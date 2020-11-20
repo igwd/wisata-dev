@@ -20,6 +20,8 @@
 <!-- Main style sheet -->
 <link href="public/site/assets/css/style.css" rel="stylesheet">    
 
+<!-- login form sheet -->
+<link href="public/site/assets/css/login-form.css" rel="stylesheet"> 
 
 <!-- Google Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>

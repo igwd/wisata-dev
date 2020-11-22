@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use DB;
+use App\User;
+use App\Roles;
+
 class HomeController extends Controller
 {
     /**
@@ -13,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -21,8 +25,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        /*echo "<pre>";
+        print_r($request->session()->all());
+        echo "</pre>";*/
+        /*foreach ($user->user_roles as $role) {
+            echo $role->role_name;
+        }*/
         return view('site.homepage');
     }
 }

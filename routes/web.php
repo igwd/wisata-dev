@@ -13,8 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/','HomeController@index');
-
 Auth::routes();
+Route::get('/gallery',function(){
+	return view('site.gallery');
+})->name('gallery');
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+//role admin route
+Route::group(['middleware' => 'RoleAccess:1'], function () {
+	Route::get('/home', 'HomeController@index');
+	Route::get('admin', 'Admin\DashboardController@index')->name('admin');
+});
+
+//role user route
+Route::group(['middleware' => 'auth','RoleAccess:2'], function () {
+	Route::get('/home', 'HomeController@index')->name('home');
+});

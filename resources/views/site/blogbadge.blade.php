@@ -5,7 +5,7 @@
           <div class="mu-from-blog-area">
             <!-- start title -->
             <div class="mu-title">
-              <h2>From Blog</h2>
+              <h2>News</h2>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum vitae quae vero ut natus. Dolore!</p>
             </div>
             <!-- end title -->  

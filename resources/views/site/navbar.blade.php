@@ -17,17 +17,19 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-          <li class="active"><a href="index.html">Home</a></li>            
+          <li class="{{request()->routeIs('home') ? 'active' : ''}}"><a href="{{ route('home') }}">Home</a></li>            
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Course <span class="fa fa-angle-down"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Accomodation <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="course.html">Course Archive</a></li>                
-              <li><a href="course-detail.html">Course Detail</a></li>                
+              <li><a href="course.html">Facilities</a></li>                
+              <li><a href="course-detail.html">Transport</a></li>
+              <li><a href="course-detail.html">Restaurant</a></li>                
             </ul>
           </li>           
-          <li><a href="gallery.html">Gallery</a></li>            
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="404.html">404 Page</a></li>
+          <li class="{{request()->routeIs('gallery') ? 'active' : ''}}"><a href="{{ route('gallery') }}">Gallery</a></li>            
+          <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="contact.html">Contact</a></li>
+          <!-- <li><a href="404.html">404 Page</a></li> -->
+
           <!-- Authentication Links -->
           @guest
               <li><a href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -38,6 +40,11 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{Auth::user()->name}} <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
+              @if(session('role_active')==1)
+              <li><a class="dropdown-item" href="admin">Dashboard</a></li>
+              @else                              
+              <li><a class="dropdown-item" href="#">Your Ticket</a></li>                              
+              @endif
               <li>
                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                 {{ __('Logout') }}
@@ -45,7 +52,7 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                 @csrf
                 </form>
-              </li>                              
+              </li>
             </ul>
           </li>
           @endguest               

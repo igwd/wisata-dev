@@ -5,7 +5,7 @@
         <div class="mu-latest-courses-area">
           <!-- Start Title -->
           <div class="mu-title">
-            <h2>Latest Courses</h2>
+            <h2>Services</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio ipsa ea maxime mollitia, vitae voluptates, quod at, saepe reprehenderit totam aliquam architecto fugiat sunt animi!</p>
           </div>
           <!-- End Title -->
@@ -16,7 +16,7 @@
                 <figure class="mu-latest-course-img">
                   <a href="#"><img src="public/site/assets/img/courses/1.jpg" alt="img"></a>
                   <figcaption class="mu-latest-course-imgcaption">
-                    <a href="#">Drawing</a>
+                    <a href="#">Akomodasi</a>
                     <span><i class="fa fa-clock-o"></i>90Days</span>
                   </figcaption>
                 </figure>
@@ -35,7 +35,7 @@
                 <figure class="mu-latest-course-img">
                   <a href="#"><img src="public/site/assets/img/courses/2.jpg" alt="img"></a>
                   <figcaption class="mu-latest-course-imgcaption">
-                    <a href="#">Engineering </a>
+                    <a href="#">Tiket </a>
                     <span><i class="fa fa-clock-o"></i>75Days</span>
                   </figcaption>
                 </figure>
@@ -54,7 +54,7 @@
                 <figure class="mu-latest-course-img">
                   <a href="#"><img src="public/site/assets/img/courses/3.jpg" alt="img"></a>
                   <figcaption class="mu-latest-course-imgcaption">
-                    <a href="#">Academic</a>
+                    <a href="#">Lunch</a>
                     <span><i class="fa fa-clock-o"></i>45Days</span>
                   </figcaption>
                 </figure>

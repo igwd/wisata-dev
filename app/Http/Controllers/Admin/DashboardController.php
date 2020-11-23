@@ -19,8 +19,6 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        //dd($request->session()->get('user'));
-        //return "Admin : ".$request->session()->get('user')['name'];
         return view('admin.dashboard');
     }
 

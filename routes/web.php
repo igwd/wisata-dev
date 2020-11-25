@@ -20,10 +20,10 @@ Route::get('/gallery',function(){
 	return view('site.gallery');
 })->name('gallery');
 
+Route::get('/home', 'HomeController@index');
 
 //role admin route
-Route::group(['middleware' => 'RoleAccess:1'], function () {
-	Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => 'auth','RoleAccess:1'], function () {
 	Route::get('admin', 'Admin\DashboardController@index')->name('admin');
 });
 

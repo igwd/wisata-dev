@@ -14,3 +14,5 @@
 
 <!-- Custom styles for this template-->
 <link href="public/admin/css/sb-admin-2.min.css" rel="stylesheet">
+<!-- datatable style -->
+<link href="public/admin/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">

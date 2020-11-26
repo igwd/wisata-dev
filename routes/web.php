@@ -25,6 +25,7 @@ Route::get('/home', 'HomeController@index');
 //role admin route
 Route::group(['middleware' => 'auth','RoleAccess:1'], function () {
 	Route::get('admin', 'Admin\DashboardController@index')->name('admin');
+	Route::get('admin/listDataSlideShow', 'Admin\SlideShowController@listDataSlideShow')->name('listDataSlideShow');
 });
 
 //role user route

@@ -56,7 +56,7 @@ class LoginController extends Controller
             [
                 'user'=>$user->getOriginal(),
                 'roles' => $user->user_roles,
-                'role_active' => 2
+                'role_active' => 1
             ]
         );
     }

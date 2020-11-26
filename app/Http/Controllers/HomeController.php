@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use DB;
-use App\User;
-use App\Roles;
+use App\Model\User;
+use App\Model\Roles;
 
 class HomeController extends Controller
 {

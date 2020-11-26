@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DataTables;
+use DB;
+use App\Models\SlideShow;
 
 class DashboardController extends Controller
 {

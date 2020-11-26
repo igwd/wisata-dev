@@ -27,7 +27,7 @@
             </ul>
           </li>           
           <li class="{{request()->routeIs('gallery') ? 'active' : ''}}"><a href="{{ route('gallery') }}">Gallery</a></li>            
-          <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="contact.html">Contact</a></li>
+          <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="contact.html">Tiket</a></li>
           <!-- <li><a href="404.html">404 Page</a></li> -->
 
           <!-- Authentication Links -->

@@ -1,6 +1,6 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fa fa-map"></i>
         </div>
@@ -16,31 +16,46 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
-    <hr class="sidebar-divider">
-
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+    
     <!-- Heading -->
     <div class="sidebar-heading">
-        Halaman Website
+        Data Pengunjung
     </div>
-
-    <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
+        <a class="nav-link" href="charts.html">
+        <i class="fas fa-fw fa-chart-area"></i>
+        <span>Grafik Kunjungan</span></a>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Manajemen Tiket
+    </div>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTiket"
+            aria-expanded="true" aria-controls="collapseTiket">
+            <i class="fas fa-fw fa-tags"></i>
+            <span>Tiket</span>
         </a>
-        <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseTiket" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Pengaturan</h6>
-                <a class="collapse-item active" href="login.html">Slide Show</a>
-                <a class="collapse-item" href="register.html">Photo Gallery</a>
-                <a class="collapse-item" href="forgot-password.html">Video Gallery</a>
-                <a class="collapse-item" href="forgot-password.html">About</a>
+                <h6 class="collapse-header">Proses Administrasi</h6>
+                <a class="collapse-item" href="login.html"><i class="far fa-calendar-check"></i> Pesan</a>
+                <a class="collapse-item" href="register.html"><i class="far fa-money-bill-alt"></i> Bukti Pembayaran</a>
+                <a class="collapse-item" href="register.html"><i class="fas fa-receipt"></i> Cetak Tiket</a>
+                <a class="collapse-item" href="forgot-password.html"><i class="fa fa-cog"></i> Pengaturan Harga</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>
     </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+    <div class="sidebar-heading">
+        Manajemen Fasilitas
+    </div>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFacilities"
@@ -51,40 +66,49 @@
         <div id="collapseFacilities" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Master Data</h6>
-                <a class="collapse-item" href="login.html">Tempat Makan</a>
-                <a class="collapse-item" href="register.html">Penginapan</a>
-                <a class="collapse-item" href="forgot-password.html">Transportasi</a>
+                <a class="collapse-item" href="login.html"><i class="fa fa-cutlery"></i> Tempat Makan</a>
+                <a class="collapse-item" href="register.html"><i class="fas fa-home"></i> Penginapan</a>
+                <a class="collapse-item" href="forgot-password.html"><i class="fa fa-car"></i> Transportasi</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>
     </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+    <div class="sidebar-heading">
+        Manajemen Galeri
+    </div>
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGaleri"
+            aria-expanded="true" aria-controls="collapseGaleri">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Galeri Photo & Video</span>
+        </a>
+        <div id="collapseGaleri" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Master Data</h6>
+                <a class="collapse-item" href="login.html"><i class="fa fa-image"></i> Photo</a>
+                <a class="collapse-item" href="register.html"><i class="fa fa-video"></i> Video</a>
+                <div class="collapse-divider"></div>
+            </div>
+        </div>
+    </li>
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
     <div class="sidebar-heading">
         Akses Kontrol
     </div>
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-user"></i>
             <span>Users</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Role</span></a>
-    </li>
-
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Charts</span></a>
-    </li>
-
-    <!-- Nav Item - Tables -->
-    <li class="nav-item">
         <a class="nav-link" href="tables.html">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+            <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
+            <span>Logout</span></a>
     </li>
 
     <!-- Divider -->

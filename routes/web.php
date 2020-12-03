@@ -13,22 +13,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes([
+  'register' => false,
+  'reset' => false,
+  'verify' => false,
+]);
 
 Route::get('/','HomeController@index');
-Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/gallery',function(){
 	return view('site.gallery');
 })->name('gallery');
 
-Route::get('/home', 'HomeController@index');
 
 //role admin route
-Route::group(['middleware' => 'auth','RoleAccess:1'], function () {
+Route::group(['middleware' => 'auth'], function () {
+	//dashboard-start
 	Route::get('admin', 'Admin\DashboardController@index')->name('admin');
 	Route::get('admin/listDataSlideShow', 'Admin\SlideShowController@listDataSlideShow')->name('listDataSlideShow');
+	Route::get('admin/listDataHalaman', 'Admin\DashboardController@listDataHalaman')->name('listDataHalaman');
+	//edit halaman web
+	Route::get( 'admin/{param1}/edithalaman','Admin\DashboardController@edit')->name('admin.edithalaman');
+	Route::put( 'admin/updatehalaman/{param1}','Admin\DashboardController@update')->name('admin.updatehalaman');
+	//dashboard-end
 });
 
-//role user route
-Route::group(['middleware' => 'auth','RoleAccess:2'], function () {
-	Route::get('/home', 'HomeController@index')->name('home');
-});

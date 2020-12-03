@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables;
 use DB;
-use App\Models\SlideShow;
+use App\Models\Page;
 
 class DashboardController extends Controller
 {
@@ -65,7 +65,8 @@ class DashboardController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Page::find($id);
+        return view('admin.page.edit',compact("data"));
     }
 
     /**
@@ -77,7 +78,7 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -89,5 +90,33 @@ class DashboardController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function listDataHalaman(Request $request){
+        $data = Page::select([
+            'id','app_key','judul','konten'
+        ]);
+
+        $datatables = DataTables::of($data);
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('page', function($query, $keyword)  {
+                    $sql = "m_halaman_web.konten like ? OR m_halaman_web.judul like ? ";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%"]);
+                });
+        }
+        return $datatables
+            ->addcolumn('page', function ($data) {
+                if(!empty($data->konten)){
+                    $konten = $data->konten;    
+                }else{
+                    $konten = $data->site_url;
+                }
+                $html = "<h5>{$data->judul}</h5><div class='max-lines-datatable'><p>{$konten}</p></div>";
+                return $html;
+            })
+            ->addcolumn('aksi','<a href="{{url(\'/\')}}/admin/{{$id}}/edithalaman" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
+                        <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>')
+            ->rawColumns(['page','aksi'])
+            ->make(true);
     }
 }

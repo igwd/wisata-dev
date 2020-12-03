@@ -4,29 +4,21 @@
       <div class="col-md-12">
         <div class="mu-about-us-area">           
           <div class="row">
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-12">
               <div class="mu-about-us-left">
                 <!-- Start Title -->
                 <div class="mu-title">
-                  <h2>About Us</h2>              
+                  <h2>{{ $ABOUT[0]['judul'] }}</h2>              
                 </div>
                 <!-- End Title -->
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum pariatur fuga eveniet soluta aspernatur rem, nam voluptatibus voluptate voluptates sapiente, inventore. Voluptatem, maiores esse molestiae.</p>
-                <ul>
-                  <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                  <li>Saepe a minima quod iste libero rerum dicta!</li>
-                  <li>Voluptas obcaecati, iste porro fugit soluta consequuntur. Veritatis?</li>
-                  <li>Ipsam deserunt numquam ad error rem unde, omnis.</li>
-                  <li>Repellat assumenda adipisci pariatur ipsam eos similique, explicabo.</li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis quaerat harum facilis excepturi et? Mollitia!</p>
+                {{ $ABOUT[0]['konten'] }}
               </div>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <!-- <div class="col-lg-6 col-md-6">
               <div class="mu-about-us-right">
                 <div id='youtube-video-player'></div>               
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

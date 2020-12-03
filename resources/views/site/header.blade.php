@@ -7,12 +7,14 @@
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
               <div class="mu-header-top-left">
                 <div class="mu-top-email">
-                  <i class="fa fa-envelope"></i>
-                  <span>info@markups.io</span>
+                  <i class="@php (empty($EMAIL) ? '' : $EMAIL[0]['icon']) @endphp"></i>
+                  <span>
+                    @php (empty($EMAIL) ? '' : $EMAIL[0]['konten']) @endphp 
+                  </span>
                 </div>
-                <div class="mu-top-phone">
-                  <i class="fa fa-phone"></i>
-                  <span>(568) 986 652</span>
+                <div class="mu-top-email">
+                  <i class="{{ @$P_CONTACT[0]['icon'] }}"></i>
+                  <span>{{ @$P_CONTACT[0]['konten'] }}</span>
                 </div>
               </div>
             </div>
@@ -20,11 +22,11 @@
               <div class="mu-header-top-right">
                 <nav>
                   <ul class="mu-top-social-nav">
-                    <li><a href="#"><span class="fa fa-facebook"></span></a></li>
-                    <li><a href="#"><span class="fa fa-twitter"></span></a></li>
-                    <li><a href="#"><span class="fa fa-google-plus"></span></a></li>
-                    <li><a href="#"><span class="fa fa-linkedin"></span></a></li>
-                    <li><a href="#"><span class="fa fa-youtube"></span></a></li>
+                    @if(!empty($SOSMED))
+                      @foreach($SOSMED as $row => $value)
+                      <li><a href="{{@$value['site_url']}}" target="_blank"><span class="{{@$value['icon']}}"></span></a></li>
+                      @endforeach
+                    @endif
                   </ul>
                 </nav>
               </div>

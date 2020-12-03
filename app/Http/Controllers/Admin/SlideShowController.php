@@ -231,8 +231,10 @@ class SlideShowController extends Controller
 
         $datatables = DataTables::of($data);
         if ($keyword = $request->get('search')['value']) {
-            $datatables->filterColumn('tema', 'whereRaw', 'tema like ?', ["%{$keyword}%"]);
-            $datatables->filterColumn('judul', 'whereRaw', 'judul like ?', ["%{$keyword}%"]);
+            $datatables->filterColumn('slideshow', function($query, $keyword) {
+                    $sql = "tema like ? OR judul like ? OR deskripsi like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
+                });
         }
         return $datatables
             ->addcolumn('slideshow', function ($data) {
@@ -249,8 +251,8 @@ class SlideShowController extends Controller
                                 <h2>{$data->judul}</h2>
                                 <p>{$data->deskripsi}</p>
                                 <div class='slider-action'>  
-                                    <a href='#' class='btn btn-xs btn-success'><i class='fa fa-edit'></i></a>
-                                    <a href='#' class='btn btn-xs btn-danger'><i class='fa fa-trash'></i></a>
+                                    <a href='#' class='btn btn-sm btn-success'><i class='fa fa-edit'></i></a>
+                                    <a href='#' class='btn btn-sm btn-danger'><i class='fa fa-trash'></i></a>
                                 </div>
                             </div>
                         </div>

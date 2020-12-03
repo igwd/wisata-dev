@@ -30,6 +30,19 @@
 		position: relative !important;
 	    z-index: 99999 !important;
 	}
+
+    .max-lines-datatable {
+        display: block;/* or inline-block */
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        overflow: hidden;
+        max-height: 3.6em;
+        line-height: 1.8em;
+    }
+
+    .card{
+        margin-top: 10px;
+    }
 </style>
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -54,10 +67,16 @@
     <div class="row">
     	<div class="col-md-12 card">
     		<div class="card-header">
-    			<h6 class="m-0 font-weight-bold text-primary">Halaman About</h6>
+    			<h6 class="m-0 font-weight-bold text-primary">Pengaturan Halaman</h6>
     		</div>
     		<div class="card-body">
-		    	
+		    	<table id="data-halaman" class="table table-striped" style="width:100%">
+                    <thead>
+                        <th width="90%">Tampilan</th>
+                        <th width="10%">Aksi</th>
+                    </thead>
+                    <tbody></tbody>
+                </table>
 		    </div>
 	    </div>
     </div>
@@ -65,6 +84,7 @@
 @section('script')
 <script type="text/javascript">
 	var table_slide_show;
+    var table_halaman;
 	$(document).ready(function() {
         table_slide_show = $('#data-slide-show').DataTable({
             processing: true,
@@ -82,7 +102,7 @@
                     data: 'slideshow',
                     name: 'slideshow',
                     orderable: false,
-                    searchable: false,
+                    searchable: true,
                     class: 'text-center'
                 }
             ],
@@ -104,6 +124,48 @@
             drawCallback: function(settings) {
                 var api = this.api();
             }*/
+        });
+
+        $('#data-slide-show_filter input').unbind();
+        $('#data-slide-show_filter input').bind('keyup', function(e) {
+            if(e.keyCode == 13) {
+                table_slide_show.search(this.value).draw();   
+            }
+        });
+
+        table_halaman = $('#data-halaman').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '{{url("admin/listDataHalaman")}}',
+                data: function(d) {
+                    /*d.id_universitas = $('#universitas').val();
+                    d.id_jenis_lomba = $('#kategori_lomba').val();
+                    d.verifikasi = $('#verifikasi').val();*/
+                }
+            },
+            columns: [         
+                {
+                    data: 'page',
+                    name: 'page',
+                    orderable: false,
+                    searchable: true,
+                    class: 'text-left'
+                },
+                {
+                    data: 'aksi',
+                    name: 'id',
+                    orderable: false,
+                    searchable: false,
+                    class: 'text-center'
+                }
+            ],
+        });
+        $('#data-halaman_filter input').unbind();
+        $('#data-halaman_filter input').bind('keyup', function(e) {
+            if(e.keyCode == 13) {
+                table_halaman.search(this.value).draw();   
+            }
         });
     });
 	

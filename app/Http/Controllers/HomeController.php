@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use DB;
-use App\Model\User;
-use App\Model\Roles;
+use App\Models\Page;
 
 class HomeController extends Controller
 {
@@ -27,12 +26,12 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        /*echo "<pre>";
-        print_r($request->session()->all());
-        echo "</pre>";*/
-        /*foreach ($user->user_roles as $role) {
-            echo $role->role_name;
-        }*/
-        return view('site.homepage');
+        $data = array();
+        $page = Page::all()->toArray();
+        foreach ($page as $key => $value) {
+            $data[$value['app_key']][] = $value;
+        }
+        //dd($data);
+        return view('site.homepage')->with($data);
     }
 }

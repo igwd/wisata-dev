@@ -26,3 +26,10 @@
 <!-- Google Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,700' rel='stylesheet' type='text/css'>
+<style type="text/css">
+	.btn-read-services{
+	    color: #fcf8e3;
+	    background-color: none; 
+	    border-color: #fcf8e3;
+	}
+</style>

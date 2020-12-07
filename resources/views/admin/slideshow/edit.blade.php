@@ -1,108 +1,60 @@
-@extends('layout/app')
-
-@section('title')
-  Slide Show
-  <small>Show</small>
-@endsection
-
+@extends('admin.template')
 @section('content')
-{!! Form::model($data, [ 'url'=>'admin/slideshow/'.$data->id,'method' => 'PUT','id' => 'editGallery','class' => 'validated_form','role' => 'form','files' => true]) !!}
-<div class="row">
-  <div class="col-md-12">
-  <div class="box box-solid">
-    <div class="box-body">
-        <div class="box-body">
-          <div class="col-md-12">
-            <img src="{{ url($data->image) }}" width="80%">
-          </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                {!! Form::label('image', 'File Image*') !!}
-                {!! Form::file('image', ['id'=>'image','class' => 'file', 'placeholder' => 'File Image','accept'=>'image/*']) !!}
-              </div>
-            </div>
-          <div class="col-md-12">
+<div class="container-fluid">
+    <!-- Content Row -->
+  <!-- Page Heading -->
+  <div class="row">
+      <h1 class="h3 text-gray-800">Manajemen Halaman Web</h1>
+  </div>
+    <div class="row">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{url('/')}}/admin">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{url('/')}}/admin">Slide Show</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit - {{$data->tema}}</li>
+      </ol>
+    </nav>
+      <div class="col-md-12 card">
+        <div class="card-body">
+          <form id="form-data" name="form-data" method="POST" enctype="multipart/form-data" action="{{url('/')}}/admin/slideshow/{{$data->id}}/update">
+            <!-- form reqiure laravel -->
+            <input type="hidden" name="_method" value="PUT">
+            @csrf
+            <!-- form require laravel end -->
             <div class="form-group">
-              {!! Form::label('judul','Judul*')!!}
-              {!! Form::text('judul', NULL, ['id'=>'judul','class' => 'form-control required', 'placeholder' => 'Judul']) !!}
+              <label>Tema</label>
+              <input type="text" class="form-control" name="tema" id="tema" value="{{$data->tema}}">
             </div>
-          </div>
-          <div class="col-md-12">
             <div class="form-group">
-              {!! Form::label('deskripsi','Deskripsi')!!}
-              {!! Form::textarea('deskripsi', NULL, ['id'=>'deskripsi','class' => 'form-control summernote', 'placeholder' => 'Deskripsi']) !!}
+              <label>Judul</label>
+              <input type="text" class="form-control" name="judul" id="judul" value="{{$data->judul}}">
             </div>
+            <div class="form-group">
+              <label>Deskripsi</label>
+              <textarea id="deskripsi" name="deskripsi" class="summernote form-control">{{$data->deskripsi}}</textarea>
+            </div>
+            <div class="form-group">
+              <label>Upload Gambar</label>
+              <input type="file" name="image" class="form-control" id="image">
+            </div>
+          </form>
+          <div class="group-btn pull-right">
+            <button id="btn-simpan" class="btn btn-success">Simpan</button>
+            <button id="btn-simpan" class="btn btn-danger">Hapus</button>
           </div>
         </div>
-        <!-- /.box-body -->
-    </div><!-- /.box-body -->
-  </div><!-- /.box-body out -->
+      </div>
+    </div>
 </div>
-</div>
-<br>
-<div class="row">
-  <div class="col-md-12">
-  <div class="box box-solid">
-    <div class="box-body">
-        
-        <!-- /.box-body -->
-        <div class="box-footer">
-          <center>
-            <button type="submit" class="btn btn-primary flat">Submit</button>
-            <button type="reset" class="btn btn-danger flat">Reset</button>
-          </center>
-        </div>
-    </div><!-- /.box-body -->
-  </div><!-- /.box-body out -->
-</div>
-</div>
-{!! Form::close() !!}
-
-
 @endsection
-
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
-    $('.summernote').summernote({
-      height: 480,
-      minHeight: null,
-      maxHeight: null,
-      focus: false,
-      callbacks: {
-        onImageUpload: function(files, editor, welEditable) {
-          for (var i = files.length - 1; i >= 0; i--) {
-            sendFile(files[i], this);
-          }
-        },
-        onInit: function() {
-          var noteBtn = '<button id="upload_gambar" type="button" class="btn btn-default btn-sm btn-small" title="Upload Images" data-event="something" tabindex="-1"><i class="fa fa-file-image-o"></i></button>';
-          var fileGroup = '<div class="note-file btn-group">' + noteBtn + '</div>';
-          $('#upload_gambar').tooltip({
-            container: 'body',
-            placement: 'bottom'
-          });
-          // Button events
-          $('#upload_gambar').click(function(event) {
-            alert('gamaar..');
-          });
-        },
-      },
-        toolbar: [
-          ['fontname', ['fontname']],
-          ['fontsize', ['fontsize']],
-          ['font', ['style','bold', 'italic', 'underline', 'clear']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          //['height', ['height']],
-          ['table', ['table']],
-          /*['insert', ['link','picture']],*/
-          //['view', ['fullscreen', 'codeview']],
-          //['misc', ['undo','redo']]
-        ]
+    $('#btn-simpan').click(function(){
+      $('#form-data').submit();
     });
-  })
 
-
+    $('.summernote').summernote();
+  });
 </script>
 @endsection

@@ -8,7 +8,8 @@
 
 <!-- Custom fonts for this template-->
 <link href="{{url('/')}}/public/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-<script src="https://use.fontawesome.com/3871e243e1.js"></script>
+<link href="{{url('/')}}/public/site/assets/css/font-awesome.css" rel="stylesheet">
+<!-- <script src="https://use.fontawesome.com/3871e243e1.js"></script> -->
 <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet">

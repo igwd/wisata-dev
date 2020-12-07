@@ -4,25 +4,18 @@
       <div class="col-lg-12 col-md-12">
         <div class="mu-service-area">
           <!-- Start single service -->
-          <div class="mu-service-single">
-            <span class="fa fa-book"></span>
-            <h3>Accommodation</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima officiis, deleniti dolorem exercitationem praesentium, est!</p>
-          </div>
-          <!-- Start single service -->
-          <!-- Start single service -->
-          <div class="mu-service-single">
-            <span class="fa fa-car"></span>
-            <h3>Transport</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima officiis, deleniti dolorem exercitationem praesentium, est!</p>
-          </div>
-          <!-- Start single service -->
-          <!-- Start single service -->
-          <div class="mu-service-single">
-            <span class="fa fa-table"></span>
-            <h3>Book Your Ticket</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima officiis, deleniti dolorem exercitationem praesentium, est!</p>
-          </div>
+          @foreach($SERVICES as $service => $value)
+          <!-- <div class="col-md-3 col-sm-3"> -->
+            <div class="mu-service-single">
+              <span class="{{$value['icon']}}"></span>
+              <h3>{{$value['judul']}}</h3>
+              <p>{!! $value['konten'] !!}</p>
+              @if(!empty($value['site_url']))
+                <a href="#" class="btn btn-read-services" tabindex="0">Read More</a>
+              @endif
+            </div>
+          <!-- </div> -->
+          @endforeach
           <!-- Start single service -->
         </div>
       </div>

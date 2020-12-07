@@ -29,7 +29,7 @@ class HomeController extends Controller
         $data = array();
         $page = Page::all()->toArray();
         foreach ($page as $key => $value) {
-            $data[$value['app_key']][] = $value;
+            $data[$value['group']][] = $value;
         }
         //dd($data);
         return view('site.homepage')->with($data);

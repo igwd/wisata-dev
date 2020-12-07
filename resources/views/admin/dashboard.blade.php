@@ -46,8 +46,12 @@
 </style>
 <div class="container-fluid">
     <!-- Page Heading -->
+    @if(Session::has('message'))
+        @php $messages = Session::get('message') @endphp
+        <p class="alert {{$messages['class']}}">{{ $messages['text'] }}</p>
+    @endif
     <h1 class="h3 text-gray-800">Dashboard</h1>
-    <p class="mb-2">Dashboard admin merupakan halaman yang digunakan untuk mengelola konten yang terdapat pada halaman web, yaitu <i>slide show</i> dan <i>about</i></p>
+    <p class="mb-2">Dashboard admin merupakan halaman yang digunakan untuk mengelola konten yang terdapat pada halaman web</p>
     <!-- Content Row -->
     <div class="row">
     	<div class="col-md-12 card">
@@ -69,7 +73,7 @@
     		<div class="card-header">
     			<h6 class="m-0 font-weight-bold text-primary">Pengaturan Halaman</h6>
     		</div>
-    		<div class="card-body">
+    		<div class="card-body table-responsive">
 		    	<table id="data-halaman" class="table table-striped" style="width:100%">
                     <thead>
                         <th width="90%">Tampilan</th>

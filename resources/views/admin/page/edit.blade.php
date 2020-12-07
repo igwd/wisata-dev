@@ -22,12 +22,20 @@
 		    		<!-- form require laravel end -->
 		    		<div class="form-group">
 		    			<label>Judul</label>
-		    			<input type="hidden" name="app_key" value="{{$data->app_key}}">
+		    			<input type="hidden" name="group" value="{{$data->group}}">
 		    			<input type="text" class="form-control" name="judul" id="judul" value="{{$data->judul}}">
 		    		</div>
 		    		<div class="form-group">
 		    			<label>Konten</label>
-		    			<textarea id="konten" name="konten" class="form-control">{{$data->konten}}</textarea>
+		    			<textarea id="konten" name="konten" class="summernote form-control">{{$data->konten}}</textarea>
+		    		</div>
+		    		<div class="form-group">
+		    			<label>Icon</label>
+		    			<input type="text" name="icon" class="form-control" id="icon" value="{{$data->icon}}">
+		    		</div>
+		    		<div class="form-group">
+		    			<label>Link Eksternal</label>
+		    			<input type="text" name="site_url" class="form-control" id="site_url" value="{{$data->site_url}}">
 		    		</div>
 		    	</form>
 	    		<button id="btn-simpan">Simpan</button>
@@ -42,6 +50,8 @@
 		$('#btn-simpan').click(function(){
 			$('#form-data').submit();
 		});
+
+		$('.summernote').summernote();
 	});
 </script>
 @endsection

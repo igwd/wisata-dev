@@ -19,15 +19,21 @@
         <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
           <li class="{{request()->routeIs('home') ? 'active' : ''}}"><a href="{{ route('home') }}">Home</a></li>            
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Accomodation <span class="fa fa-angle-down"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fasilitas <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="course.html">Facilities</a></li>                
-              <li><a href="course-detail.html">Transport</a></li>
-              <li><a href="course-detail.html">Restaurant</a></li>                
+              <li><a href="{{url('/')}}">Transportasi</a></li>                
+              <li><a href="course-detail.html">Penginapan</a></li>
+              <li><a href="course-detail.html">Kuliner</a></li>                
             </ul>
-          </li>           
-          <li class="{{request()->routeIs('gallery') ? 'active' : ''}}"><a href="{{ route('gallery') }}">Gallery</a></li>            
-          <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="contact.html">Tiket</a></li>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Galeri <span class="fa fa-angle-down"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{url('/')}}">Photo</a></li>                
+              <li><a href="{{url('/')}}">Video</a></li>                
+            </ul>
+          </li>                      
+          <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="{{ route('tiket') }}">Tiket</a></li>
           <!-- <li><a href="404.html">404 Page</a></li> -->
 
           <!-- Authentication Links -->

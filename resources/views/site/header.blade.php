@@ -6,10 +6,10 @@
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
               <div class="mu-header-top-left">
-                <div class="mu-top-email">
-                  <i class="@php (empty($EMAIL) ? '' : $EMAIL[0]['icon']) @endphp"></i>
+                <div class="mu-top-email" style="margin-right: 15px;">
+                  <i class="{!!@$EMAIL[0]['icon']!!}"></i>
                   <span>
-                    @php (empty($EMAIL) ? '' : $EMAIL[0]['konten']) @endphp 
+                    {!!@$EMAIL[0]['konten']!!} 
                   </span>
                 </div>
                 <div class="mu-top-email">

@@ -78,7 +78,22 @@ class DashboardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
+        //dd($request);
+        $msg = array();
+        $page = Page::where('id',$id)->first();
+    
+        $page->judul = $request->judul;
+        $page->konten = $request->konten;
+        $page->icon = $request->icon;
+        $page->site_url = $request->site_url;
+
+        $check = $page->save();
+        if($check){
+            session()->flash('message', array('class'=>'alert-success','text'=>"Berhasil update halaman {$request->judul}"));
+        }else{
+            session()->flash('message', array('class'=>'alert-success','text'=>"Gagal update halaman {$request->judul}"));
+        }
+        return redirect('admin');
     }
 
     /**
@@ -94,7 +109,7 @@ class DashboardController extends Controller
 
     public function listDataHalaman(Request $request){
         $data = Page::select([
-            'id','app_key','judul','konten'
+            'id','group','judul','konten'
         ]);
 
         $datatables = DataTables::of($data);
@@ -111,11 +126,10 @@ class DashboardController extends Controller
                 }else{
                     $konten = $data->site_url;
                 }
-                $html = "<h5>{$data->judul}</h5><div class='max-lines-datatable'><p>{$konten}</p></div>";
+                $html = "<h5>{$data->judul}</h5><div class=''><p>{$konten}</p></div>";
                 return $html;
             })
-            ->addcolumn('aksi','<a href="{{url(\'/\')}}/admin/{{$id}}/edithalaman" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>
-                        <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>')
+            ->addcolumn('aksi','<a href="{{url(\'/\')}}/admin/{{$id}}/edithalaman" class="btn btn-sm btn-success"><i class="fa fa-edit"></i></a>')
             ->rawColumns(['page','aksi'])
             ->make(true);
     }

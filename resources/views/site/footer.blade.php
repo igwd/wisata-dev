@@ -9,10 +9,6 @@
               <h4>Information</h4>
               <ul>
                 <li><a href="#">About Us</a></li>
-                <li><a href="">Features</a></li>
-                <li><a href="">Course</a></li>
-                <li><a href="">Event</a></li>
-                <li><a href="">Sitemap</a></li>
                 <li><a href="">Term Of Use</a></li>
               </ul>
             </div>
@@ -21,10 +17,9 @@
             <div class="mu-footer-widget">
               <h4>Contact</h4>
               <address>
-                <p>P.O. Box 620, Ross, California 9495, USA</p>
-                <p>Phone: (415) 453-1568 </p>
-                <p>Website: www.markups.io</p>
-                <p>Email: info@markups.io</p>
+                <p>{!!@$ALAMAT[0]['konten']!!}</p>
+                <p>Phone: {{@$P_CONTACT[0]['konten']}}</p>
+                <p>Email: {{@$EMAIL[0]['konten']}}</p>
               </address>
             </div>
           </div>
@@ -37,7 +32,7 @@
   <div class="mu-footer-bottom">
     <div class="container">
       <div class="mu-footer-bottom-area">
-        <p>&copy; All Right Reserved. XIGWDX</a></p>
+        <p>&copy; All Right Reserved.</a></p>
       </div>
     </div>
   </div>

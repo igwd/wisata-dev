@@ -8,5 +8,5 @@ class Page extends Model
 {
     protected $table = 'm_halaman_web';
 
-    protected $fillable = ['app_key','icon','judul','konten','site_url','is_use_style'];
+    protected $fillable = ['group','icon','judul','konten','site_url','is_use_style'];
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use DB;
 use App\Models\SlideShow;
+use Validator;
 
 class SlideShowController extends Controller
 {
@@ -28,7 +29,7 @@ class SlideShowController extends Controller
     public function create()
     {
         //
-        return view('slideshow.create');
+        return view('admin.dashboard.slideshow.create');
     }
 
     /**
@@ -40,69 +41,59 @@ class SlideShowController extends Controller
     public function store(Request $request)
     {
         //
-        $slider = new slideshow;
-
+        $slider = new SlideShow;
+        $msg = array();
+        $url_gambar = $request->url_gambar;
+        $slider->tema = $request->tema;
         $slider->judul = $request->judul;
         $slider->deskripsi = $request->deskripsi;
-        $slider->status_id = 1;
-
-        $ins = $slider->save();
-
-        if($ins){
-            if(!empty($request->file('image'))){
-                $file = array('image' => $request->file('image'));
-                //print_r($file);
-                // setting up rules
-                $rules = array('image' => 'required'); 
-                //mimes:jpeg,bmp,png and for max size max:10000
-                // doing the validation, passing post data, rules and the messages
-                $validator = Validator::make($file, $rules);
-                if ($validator->fails()) {
-                    // send back to the page with the input data and errors
-                    //return Redirect::to('daftar/uploadfoto?gagal=1')->withInput()->withErrors($validator);
-                    return "Gagal";
-                } else {
-                    // checking file is valid.
-                    if ($request->file('image')->isValid()) {
-                        $destinationPath = 'protected/storage/slideshow'; // upload path
-                        $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-                        $filename = $request->file('image')->getClientOriginalName(); // getting image extension
-                        $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-                        $fileName = $file.'.'.$extension;
-                        if (file_exists($destinationPath.'/'.$fileName)) {
-                        unlink($destinationPath.'/'.$fileName);
-                    }
-                    // renameing image
-                    //$request->file('image')->move($destinationPath, $fileName); // uploading file to given path
-                  
-                        if ($request->file('image')->move($destinationPath, $fileName)) {
-                                $filePath = $destinationPath.'/'.$fileName;
-                                $id = $slider->id;
-                                //menyimpan nama file di database
-                                $save = slideshow::where('id','=',$id)
-                                ->update(
-                                    array(
-                                            'image' => $filePath
-                                            //'flag_step_counter'=>'2',
-                                        )
-                                );
-                            // sending back with message
-                            /*Session::flash('message', 'Upload successfully');
-                            return redirect('/listSlider');*/
-                            //return Redirect::to('daftar/uploadfoto?sukses=1');
-                        }
-                    } else {
-                      session()->flash('error', 'Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx');
-                    }
-                }
-                session()->flash('success', 'Berhasil Menyimpan Slide Show');
-            }else{
-                session()->flash('success', 'Berhasil Menyimpan Slide Show');
-            }
+        
+        // setting up rules
+        $rules = array('image' => 'required'); 
+        //mimes:jpeg,bmp,png and for max size max:10000
+        $file = array('image' => $request->file('image'));
+        // doing the validation, passing post data, rules and the messages
+        $validator = Validator::make($file, $rules);
+        
+        if($validator->fails()){
+            // send back to the page with the input data and errors
+            $msg = array('class'=>'alert-danger','text'=>'Gambar tidak boleh kosong.');
         }else{
-            session()->flash('error', 'Gagal Menyimpan Slide Show');
+            // checking file is valid.
+            if ($request->file('image')->isValid()) {
+                $destinationPath = 'storage/slideshow'; // upload path
+                $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+                $filename = $request->file('image')->getClientOriginalName(); // getting image extension
+                $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+                $fileName = md5($file).'.'.$extension;
+                if (file_exists($destinationPath.'/'.$fileName)) {
+                    unlink($destinationPath.'/'.$fileName);
+                }
+
+                // uploading file to given path
+                if ($request->file('image')->move($destinationPath, $fileName)) {
+                    $filePath = $destinationPath.'/'.$fileName;
+                    $url_gambar = $filePath;
+                }
+            }else{
+                $msg = array('class'=>'alert-danger','text'=>'Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx');
+            }
         }
-        return redirect('admin/slideshow/list');
+
+        //dd($msg);
+        $slider->url_gambar = $url_gambar;
+        if(empty($url_gambar)){
+            session()->flash('message', $msg);
+        }else{
+            $simpan = $slider->save();
+            if($simpan){
+                session()->flash('message', array('class'=>'alert-success','text'=>'Berhasil tambah data Slide Show - '.$request->judul));
+            }else{
+                session()->flash('message', array('class'=>'alert-danger','text'=>'Gagal tambah data Slide Show - '.$request->judul));
+            }
+        }
+        $form = (object) $request->input();
+        return view('admin.dashboard.slideshow.create',compact("form"));
     }
 
     /**
@@ -114,8 +105,6 @@ class SlideShowController extends Controller
     public function show($id)
     {
         //
-        $data = slideshow::where("id","=",$id)->first();
-        return view('slideshow.show',compact('data'));
     }
 
     /**
@@ -128,7 +117,7 @@ class SlideShowController extends Controller
     {
         //
         $data = slideshow::where("id","=",$id)->first();
-        return view('admin.slideshow.edit',compact('data'));
+        return view('admin.dashboard.slideshow.edit',compact('data'));
     }
 
     /**
@@ -141,9 +130,7 @@ class SlideShowController extends Controller
     public function update(Request $request, $id)
     {
         $slider = SlideShow::find($id);
-        $url_gambar = "";
-        dd($slider);
-
+        $url_gambar = $request->url_gambar;
         $slider->tema = $request->tema;
         $slider->judul = $request->judul;
         $slider->deskripsi = $request->deskripsi;
@@ -156,8 +143,7 @@ class SlideShowController extends Controller
             $validator = Validator::make($file, $rules);
             if($validator->fails()){
                 // send back to the page with the input data and errors
-                //return Redirect::to('daftar/uploadfoto?gagal=1')->withInput()->withErrors($validator);
-                session()->flash('message', array('class'=>'alert-danger','txt'=>'Gambar tidak boleh kosong.'));
+                $msg = array('class'=>'alert-danger','text'=>'Gambar tidak boleh kosong.');
             }else{
                 // checking file is valid.
                 if ($request->file('image')->isValid()) {
@@ -165,30 +151,34 @@ class SlideShowController extends Controller
                     $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
                     $filename = $request->file('image')->getClientOriginalName(); // getting image extension
                     $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-                    $fileName = $file.'.'.$extension;
+                    $fileName = md5($file).'.'.$extension;
                     if (file_exists($destinationPath.'/'.$fileName)) {
                         unlink($destinationPath.'/'.$fileName);
                     }
-                    // renameing image
-                    //$request->file('image')->move($destinationPath, $fileName); // uploading file to given path
-                  
+
+                    // uploading file to given path
                     if ($request->file('image')->move($destinationPath, $fileName)) {
-                            $filePath = $destinationPath.'/'.$fileName;
-                            $url_gambar = $filePath;
-                        // sending back with message
-                        /*Session::flash('message', 'Upload successfully');
-                        return redirect('/listSlider');*/
-                        //return Redirect::to('daftar/uploadfoto?sukses=1');
+                        $filePath = $destinationPath.'/'.$fileName;
+                        $url_gambar = $filePath;
                     }
                 }else{
-                    session()->flash('message', array('class'=>'alert-danger','txt'=>'Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
+                    $msg = array('class'=>'alert-danger','text'=>'Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx');
                 }
             }
-            session()->flash('success', 'Berhasil Menyimpan Slide Show');
-        }else{
-            session()->flash('success', 'Berhasil Menyimpan Slide Show');
         }
-        return redirect('admin/slideshow/list');
+        //dd($url_gambar);
+        $slider->url_gambar = $url_gambar;
+        if(empty($url_gambar)){
+            session()->flash('message', $msg);
+        }else{
+            $simpan = $slider->save();
+            if($simpan){
+                session()->flash('message', array('class'=>'alert-success','text'=>'Berhasil <i>update</i> data Slide Show - '.$request->judul));
+            }else{
+                session()->flash('message', array('class'=>'alert-danger','text'=>'Gagal <i>update</i> data Slide Show - '.$request->judul));
+            }
+        }
+        return redirect('admin');
     }
 
     /**
@@ -197,16 +187,17 @@ class SlideShowController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
-        $del = slideshow::where('id',$id)->delete();
+        //$del = SlideShow::where('id',$id)->delete();
+        $del = false;
         if($del){
-            $arr = array("submit"=>1);
+            //@unlink($request->file);
+            $msg = array('class'=>'alert-success','text'=>'Berhasil hapus data Slide Show - '.$request->judul);
         }else{
-            $arr = array("submit"=>0);
+            $msg = array('class'=>'alert-danger','text'=>'Gagal hapus data Slide Show - '.$request->judul);
         }
-        echo json_encode($arr);
+        return response()->json($msg);
     }
 
     public function listDataSlideShow(Request $request){
@@ -225,11 +216,17 @@ class SlideShowController extends Controller
             ->addcolumn('slideshow', function ($data) {
                 $url_edit = url('/')."/admin/slideshow/{$data->id}/edit";
                 $url_delete = url('/')."/admin/slideshow/{$data->id}/destroy";
+                $url_gambar = "";
+                if(!empty($data->url_gambar)){
+                    $url_gambar = url('/')."/{$data->url_gambar}";
+                }else{
+                    $url_gambar = url('/')."/public/site/assets/img/slider/1.jpg";
+                }
                 $html = "<section id='mu-slider'>
                             <div class='mu-slider-single'>
                                 <div class='mu-slider-img'>
                                     <figure>
-                                        <img src='public/site/assets/img/slider/1.jpg' alt='img'>
+                                        <img src='{$url_gambar}' alt='{$data->judul}'>
                                     </figure>
                                 </div>
                             <div class='mu-slider-content'>
@@ -239,7 +236,7 @@ class SlideShowController extends Controller
                                 <p>{$data->deskripsi}</p>
                                 <div class='slider-action'>  
                                     <a href='{$url_edit}' class='btn btn-sm btn-success'><i class='fa fa-edit'></i></a>
-                                    <a href='{$url_delete}' class='btn btn-sm btn-danger'><i class='fa fa-trash'></i></a>
+                                    <a onclick='deleteSlideShow()' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-judul='{$data->judul}' data-file='{$data->url_gambar}'><i class='fa fa-trash'></i></a>
                                 </div>
                             </div>
                         </div>

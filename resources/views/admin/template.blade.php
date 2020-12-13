@@ -3,6 +3,14 @@
 
 <head>
   @include('/admin/metadata')
+  <style type="text/css">
+    .card-header {
+        padding: .75rem 1.25rem !important;
+        margin-bottom: 0;
+        background-color: #ffffff !important;
+        border-bottom: 1px solid #e3e6f0;
+    }
+  </style>
 </head>
 
 <body id="page-top">

@@ -22,7 +22,7 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        return view('admin.dashboard');
+        return view('admin.dashboard.index');
     }
 
     /**
@@ -66,7 +66,7 @@ class DashboardController extends Controller
     public function edit($id)
     {
         $data = Page::find($id);
-        return view('admin.page.edit',compact("data"));
+        return view('admin.dashboard.page.edit',compact("data"));
     }
 
     /**

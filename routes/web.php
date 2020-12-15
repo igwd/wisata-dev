@@ -21,9 +21,14 @@ Auth::routes([
 
 Route::get('/','HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/gallery',function(){
-	return view('site.gallery');
-})->name('gallery');
+
+Route::get('galeri/photo', 'GaleriController@photo', function () {
+    return Galeri::paginate();
+})->name('galeri.photo');
+
+Route::get('galeri/video', 'GaleriController@video', function () {
+    return Galeri::paginate();
+})->name('galeri.video');
 
 Route::get('/tiket',function(){
 	return view('site.tiket');
@@ -79,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//admin-fasilitas-end
 	//admin-galeri-photo-start
 	Route::get('admin/galeri/photo', function () {
-	    return Fasilitas::paginate();
+	    return Galeri::paginate();
 	});
 	Route::get('admin/galeri/photo', 'Admin\Galeri\PhotoController@index')->name('admin.galeri.photo');
 	Route::get( 'admin/galeri/photo/{param1}/edit','Admin\Galeri\PhotoController@edit')->name('admin.galeri.photo.edit');
@@ -88,5 +93,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put( 'admin/galeri/photo/store','Admin\Galeri\PhotoController@store')->name('admin.galeri.photo.store');
 	Route::delete('admin/galeri/photo/{param1}/destroy','Admin\Galeri\PhotoController@destroy')->name('admin.galeri.photo.destroy');
 	//admin-galeri-photo-end
+
+	//admin-galeri-video-start
+	Route::get('admin/galeri/video', function () {
+	    return Galeri::paginate();
+	});
+	Route::get('admin/galeri/video', 'Admin\Galeri\VideoController@index')->name('admin.galeri.video');
+	Route::get( 'admin/galeri/video/{param1}/edit','Admin\Galeri\VideoController@edit')->name('admin.galeri.video.edit');
+	Route::put( 'admin/galeri/video/{param1}/update','Admin\Galeri\VideoController@update')->name('admin.galeri.video.update');
+	Route::get( 'admin/galeri/video/create','Admin\Galeri\VideoController@create')->name('admin.galeri.video.create');
+	Route::put( 'admin/galeri/video/store','Admin\Galeri\VideoController@store')->name('admin.galeri.video.store');
+	Route::delete('admin/galeri/video/{param1}/destroy','Admin\Galeri\VideoController@destroy')->name('admin.galeri.video.destroy');
+	//admin-galeri-video-end
 });
 

@@ -1652,7 +1652,7 @@ img {
 #mu-gallery {
   display: inline;
   float: left;
-  padding: 100px 0;
+  padding: 0 0;
   width: 100%;
 }
 #mu-gallery .mu-gallery-area {

@@ -1,3 +1,11 @@
+@php
+  use App\Models\Page;
+  $config = array();
+  $page = Page::all()->toArray();
+  foreach ($page as $key => $value) {
+    $config[$value['group']][] = $value;
+  }
+@endphp
 <footer id="mu-footer">
   <!-- start footer top -->
   <div class="mu-footer-top">
@@ -10,6 +18,17 @@
               <ul>
                 <li><a href="#">About Us</a></li>
                 <li><a href="">Term Of Use</a></li>
+                <!-- Authentication Links -->
+                @guest
+                    <li><a href="{{ route('login') }}">{{ __('Administrator') }}</a></li>
+                    @if (Route::has('register'))
+                      <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                    @endif
+                @else
+                <li>
+                  <a href="{{url('/admin')}}">{{Auth::user()->name}}</a>
+                </li>
+                @endguest
               </ul>
             </div>
           </div>
@@ -17,9 +36,9 @@
             <div class="mu-footer-widget">
               <h4>Contact</h4>
               <address>
-                <p>{!!@$ALAMAT[0]['konten']!!}</p>
-                <p>Phone: {{@$P_CONTACT[0]['konten']}}</p>
-                <p>Email: {{@$EMAIL[0]['konten']}}</p>
+                <p>{!!@$config['ALAMAT'][0]['konten']!!}</p>
+                <p>Phone : {{@$config['P_CONTACT'][0]['konten']}}</p>
+                <p>Email : {{@$config['EMAIL'][0]['konten']}}</p>
               </address>
             </div>
           </div>

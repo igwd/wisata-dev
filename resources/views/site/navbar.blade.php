@@ -21,47 +21,20 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fasilitas <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{url('/')}}">Transportasi</a></li>                
-              <li><a href="course-detail.html">Penginapan</a></li>
-              <li><a href="course-detail.html">Kuliner</a></li>                
+              <li><a href="{{url('/fasilitas/transportasi')}}">Transportasi</a></li>                
+              <li><a href="{{url('/fasilitas/penginapan')}}">Penginapan</a></li>
+              <li><a href="{{url('/fasilitas/kuliner')}}">Kuliner</a></li>                
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Galeri <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{url('/')}}">Photo</a></li>                
-              <li><a href="{{url('/')}}">Video</a></li>                
+              <li><a href="{{url('/galeri/photo')}}">Photo</a></li>                
+              <li><a href="{{url('/galeri/video')}}">Video</a></li>                
             </ul>
           </li>                      
           <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="{{ route('tiket') }}">Tiket</a></li>
-          <!-- <li><a href="404.html">404 Page</a></li> -->
-
-          <!-- Authentication Links -->
-          @guest
-              <li><a href="{{ route('login') }}">{{ __('Login') }}</a></li>
-              @if (Route::has('register'))
-                <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
-              @endif
-          @else
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{Auth::user()->name}} <span class="fa fa-angle-down"></span></a>
-            <ul class="dropdown-menu" role="menu">
-              @if(session('role_active')==1)
-              <li><a class="dropdown-item" href="admin">Dashboard</a></li>
-              @else                              
-              <li><a class="dropdown-item" href="#">Your Ticket</a></li>                              
-              @endif
-              <li>
-                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-                </form>
-              </li>
-            </ul>
-          </li>
-          @endguest               
+          <!-- <li><a href="404.html">404 Page</a></li> -->               
           <li><a href="#" id="mu-search-icon"><i class="fa fa-search"></i></a></li>
         </ul>                     
       </div><!--/.nav-collapse -->        

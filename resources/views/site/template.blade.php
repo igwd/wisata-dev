@@ -24,7 +24,7 @@
         <div class="row">
           <div class="col-md-12">            
             <form class="mu-search-form">
-              <input type="search" placeholder="Type Your Keyword(s) & Hit Enter">              
+              <input type="search" name="search" id="search" placeholder="Type Your Keyword(s) & Hit Enter">              
             </form>
           </div>
         </div>

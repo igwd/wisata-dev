@@ -10,6 +10,10 @@
         background-color: #ffffff !important;
         border-bottom: 1px solid #e3e6f0;
     }
+
+    .mb-4, .my-4 {
+        margin-bottom: 0.75rem !important;
+    }
   </style>
 </head>
 

@@ -7,22 +7,23 @@
 <!-- <link rel="shortcut icon" href="public/site/assets/img/favicon.ico" type="image/x-icon"> -->
 
 <!-- Font awesome -->
-<link href="public/site/assets/css/font-awesome.css" rel="stylesheet">
+<link href="{{url('/')}}/public/site/assets/css/font-awesome.css" rel="stylesheet">
 <!-- Bootstrap -->
-<link href="public/site/assets/css/bootstrap.css" rel="stylesheet">   
+<link href="{{url('/')}}/public/site/assets/css/bootstrap.css" rel="stylesheet">   
 <!-- Slick slider -->
-<link rel="stylesheet" type="text/css" href="public/site/assets/css/slick.css">          
+<link rel="stylesheet" type="text/css" href="{{url('/')}}/public/site/assets/css/slick.css">          
 <!-- Fancybox slider -->
-<link rel="stylesheet" href="public/site/assets/css/jquery.fancybox.css" type="text/css" media="screen" /> 
+<link rel="stylesheet" href="{{url('/')}}/public/site/assets/css/jquery.fancybox.css" type="text/css" media="screen" /> 
 <!-- Theme color -->
-<link id="switcher" href="public/site/assets/css/theme-color/green-theme.css" rel="stylesheet">          
+<link id="switcher" href="{{url('/')}}/public/site/assets/css/theme-color/green-theme.css" rel="stylesheet">          
 
 <!-- Main style sheet -->
-<link href="public/site/assets/css/style.css" rel="stylesheet">    
+<link href="{{url('/')}}/public/site/assets/css/style.css" rel="stylesheet">    
 
 <!-- login form sheet -->
-<link href="public/site/assets/css/login-form.css" rel="stylesheet"> 
-
+<link href="{{url('/')}}/public/site/assets/css/login-form.css" rel="stylesheet"> 
+<!-- video player -->
+<link href="{{url('/public/admin/vendor/jplayer-2.9.2')}}/dist/skin/blue.monday/css/jplayer.blue.monday.min.css" rel="stylesheet" type="text/css" />
 <!-- Google Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,700' rel='stylesheet' type='text/css'>

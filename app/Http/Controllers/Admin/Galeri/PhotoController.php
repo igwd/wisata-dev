@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Admin\Galeri;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Fasilitas;
+use App\Models\Galeri;
 use DataTables;
 use DB;
 use Validator;
+use Intervention\Image\Facades\Image;
 
 
 class PhotoController extends Controller
@@ -20,9 +21,11 @@ class PhotoController extends Controller
     public function index(Request $request)
     {
         $q = $request->search;
-        $data = Fasilitas::where('nama_fasilitas', 'LIKE', '%' . $q . '%')
-                ->orWhere('deskripsi', 'LIKE', '%' . $q . '%')
-                ->paginate(6);
+        $data = Galeri::where('group_kategori','=',DB::raw('"PHOTO"'))
+                ->where(function($query) use ($q){
+                    $query->where('judul', 'LIKE', '%' . $q . '%')
+                    ->orWhere('deskripsi', 'LIKE', '%' . $q . '%');
+                })->paginate(6);
         $data->appends(['search' => $q]);
         return view('admin.galeri.photo.index',compact('data'));
         /*$data = Fasilitas::paginate(6);
@@ -36,11 +39,7 @@ class PhotoController extends Controller
      */
     public function create()
     {
-        $data = Fasilitas::all()->paginate(15);
-/*        return view('user.index', [
-            'users' => DB::table('users')->paginate(15)
-        ]);*/
-        return view('admin.fasilitas.tempatmakan.create',compact('data'));
+        return view('admin.galeri.photo.create',compact('data'));
     }
 
     /**
@@ -51,23 +50,19 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        $fasilitas = new Fasilitas;
+        $galeri = new Galeri;
         $url_gambar = $request->url_gambar;
-        $fasilitas->nama_fasilitas = $request->nama_fasilitas;
-        $fasilitas->group_kategori = $request->group_kategori;
-        $fasilitas->deskripsi = $request->deskripsi;
-        $fasilitas->alamat_fasilitas = $request->alamat_fasilitas;
-        $fasilitas->geo_location = $request->geo_location;
+        $galeri->judul = $request->judul;
+        $galeri->group_kategori = $request->group_kategori;
+        $galeri->deskripsi = $request->deskripsi;
+
         $msg = array();
         
         // setting up rules
         $rules = array(
-            'nama_fasilitas' => 'required',
-            'alamat_fasilitas'=> 'required',
+            'judul' => 'required',
             'deskripsi' => 'required',
             'image' => 'required',
-            'geo_location'=> 'required'
-
         ); 
 
         $messages = [
@@ -95,7 +90,7 @@ class PhotoController extends Controller
         }else{
             // checking file is valid.
             if ($request->file('image')->isValid()) {
-                $destinationPath = 'storage/fasilitas'; // upload path
+                $destinationPath = 'storage/galeri/photo'; // upload path
                 $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
                 $filename = $request->file('image')->getClientOriginalName(); // getting image extension
                 $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
@@ -108,28 +103,41 @@ class PhotoController extends Controller
                 if ($request->file('image')->move($destinationPath, $fileName)) {
                     $filePath = $destinationPath.'/'.$fileName;
                     $url_gambar = $filePath;
+                    $img_fit = Image::make($url_gambar);
+                    $img_fit->fit(2048, 1365);
+                    $img_fit->save($url_gambar);
                 }
             }else{
                 $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
             }
         }
         //dd($url_gambar);
-        $fasilitas->thumbnail = $url_gambar; $id = null;
+        $galeri->filename = $url_gambar; $id = null;
         if(empty($url_gambar)){
             session()->flash('message', $msg);
         }else{
-            if($fasilitas->save()){
-                $id = $fasilitas->id;
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil tambah data Tempat Makan - '.$request->nama_fasilitas)));
+            // lets make thumbnail
+            $img_thumb = Image::make($url_gambar);
+            $img_thumb_path = $img_thumb->dirname.'/thumb';
+            $img_thumb_name = $img_thumb->basename;
+            $img_thumb_extension = $img_thumb->extension;
+            $img_thumb->fit(370, 220);
+            $img_thumb->save($img_thumb_path.'/thumb_'.$img_thumb_name);
+
+            $galeri->thumbnail = $img_thumb_path.'/thumb_'.$img_thumb_name;
+
+            if($galeri->save()){
+                $id = $galeri->id;
+                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil tambah data Galeri Photo - '.$request->judul)));
             }else{
-                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal tambah data Tempat Makan - '.$request->nama_fasilitas)));
+                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal tambah data Galeri Photo - '.$request->judul)));
             }
         }
         $data = (object) $request->input();
         if(!empty($errors)){
-            return view('admin.fasilitas.tempatmakan.create',compact("data"));
+            return view('admin.galeri.photo.create',compact("data"));
         }else{
-            return redirect('admin/fasilitas/tempatmakan/'.$id.'/edit');
+            return redirect('admin/galeri/photo/'.$id.'/edit');
         }
     }
 
@@ -152,8 +160,8 @@ class PhotoController extends Controller
      */
     public function edit($id)
     {
-        $data = Fasilitas::where("id","=",$id)->first();
-        return view('admin.fasilitas.tempatmakan.edit',compact('data'));
+        $data = Galeri::where("id","=",$id)->first();
+        return view('admin.galeri.photo.edit',compact('data'));
     }
 
     /**
@@ -165,23 +173,19 @@ class PhotoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fasilitas = Fasilitas::find($id);
+        $galeri = Galeri::find($id);
         $url_gambar = $request->url_gambar;
-        $fasilitas->nama_fasilitas = $request->nama_fasilitas;
-        $fasilitas->group_kategori = $request->group_kategori;
-        $fasilitas->deskripsi = $request->deskripsi;
-        $fasilitas->alamat_fasilitas = $request->alamat_fasilitas;
-        $fasilitas->geo_location = $request->geo_location;
+        $galeri->judul = $request->judul;
+        $galeri->group_kategori = $request->group_kategori;
+        $galeri->deskripsi = $request->deskripsi;
+
         $msg = array();
         $file = array('image' => $request->file('image'));
         // setting up rules
         $rules = array(
             'image' => 'required',
-            'nama_fasilitas' => 'required',
+            'judul' => 'required',
             'deskripsi' => 'required',
-            'alamat_fasilitas'=> 'required',
-            'geo_location'=> 'required'
-
         ); 
 
         $messages = [
@@ -209,7 +213,7 @@ class PhotoController extends Controller
         }else{
             // checking file is valid.
             if ($request->file('image')->isValid()) {
-                $destinationPath = 'storage/fasilitas'; // upload path
+                $destinationPath = 'storage/galeri/photo'; // upload path
                 $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
                 $filename = $request->file('image')->getClientOriginalName(); // getting image extension
                 $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
@@ -222,24 +226,39 @@ class PhotoController extends Controller
                 if ($request->file('image')->move($destinationPath, $fileName)) {
                     $filePath = $destinationPath.'/'.$fileName;
                     $url_gambar = $filePath;
+                    //2048x1365
+                    $img_fit = Image::make($url_gambar);
+                    $img_fit->fit(2048, 1365);
+                    $img_fit->save($url_gambar);
                 }
             }else{
                 $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
             }
         }
         //dd($url_gambar);
-        $fasilitas->thumbnail = $url_gambar;
+        $galeri->filename = $url_gambar;
         if(empty($url_gambar)){
             session()->flash('message', $msg);
         }else{
-            $simpan = $fasilitas->save();
+            // lets make thumbnail
+            $img_thumb = Image::make($url_gambar);
+            $img_thumb_path = $img_thumb->dirname.'/thumb';
+            $img_thumb_name = $img_thumb->basename;
+            $img_thumb_extension = $img_thumb->extension;
+            
+            $img_thumb->fit(370, 220);
+            $img_thumb->save($img_thumb_path.'/thumb_'.$img_thumb_name);
+
+            $galeri->thumbnail = $img_thumb_path.'/thumb_'.$img_thumb_name;
+
+            $simpan = $galeri->save();
             if($simpan){
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>update</i> data Tempat Makan - '.$request->nama_fasilitas)));
+                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>update</i> data Galeri Photo - '.$request->judul)));
             }else{
-                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>update</i> data Tempat Makan - '.$request->nama_fasilitas)));
+                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>update</i> data Galeri Photo - '.$request->judul)));
             }
         }
-        return redirect('admin/fasilitas/tempatmakan/'.$id.'/edit');
+        return redirect('admin/galeri/photo/'.$id.'/edit');
     }
 
     /**
@@ -251,44 +270,5 @@ class PhotoController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function listData(Request $request){
-        $data = Fasilitas::select([
-            'id','thumbnail','group_kategori','nama_fasilitas','alamat_fasilitas','deskripsi','geo_location'
-        ])->where('group_kategori','TEMPAT_MAKAN');
-
-        $datatables = DataTables::of($data);
-        if ($keyword = $request->get('search')['value']) {
-            $datatables->filterColumn('fasilitas', function($query, $keyword) {
-                    $sql = "nama_fasilitas like ? OR deskripsi like ?";
-                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
-                });
-        }
-        return $datatables
-            ->addcolumn('thumbnail',function($data){
-                $url_gambar = "";
-                if(!empty($data->thumbnail)){
-                    $url_gambar = url('/')."/{$data->thumbnail}";
-                }else{
-                    $url_gambar = url('/')."/public/site/assets/img/slider/1.jpg";
-                }
-
-                return "<img width='80%' src='{$url_gambar}'>";
-            })
-            ->addcolumn('fasilitas', function ($data) {
-                $url_edit = url('/')."/admin/fasilitas/tempatmakan/{$data->id}/edit";
-                $url_delete = url('/')."/admin/fasilitas/tempatmakan/{$data->id}/destroy";
-                $html = "<h5>{$data->nama_fasilitas}</h5>
-                        <i class='fa fa-map-marker'> {$data->alamat_fasilitas}</i><br>
-                        {$data->deskripsi}";
-                return $html;
-            })
-            ->addcolumn('aksi',function($data){
-                $url_edit = url('/')."/admin/fasilitas/tempatmakan/{$data->id}/edit";
-                return "<a href='{$url_edit}' class='btn btn-sm btn-success'><i class='fa fa-edit'></i></a>
-                <a onclick='deleteSlideShow()' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$data->nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i></a>";
-            })->rawColumns(['thumbnail','fasilitas','aksi'])
-            ->make(true);
     }
 }

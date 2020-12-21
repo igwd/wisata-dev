@@ -1,3 +1,11 @@
+<style type="text/css">
+  .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    color: #fff !important;
+    text-decoration: none;
+    background-color: #3fc35f;
+    outline: 0;
+  }
+</style>
 <section id="mu-menu">
   <nav class="navbar navbar-default" role="navigation">  
     <div class="container">
@@ -18,12 +26,12 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
           <li class="{{request()->routeIs('home') ? 'active' : ''}}"><a href="{{ route('home') }}">Home</a></li>            
-          <li class="dropdown">
+          <li class="dropdown @php echo(Request::segment(1) == 'fasilitas' ? 'active' : '') @endphp">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fasilitas <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{url('/fasilitas/transportasi')}}">Transportasi</a></li>                
-              <li><a href="{{url('/fasilitas/penginapan')}}">Penginapan</a></li>
-              <li><a href="{{url('/fasilitas/kuliner')}}">Kuliner</a></li>                
+              <li class="@php echo(Request::segment(2) == 'transportasi' ? 'active' : '') @endphp"><a href="{{url('/fasilitas/transportasi')}}">Transportasi</a></li>                
+              <li class="@php echo(Request::segment(2) == 'penginapan' ? 'active' : '') @endphp"><a href="{{url('/fasilitas/penginapan')}}">Penginapan</a></li>
+              <li class="@php echo(Request::segment(2) == 'kuliner' ? 'active' : '') @endphp"><a href="{{url('/fasilitas/kuliner')}}">Kuliner</a></li>                
             </ul>
           </li>
           <li class="dropdown">

@@ -30,9 +30,15 @@ Route::get('galeri/video', 'GaleriController@video', function () {
     return Galeri::paginate();
 })->name('galeri.video');
 
-Route::get('/tiket',function(){
-	return view('site.tiket');
-})->name('tiket');
+Route::get('fasilitas/{param1}', 'FasilitasController@view', function () {
+    return Fasilitas::paginate();
+})->name('fasilitas.view');
+
+Route::get('fasilitas/{param1}/popular', 'FasilitasController@popular')->name('fasilitas.view');
+
+Route::get('fasilitas/{param1}/{param2}/detail', 'FasilitasController@show')->name('fasilitas.show');
+
+Route::get('/tiket','TiketController@index')->name('tiket');
 
 
 //role admin route

@@ -106,9 +106,13 @@
             <span>Users</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
-            <span>Logout</span></a>
+            <span>{{ __('Logout') }}</span>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
     </li>
 
     <!-- Divider -->

@@ -11,7 +11,7 @@
               <h3>{{$value['judul']}}</h3>
               <p>{!! $value['konten'] !!}</p>
               @if(!empty($value['site_url']))
-                <a href="#" class="btn btn-read-services" tabindex="0">Read More</a>
+                <a href="{{url('/')}}/{{$value['site_url']}}" class="btn btn-read-services" tabindex="0">Read More</a>
               @endif
             </div>
           <!-- </div> -->

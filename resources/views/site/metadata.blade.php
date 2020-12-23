@@ -22,6 +22,9 @@
 
 <!-- login form sheet -->
 <link href="{{url('/')}}/public/site/assets/css/login-form.css" rel="stylesheet"> 
+
+<!-- datepicker -->
+<link href="{{url('/')}}/public/site/assets/datepicker/datepicker3.css" rel="stylesheet"> 
 <!-- video player -->
 <link href="{{url('/public/admin/vendor/jplayer-2.9.2')}}/dist/skin/blue.monday/css/jplayer.blue.monday.min.css" rel="stylesheet" type="text/css" />
 <!-- Google Fonts -->

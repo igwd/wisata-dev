@@ -22,3 +22,5 @@
   <!-- video player-->
   <script type="text/javascript" src="{{url('/public/admin/vendor/jplayer-2.9.2')}}/dist/jplayer/jquery.jplayer.min.js"></script>
   <script type="text/javascript" src="{{url('/public/admin/vendor/jplayer-2.9.2')}}/dist/add-on/jplayer.playlist.min.js"></script>
+  <!-- datepicker -->
+  <script type="text/javascript" src="{{url('/public/site/assets')}}/datepicker/bootstrap-datepicker.js"></script>

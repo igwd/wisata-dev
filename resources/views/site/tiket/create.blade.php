@@ -62,10 +62,28 @@
 		        </div>
 						<div class="col-md-9">
 							<form role="form" id="form-data" name="form-data" method="POST" action="{{url('/')}}/tiket/pesan">
-								
+								<!-- form reqiure laravel -->
+								<input type="hidden" name="_method" value="POST">
+								@csrf
+								<!-- form require laravel end -->
 								<div class="mu-course-container mu-course-details">
 	                <div class="row">
 	                  <div class="col-md-12">
+	                  	@if(Session::has('message'))
+						            @php 
+						              $messages = Session::get('message');
+						            @endphp
+						            <p class="alert {{@$messages['class']}}">
+						              @if(!empty($messages['text']))
+						                @foreach(@$messages['text'] as $err => $errvalue)
+						                  {!!@$errvalue!!}<br>
+						                @endforeach
+						              @endif
+						            </p>
+						          @endif
+						          @php
+						          	//print_r($data);
+						          @endphp
 	                    <div class="mu-latest-course-single">
 	                      <div class="mu-latest-course-single-content">
 	                        <h4>Data Diri</h4>
@@ -73,19 +91,19 @@
 	                          <div class="col-md-4">
 	                          	<div class="form-group">
 	                          		<label>Nama</label>
-	                          		<input type="text" name="nama" id="nama" class="form-control" required="">
+	                          		<input type="text" name="nama" id="nama" class="form-control" required="" value="{{@$data->nama}}">
 	                          	</div>
 	                          </div>
 	                          <div class="col-md-4">
 	                          	<div class="form-group">
 	                          		<label>Email</label>
-	                          		<input type="email" name="email" id="email" class="form-control" required="">
+	                          		<input type="email" name="email" id="email" class="form-control" required="" value="{{@$data->email}}">
 	                          	</div>
 	                          </div>
 	                          <div class="col-md-4">
 	                          	<div class="form-group">
 	                          		<label>Phone</label>
-	                          		<input type="text" name="telp" id="telp" class="form-control" required="">
+	                          		<input type="text" name="telp" id="telp" class="form-control" required="" value="{{@$data->telp}}">
 	                          	</div>
 	                          </div>
 	                        </div>
@@ -107,7 +125,7 @@
 		                      	<div class="col-md-4">
 		                      		<div class="form-group">
 		                        		<label>Tanggal Booking</label>
-												        <input type="text" readonly class="datepicker form-control" id="tanggal" placeholder="{!!date('Y-m-d')!!}">
+												        <input type="text" readonly class="datepicker form-control" id="tanggal" name="tanggal" value="{!!(!empty($data->tanggal) ? @$data->tanggal : date('Y-m-d')) !!}">
 		                      		</div>
 		                      	</div>
 		                      </div>
@@ -126,9 +144,12 @@
 		                          	@foreach(Tiket::all() as $tiket => $value)
 		                            <tr>
 		                              <td> {{$value->mt_nama_tiket}}</td>
-		                              <td align="right"> {!!number_format($value->mt_harga)!!} </td>
-		                              <td><input type="number" name="qty" id="qty{{$value->mt_id}}" data-tiketid="{{$value->mt_id}}" data-harga="{{$value->mt_harga}}" class="qty form-control" value="0"></td>
-		                              <td align="right"><input type="text" style="text-align:right;" readonly name="subtotal" id="subtotal{{$value->mt_id}}" class="subtotal form-control" value="0"></td>
+		                              <td align="right"> 
+		                              	{!!number_format($value->mt_harga)!!} 
+		                              	<input type="hidden" name="harga[{{$value->mt_id}}]" id="harga{{$value->mt_id}}" class="form-control" value="{{$value->mt_harga}}">
+		                              </td>
+		                              <td><input type="number" name="qty[{{$value->mt_id}}]" id="qty{{$value->mt_id}}" data-tiketid="{{$value->mt_id}}" data-harga="{{$value->mt_harga}}" class="qty form-control" value="{{@$data->qty[$value->mt_id]}}"></td>
+		                              <td align="right"><input type="text" style="text-align:right;" readonly name="subtotal[{{$value->mt_id}}]" id="subtotal{{$value->mt_id}}" class="subtotal form-control" value="0"></td>
 		                            </tr>
 		                            @endforeach
 		                          </tbody>
@@ -143,7 +164,7 @@
 		                      <div class="row">
 		                      	<div class="col-md-6">
 		                      		<div class="form-check">
-															  <input class="form-check-input" type="radio" name="metode_bayar" id="metode_bayar_1" value="1">
+															  <input class="form-check-input" type="radio" name="metode_bayar" id="metode_bayar_1" value="1" {!!(($data->metode_bayar == 1) ? 'checked' : '')!!}>
 															  <label class="form-check-label" for="metode_bayar_1">
 															    Bayar cash di loket
 															  </label>
@@ -151,7 +172,7 @@
 		                      	</div>
 		                      	<div class="col-md-6">
 		                      		<div class="form-check">
-															  <input class="form-check-input" type="radio" name="metode_bayar" id="metode_bayar_2" value="2" checked>
+															  <input class="form-check-input" type="radio" name="metode_bayar" id="metode_bayar_2" value="2" {!!(($data->metode_bayar == 2) ? 'checked' : '')!!}>
 															  <label class="form-check-label" for="metode_bayar_2">
 															    Transfer Bank
 															  </label>
@@ -214,19 +235,25 @@
 			reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
 			normal = reverseNumber(reversedWithDots);
 			$('#subtotal'+id).val(normal);
-
+			
 			//change total order price
 			var total = 0;
 			$('.subtotal').each(function() {
-				console.log($(this).val());
 				total += parseFloat(plainNumber($(this).val()));
+				$('#total').val(total);
 			});
-			var value = total,
+			var sanitized = $('#total').val().replace(/[^-.0-9]/g, '');
+			// Remove non-leading minus signs
+			sanitized = sanitized.replace(/(.)-+/g, '$1');
+			// Remove the first point if there is more than one
+			sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+			// Update value
+			var value = sanitized,
 			plain = plainNumber(value),
 			reversed = reverseNumber(plain),
 			reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
 			normal = reverseNumber(reversedWithDots);
-			$('#total').html(normal);
+			$('#total').val(normal);
 		});
 
 	});

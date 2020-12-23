@@ -38,7 +38,11 @@ Route::get('fasilitas/{param1}/popular', 'FasilitasController@popular')->name('f
 
 Route::get('fasilitas/{param1}/{param2}/detail', 'FasilitasController@show')->name('fasilitas.show');
 
-Route::get('/tiket','TiketController@index')->name('tiket');
+Route::get('/tiket/howto','TiketController@index')->name('tiket');
+Route::get('/tiket','TiketController@create')->name('tiket.order');
+Route::post('/tiket/pesan','TiketController@store')->name('tiket.order');
+Route::get('/tiket/show/{param}','TiketController@show')->name('tiket.view');
+Route::get('/tiket/{param}/verifikasi','TiketController@verifikasi')->name('tiket.verify');
 
 
 //role admin route

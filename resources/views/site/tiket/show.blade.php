@@ -28,8 +28,8 @@
 		        <div class="mu-page-breadcrumb-area">
 		           <h2>Pemesanan Tiket</h2>
 		           <ol class="breadcrumb">
-		            <li><a href="#">Home</a></li>            
-		            <li class="active">Tiket</li>
+		            <li>Tiket</li>
+		            <li class="active">Verifikasi</li>            
 		          </ol>
          		</div>
        		</div>
@@ -49,7 +49,7 @@
                 <div class="mu-single-sidebar">
                   <h4>Cara Pemesanan On-line</h4>
                   <ul class="mu-sidebar-catg">
-                    <li><i class="fa fa-book"></i> Lengkapi Form Isian Data</li>
+                    <li>{!!($invoice->status_tiket_id >= 1 ? '<i class="fa fa-check-circle"></i>' : '<i class="fa fa-book"></i>')!!} Lengkapi Form Isian Data</li>
                     <li><i class="fa fa-envelope"></i> Verifikasi Tiket Melalui E-mail</li>
                     <li><i class="fa fa-money"></i> Verifikasi Bukti Bayar</li>
                     <li><i class="fa fa-file-pdf-o"></i> Cetak Tiket</li>
@@ -61,8 +61,7 @@
 	            </aside>
 		        </div>
 						<div class="col-md-9">
-							<form role="form" id="form-data" name="form-data" method="POST" action="{{url('/')}}/tiket/pesan">
-								
+							
 								<div class="mu-course-container mu-course-details">
 	                <div class="row">
 	                  <div class="col-md-12">
@@ -73,41 +72,30 @@
 	                          <div class="col-md-4">
 	                          	<div class="form-group">
 	                          		<label>Nama</label>
-	                          		<input type="text" name="nama" id="nama" class="form-control" required="">
+	                          		<input type="text" name="nama" id="nama" readonly class="form-control" value="{{$invoice->it_pemesan}}">
 	                          	</div>
 	                          </div>
 	                          <div class="col-md-4">
 	                          	<div class="form-group">
 	                          		<label>Email</label>
-	                          		<input type="email" name="email" id="email" class="form-control" required="">
+	                          		<input type="email" name="email" id="email" readonly class="form-control" value="{{$invoice->it_email}}">
 	                          	</div>
 	                          </div>
 	                          <div class="col-md-4">
 	                          	<div class="form-group">
 	                          		<label>Phone</label>
-	                          		<input type="text" name="telp" id="telp" class="form-control" required="">
+	                          		<input type="text" name="telp" id="telp" readonly="" class="form-control" value="{{$invoice->it_telp}}">
 	                          	</div>
 	                          </div>
 	                        </div>
 	                        <h4>Data Tiket</h4>
 	                        <div class="row">
 		                        <div class="col-md-8">
-			                        @php
-														    use App\Models\Tiket;
-														  @endphp 
-			                        <p>
-			                        	Informasi harga tiket : 
-			                        	<ul style="font-size: 14px;">
-			                        	@foreach(Tiket::all() as $tiket => $value)
-			                        		<li>{{$value->mt_nama_tiket}} <small>({{$value->mt_keterangan}})</small> : <i>Rp. {!!number_format($value->mt_harga)!!}</i></li>
-														  	@endforeach
-			                        	</ul>	 
-														  </p>
 														</div>
 		                      	<div class="col-md-4">
 		                      		<div class="form-group">
 		                        		<label>Tanggal Booking</label>
-												        <input type="text" readonly class="datepicker form-control" id="tanggal" placeholder="{!!date('Y-m-d')!!}">
+												        <input type="text" readonly class="form-control" id="tanggal" value="{{$invoice->it_tanggal}}">
 		                      		</div>
 		                      	</div>
 		                      </div>
@@ -123,18 +111,18 @@
 		                            </tr>
 		                          </thead>
 		                          <tbody>
-		                          	@foreach(Tiket::all() as $tiket => $value)
+		                          	@foreach($invoice->invoice_tiket_detail as $tiket => $value)
 		                            <tr>
-		                              <td> {{$value->mt_nama_tiket}}</td>
-		                              <td align="right"> {!!number_format($value->mt_harga)!!} </td>
-		                              <td><input type="number" name="qty" id="qty{{$value->mt_id}}" data-tiketid="{{$value->mt_id}}" data-harga="{{$value->mt_harga}}" class="qty form-control" value="0"></td>
-		                              <td align="right"><input type="text" style="text-align:right;" readonly name="subtotal" id="subtotal{{$value->mt_id}}" class="subtotal form-control" value="0"></td>
+		                              <td>{{$value->tiket->mt_nama_tiket}}</td>
+		                              <td align="right"> {!!number_format($value->itd_nominal)!!} </td>
+		                              <td><input type="number" name="qty" readonly class="qty form-control" value="{{$value->itd_qty}}"></td>
+		                              <td align="right"><input type="text" style="text-align:right;" readonly name="subtotal" class="subtotal form-control" value="{{$value->itd_subtotal}}"></td>
 		                            </tr>
 		                            @endforeach
 		                          </tbody>
 		                          <tfoot>
 		                          	<td colspan="3">Total</td>
-		                          	<td align="right"><input readonly type="text" style="text-align: right;" value="0" name="total" class="form-control" id="total"></td>
+		                          	<td align="right"><input readonly type="text" style="text-align: right;" value="{{$invoice->it_total_tagihan}}" name="total" class="form-control" id="total"></td>
 		                          </tfoot>
 		                        </table>
 		                        </div>
@@ -158,10 +146,10 @@
 															</div>
 															<p>
 																@php
-															    /*use App\Models\Page;
+															    use App\Models\Page;
 															    $rekening = Page::select('konten')->where('group','NO_REK')->first();
-															    print_r($rekening->konten);*/
 															  @endphp
+															  {!!$rekening->konten!!}
 															</p>
 		                      	</div>
 		                      </div>
@@ -175,7 +163,7 @@
 	                  </div>                                   
 	                </div>
 	              </div>
-	            </form>
+	            
 						</div>
 					</div>
 				</div>

@@ -48,6 +48,24 @@
   color:#FF912C;
 }
 
+.mu-latest-course-single-content ul {
+    margin-bottom: 30px;
+}
+
+.mu-latest-course-single-content ul li {
+    margin-bottom: 10px;
+}
+
+.mu-latest-course-single-content h4 {
+  border-bottom: 1px solid #ccc !important;
+  padding-bottom: 10px !important;
+}
+
+.mu-latest-course-single-content ul li span:first-child {
+    display: inline-block !important;
+    min-width: 150px !important;
+    float: left !important;
+}
 </style>
 <section id="mu-page-breadcrumb">
    <div class="container">
@@ -102,6 +120,15 @@
                     </figcaption>
                   </figure>
                   <div class="mu-latest-course-single-content">
+                    <button class="btn btn-success" id="btn-booking">Book Now !</button>
+                  </div>
+                  <div class="mu-latest-course-single-content">
+                    <h4>Informasi Pemesanan</h4>
+                    <ul>
+                      <li> <span>Harga Booking</span> <span>Rp. {!!number_format($data->harga_booking)!!} ,-</span></li>
+                      <li> <span>Lokasi</span> <span>{{$data->alamat_fasilitas}}</span></li>
+                    </ul>
+                    <h4>Deskripsi</h4>
                     {!!$data->deskripsi!!}
                   </div>
                 </div>
@@ -123,12 +150,16 @@
          </div>
        </div>
      </div>
+     <input type="hidden" id="keyid" name="keyid" value="{!!Crypt::encryptString($data->id)!!}">
+     <input type="hidden" id="nama_fasilitas" name="nama_fasilitas" value="{{$data->nama_fasilitas}}">
+     <input type="hidden" id="harga_booking" name="harga_booking" value="{{$data->harga_booking}}">
    </div>
 </section>
 @endsection
 @section('script')
 <script type="text/javascript">
   $(document).ready(function(){
+    getCartItem();
     $.ajax({
       url:"{{url('/')}}/fasilitas/{{$segment}}/popular",
       type:"GET",
@@ -187,6 +218,10 @@
       }
       responseMessage(msg);
       
+    });
+
+    $('#btn-booking').click(function(){
+      bookingFasilitas();
     });
   });
 </script>

@@ -43,6 +43,7 @@
           </li>                      
           <li class="{{request()->routeIs('contact') ? 'active' : ''}}"><a href="{{ route('tiket') }}">Tiket</a></li>
           <!-- <li><a href="404.html">404 Page</a></li> -->               
+          <li><a href="#"> Pesanan <span class="badge badge-danger badge-counter" id="cart-number">0</span></a></li>
           <li><a href="#" id="mu-search-icon"><i class="fa fa-search"></i></a></li>
         </ul>                     
       </div><!--/.nav-collapse -->        

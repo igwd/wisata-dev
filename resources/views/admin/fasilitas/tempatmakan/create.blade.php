@@ -55,6 +55,10 @@
               <textarea id="deskripsi" name="deskripsi" class="summernote form-control">{{@$data->deskripsi}}</textarea>
             </div>
             <div class="form-group">
+              <label>Harga Booking</label>
+              <input type="number" class="form-control" name="harga_booking" id="harga_booking" value="{{@$data->harga_booking}}">
+            </div>
+            <div class="form-group">
               <label>Upload Gambar</label>
               <input type="hidden" name="url_gambar" id="url_gambar" value="{{@$data->thumbnail}}">
               <input type="file" name="image" class="form-control" id="image">

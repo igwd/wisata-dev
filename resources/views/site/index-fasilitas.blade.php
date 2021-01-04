@@ -48,7 +48,7 @@
                           <div class="mu-single-gallery">                  
                             <div class="mu-single-gallery-item">
                               <div class="mu-single-gallery-img">
-                                <a href="{{url('/')}}/fasilitas/{{$segment}}/{{$value->id}}/detail"><img width="80%" alt="{{$value->judul}}" src="{!!(!empty($value->thumbnail) ? url('/').'/'.$value->thumbnail : url('/').'/public/site/assets/img/gallery/small/1.jpg' )!!}"></a>
+                                <a href="{{url('/')}}/fasilitas/{{$segment}}/{!!Crypt::encryptString($value->id)!!}/detail"><img width="80%" alt="{{$value->judul}}" src="{!!(!empty($value->thumbnail) ? url('/').'/'.$value->thumbnail : url('/').'/public/site/assets/img/gallery/small/1.jpg' )!!}"></a>
                               </div>
                               <div class="mu-single-gallery-info">
                                 <div class="mu-single-gallery-info-inner">

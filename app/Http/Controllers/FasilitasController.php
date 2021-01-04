@@ -8,6 +8,7 @@ use App\Models\Fasilitas;
 use App\Models\RateFasilitas;
 use DataTables;
 use DB;
+use Illuminate\Support\Facades\Crypt;
 
 
 class FasilitasController extends Controller
@@ -43,7 +44,7 @@ class FasilitasController extends Controller
 		}elseif($kategori == "penginapan"){
 			$group_kategori = "PENGINAPAN";
 		}
-		$qry = RateFasilitas::select('thumbnail','nama_fasilitas','alamat_fasilitas',DB::raw("ROUND(AVG(rf_skor),1) as skor"))
+		$qry = RateFasilitas::select('m_fasilitas.id','thumbnail','nama_fasilitas','alamat_fasilitas',DB::raw("ROUND(AVG(rf_skor),1) as skor"))
 				->join('m_fasilitas','rate_fasilitas.fasilitas_id','m_fasilitas.id')
 				->where('m_fasilitas.group_kategori',$group_kategori)
 				->groupBy('fasilitas_id');
@@ -53,14 +54,15 @@ class FasilitasController extends Controller
 
 	    $html = "";
 	    foreach ($data as $key => $value) {
+	    	$url = url('/')."/fasilitas/{$kategori}/".Crypt::encryptString($value->id)."/detail";
 	    	$html .= "<div class=\"media\">
                         <div class=\"media-left\">
-                          <a href=\"#\">
+                          <a href=\"{$url}\">
                             <img class=\"media-object\" src=\"".url('/').'/'.$value->thumbnail."\" alt=\"img\">
                           </a>
                         </div>
                         <div class=\"media-body\">
-                          <h4 class=\"media-heading\"><a href=\"#\">{$value->nama_fasilitas}</a></h4>                      
+                          <h4 class=\"media-heading\"><a href=\"{$url}\">{$value->nama_fasilitas}</a></h4>                      
                           <span class=\"popular-course-price\"><i class=\"fa fa-star\"></i> {$value->skor}</span>
                         </div>
                       </div>";
@@ -69,8 +71,10 @@ class FasilitasController extends Controller
 	}
 
 	public function show($kategori,$id,Request $request){
+		$keyid = $id;
+		$id = Crypt::decryptString($id);
 		$data = Fasilitas::AvgRating($id);
 		$segment = $request->segment(2);
-		return view('site.detail-fasilitas', compact('data','segment'));
+		return view('site.detail-fasilitas', compact('data','segment','keyid'));
 	}
 }

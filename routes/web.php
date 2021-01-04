@@ -44,6 +44,9 @@ Route::post('/tiket/pesan','TiketController@store')->name('tiket.order');
 Route::get('/tiket/show/{param}','TiketController@show')->name('tiket.view');
 Route::get('/tiket/{param}/verifikasi','TiketController@verifikasi')->name('tiket.verify');
 
+Route::post('/book/addtocart','BookingController@addToCart')->name('booking.addtocart');
+Route::get('/book/getcartitem','BookingController@getCartItem')->name('booking.getcartitem');
+
 
 //role admin route
 Route::group(['middleware' => 'auth'], function () {

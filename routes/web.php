@@ -38,15 +38,16 @@ Route::get('fasilitas/{param1}/popular', 'FasilitasController@popular')->name('f
 
 Route::get('fasilitas/{param1}/{param2}/detail', 'FasilitasController@show')->name('fasilitas.show');
 
-Route::get('/tiket/howto','TiketController@index')->name('tiket');
-Route::get('/tiket','TiketController@create')->name('tiket.order');
-Route::post('/tiket/pesan','TiketController@store')->name('tiket.order');
+Route::get('/tiket','TiketController@index')->name('tiket');
+Route::get('/tiket2','TiketController@create')->name('tiket.order');
 Route::get('/tiket/show/{param}','TiketController@show')->name('tiket.view');
 Route::get('/tiket/{param}/verifikasi','TiketController@verifikasi')->name('tiket.verify');
 
-Route::post('/book/addtocart','BookingController@addToCart')->name('booking.addtocart');
-Route::get('/book/getcartitem','BookingController@getCartItem')->name('booking.getcartitem');
-
+Route::post('/booking/proses','BookingController@store')->name('booking.order');
+Route::post('/booking/addtocart','BookingController@addToCart')->name('booking.addtocart');
+Route::post('/booking/addtikettocart','BookingController@addTiketToCart')->name('booking.addtikettocart');
+Route::get('/booking/getcartitem','BookingController@getCartItem')->name('booking.getcartitem');
+Route::get('/booking/cart','BookingController@index')->name('booking.cart');
 
 //role admin route
 Route::group(['middleware' => 'auth'], function () {

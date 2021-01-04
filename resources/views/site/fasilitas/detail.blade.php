@@ -125,7 +125,7 @@
                   <div class="mu-latest-course-single-content">
                     <h4>Informasi Pemesanan</h4>
                     <ul>
-                      <li> <span>Harga Booking</span> <span>Rp. {!!number_format($data->harga_booking)!!} ,-</span></li>
+                      <li> <span>Harga Booking</span> <span>Rp. {!!number_format($data->mt_harga)!!} ,-</span></li>
                       <li> <span>Lokasi</span> <span>{{$data->alamat_fasilitas}}</span></li>
                     </ul>
                     <h4>Deskripsi</h4>
@@ -152,7 +152,7 @@
      </div>
      <input type="hidden" id="keyid" name="keyid" value="{!!Crypt::encryptString($data->id)!!}">
      <input type="hidden" id="nama_fasilitas" name="nama_fasilitas" value="{{$data->nama_fasilitas}}">
-     <input type="hidden" id="harga_booking" name="harga_booking" value="{{$data->harga_booking}}">
+     <input type="hidden" id="harga_booking" name="harga_booking" value="{{$data->mt_harga}}">
    </div>
 </section>
 @endsection
@@ -217,7 +217,6 @@
           msg = "We will improve ourselves. You rated this " + ratingValue + " stars.";
       }
       responseMessage(msg);
-      
     });
 
     $('#btn-booking').click(function(){

@@ -31,7 +31,7 @@ class FasilitasController extends Controller
                 })->paginate(6);
         $data->appends(['search' => $q]);
         $segment = $kategori;
-		return view('site.index-fasilitas', compact('data','segment'));
+		return view('site.fasilitas.index', compact('data','segment'));
 	}
 
 	public function popular(Request $request){
@@ -75,6 +75,6 @@ class FasilitasController extends Controller
 		$id = Crypt::decryptString($id);
 		$data = Fasilitas::AvgRating($id);
 		$segment = $request->segment(2);
-		return view('site.detail-fasilitas', compact('data','segment','keyid'));
+		return view('site.fasilitas.detail', compact('data','segment','keyid'));
 	}
 }

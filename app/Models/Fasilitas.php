@@ -9,7 +9,7 @@ class Fasilitas extends Model
 {
     protected $table = 'm_fasilitas';
     protected $primarykey = 'id';
-    protected $fillable = ['thumbnail','group_kategori','nama_fasilitas','alamat_fasilitas','deskripsi','harga_booking','geo_location'];
+    protected $fillable = ['thumbnail','group_kategori','nama_fasilitas','alamat_fasilitas','deskripsi','mt_harga','geo_location'];
 
     /**
      * Get the rating for the facilities.

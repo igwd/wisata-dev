@@ -26,10 +26,10 @@
 	    <div class="row">
 	        <div class="col-md-12">
 		        <div class="mu-page-breadcrumb-area">
-		           <h2>Pemesanan Tiket</h2>
+		           <h2>Booking Area</h2>
 		           <ol class="breadcrumb">
-		            <li>Tiket</li>
-		            <li class="active">Verifikasi</li>            
+		            <li><a href="#">Home</a></li>            
+		            <li class="active">Booking</li>
 		          </ol>
          		</div>
        		</div>
@@ -105,12 +105,14 @@
 		                          <thead>
 		                            <tr>
 		                              <th width="20%"> Tiket </th>
+		                              <th width="20%"> Group </th>
 		                              <th width="10%"> Harga </th>
 		                              <th width="10%"> Jumlah </th>
 		                              <th width="30%" style="text-align:right"> Total </th>
 		                            </tr>
 		                          </thead>
 		                          <tbody>
+		                          	@dd($invoice->invoice_tiket_detail)
 		                          	@foreach($invoice->invoice_tiket_detail as $tiket => $value)
 		                            <tr>
 		                              <td>{{$value->tiket->mt_nama_tiket}}</td>
@@ -175,60 +177,7 @@
 @section('script')
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('.datepicker').datepicker({
-	    format: 'yyyy-mm-dd',
-	    startDate: '-3d',
-	    todayHighlight:true,
-	    autoclose:true
-		});
-
-		$('.qty').on('change keyup', function() {
-			//console.log($(this).val(),$(this).attr('data-harga'));
-			var id = $(this).attr('data-tiketid');
-			var harga = $(this).attr('data-harga');
-			const subtotal = parseInt($(this).val())*parseFloat(harga);
-
-			//change subtotal format
-			$('#subtotal'+id).val(subtotal);
-			var sanitized = $('#subtotal'+id).val().replace(/[^-.0-9]/g, '');
-			// Remove non-leading minus signs
-			sanitized = sanitized.replace(/(.)-+/g, '$1');
-			// Remove the first point if there is more than one
-			sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
-			// Update value
-			var value = sanitized,
-			plain = plainNumber(value),
-			reversed = reverseNumber(plain),
-			reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
-			normal = reverseNumber(reversedWithDots);
-			$('#subtotal'+id).val(normal);
-
-			//change total order price
-			var total = 0;
-			$('.subtotal').each(function() {
-				console.log($(this).val());
-				total += parseFloat(plainNumber($(this).val()));
-			});
-			var value = total,
-			plain = plainNumber(value),
-			reversed = reverseNumber(plain),
-			reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
-			normal = reverseNumber(reversedWithDots);
-			$('#total').html(normal);
-		});
 
 	});
-
-	//currencynumber start
-  // Catch all events related to changes
-  function reverseNumber(input) {
-    return [].map.call(input, function(x) {
-      return x;
-    }).reverse().join(''); 
-  }
-
-  function plainNumber(number) {
-    return number.split('.').join('');
-  }
 </script>
 @endsection

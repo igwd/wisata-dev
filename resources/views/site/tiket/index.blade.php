@@ -42,53 +42,12 @@
 			<div class="col-md-12">
 				<div class="mu-course-content-area">
 					<div class="row">
-						<div class="col-md-3">
-              <!-- start sidebar -->
-              <aside class="mu-sidebar">
-                <!-- start single sidebar -->
-                <div class="mu-single-sidebar">
-                  <h4>Cara Pemesanan On-line</h4>
-                  <ul class="mu-sidebar-catg">
-                    <li><i class="fa fa-book"></i> Lengkapi Form Isian Data</li>
-                    <li><i class="fa fa-envelope"></i> Verifikasi Tiket Melalui E-mail</li>
-                    <li><i class="fa fa-money"></i> Verifikasi Bukti Bayar</li>
-                    <li><i class="fa fa-file-pdf-o"></i> Cetak Tiket</li>
-                    <li><i class="fa fa-check-circle"></i> Selesai</li>
-                  </ul>
-                </div>
-                <!-- end single sidebar -->
-                <!-- start single sidebar -->
-	            </aside>
-		        </div>
 						<div class="col-md-9">
-							<form role="form" id="form-data" name="form-data" method="POST" action="{{url('/')}}/tiket/pesan">
-								
 								<div class="mu-course-container mu-course-details">
 	                <div class="row">
 	                  <div class="col-md-12">
 	                    <div class="mu-latest-course-single">
 	                      <div class="mu-latest-course-single-content">
-	                        <h4>Data Diri</h4>
-	                        <div class="row">
-	                          <div class="col-md-4">
-	                          	<div class="form-group">
-	                          		<label>Nama</label>
-	                          		<input type="text" name="nama" id="nama" class="form-control" required="">
-	                          	</div>
-	                          </div>
-	                          <div class="col-md-4">
-	                          	<div class="form-group">
-	                          		<label>Email</label>
-	                          		<input type="email" name="email" id="email" class="form-control" required="">
-	                          	</div>
-	                          </div>
-	                          <div class="col-md-4">
-	                          	<div class="form-group">
-	                          		<label>Phone</label>
-	                          		<input type="text" name="telp" id="telp" class="form-control" required="">
-	                          	</div>
-	                          </div>
-	                        </div>
 	                        <h4>Data Tiket</h4>
 	                        <div class="row">
 		                        <div class="col-md-8">
@@ -104,70 +63,56 @@
 			                        	</ul>	 
 														  </p>
 														</div>
-		                      	<div class="col-md-4">
-		                      		<div class="form-group">
-		                        		<label>Tanggal Booking</label>
-												        <input type="text" readonly class="datepicker form-control" id="tanggal" placeholder="{!!date('Y-m-d')!!}">
-		                      		</div>
-		                      	</div>
 		                      </div>
-	                      	<div class="row col-md-12">
-		                        <div class="table-responsive">
-		                          <table class="table table-striped">
-		                          <thead>
-		                            <tr>
-		                              <th width="20%"> Tiket </th>
-		                              <th width="10%"> Harga </th>
-		                              <th width="10%"> Jumlah </th>
-		                              <th width="30%" style="text-align:right"> Total </th>
-		                            </tr>
-		                          </thead>
-		                          <tbody>
-		                          	@foreach(Tiket::all() as $tiket => $value)
-		                            <tr>
-		                              <td> {{$value->mt_nama_tiket}}</td>
-		                              <td align="right"> {!!number_format($value->mt_harga)!!} </td>
-		                              <td><input type="number" name="qty" id="qty{{$value->mt_id}}" data-tiketid="{{$value->mt_id}}" data-harga="{{$value->mt_harga}}" class="qty form-control" value="0"></td>
-		                              <td align="right"><input type="text" style="text-align:right;" readonly name="subtotal" id="subtotal{{$value->mt_id}}" class="subtotal form-control" value="0"></td>
-		                            </tr>
-		                            @endforeach
-		                          </tbody>
-		                          <tfoot>
-		                          	<td colspan="3">Total</td>
-		                          	<td align="right"><input readonly type="text" style="text-align: right;" value="0" name="total" class="form-control" id="total"></td>
-		                          </tfoot>
-		                        </table>
-		                        </div>
-		                      </div>
-		                      <h4>Metode Pembayaran</h4>
-		                      <div class="row">
-		                      	<div class="col-md-6">
-		                      		<div class="form-check">
-															  <input class="form-check-input" type="radio" name="metode_bayar" id="metode_bayar_1" value="1">
-															  <label class="form-check-label" for="metode_bayar_1">
-															    Bayar cash di loket
-															  </label>
-															</div>
-		                      	</div>
-		                      	<div class="col-md-6">
-		                      		<div class="form-check">
-															  <input class="form-check-input" type="radio" name="metode_bayar" id="metode_bayar_2" value="2" checked>
-															  <label class="form-check-label" for="metode_bayar_2">
-															    Transfer Bank
-															  </label>
-															</div>
-															<p>
-																@php
-															    /*use App\Models\Page;
-															    $rekening = Page::select('konten')->where('group','NO_REK')->first();
-															    print_r($rekening->konten);*/
-															  @endphp
-															</p>
-		                      	</div>
-		                      </div>
+		                      <form role="form" id="form-data" name="form-data">
+		                      	<input type="hidden" name="_method" value="POST">
+														@csrf
+		                      	<div class="row col-md-12">
+			                        <div class="table-responsive">
+			                          <table class="table table-striped">
+				                          <thead>
+				                            <tr>
+				                              <th width="20%"> Tiket </th>
+				                              <th width="10%"> Harga </th>
+				                              <th width="10%"> Jumlah </th>
+				                              <th width="30%" style="text-align:right"> Total </th>
+				                            </tr>
+				                          </thead>
+				                          <tbody>
+				                          	@foreach(Tiket::all() as $tiket => $value)
+				                            <tr>
+				                              <td> 
+				                              	{{$value->mt_nama_tiket}}
+				                              	<input type="hidden" name="mt_nama_tiket[{{$value->mt_id}}]" id="mt_nama_tiket{{$value->mt_id}}" class="form-control" value="{{$value->mt_nama_tiket}}">
+				                              </td>
+				                              <td align="right"> 
+				                              	{!!number_format($value->mt_harga)!!} 
+				                              	<input type="hidden" name="harga[{{$value->mt_id}}]" id="harga{{$value->mt_id}}" class="form-control" value="{{$value->mt_harga}}">
+				                              </td>
+				                              <td>
+				                              	<input type="number" name="qty[{{$value->mt_id}}]" id="qty{{$value->mt_id}}" data-tiketid="{{$value->mt_id}}" data-harga="{{$value->mt_harga}}" class="qty form-control" value="{{@$data->qty[$value->mt_id]}}">
+				                              </td>
+				                              <td align="right">
+				                              	<input type="text" style="text-align:right;" readonly name="subtotal[{{$value->mt_id}}]" id="subtotal{{$value->mt_id}}" class="subtotal form-control" value="0">
+				                              </td>
+				                            </tr>
+				                            @endforeach
+				                          </tbody>
+				                          <tfoot>
+				                          	<td colspan="3">
+				                          		Total
+				                          	</td>
+				                          	<td align="right">
+				                          		<input readonly type="text" style="text-align: right;" value="0" name="total" class="form-control" id="total">
+				                          	</td>
+				                          </tfoot>
+			                        	</table>
+			                        </div>
+			                      </div>
+            	            </form>
 		                      <div class="row" style="margin-top: 10px;">
 		                      	<div class="col-md-12" align="center">
-		                      		<button id="btn-proses" class="btn btn-primary"><i class="fa fa-check"></i> Pesan Tiket</button>
+		                      		<button id="btn-proses" class="btn btn-success"><i class="fa fa-check"></i> Pesan Tiket</button>
 		                      	</div>
 		                      </div>
 	                      </div>
@@ -175,8 +120,39 @@
 	                  </div>                                   
 	                </div>
 	              </div>
-	            </form>
 						</div>
+						<div class="col-md-3">
+                <!-- start sidebar -->
+                <aside class="mu-sidebar">
+                  <!-- start single sidebar -->
+                  <div class="mu-single-sidebar">
+                    <h4>Most Popular Kuliner</h4>
+                    <div id="popular-kuliner" class="mu-sidebar-popular-courses">
+                    	
+                    </div>
+                  </div>
+                </aside>
+                <!-- start sidebar -->
+                <aside class="mu-sidebar">
+                  <!-- start single sidebar -->
+                  <div class="mu-single-sidebar">
+                    <h4>Most Popular Homestay</h4>
+                    <div id="popular-homestay" class="mu-sidebar-popular-courses">
+                    	
+                    </div>
+                  </div>
+                </aside>
+                <!-- start sidebar -->
+                <aside class="mu-sidebar">
+                  <!-- start single sidebar -->
+                  <div class="mu-single-sidebar">
+                    <h4>Most Popular Transport</h4>
+                    <div id="popular-transport" class="mu-sidebar-popular-courses">
+                    	
+                    </div>
+                  </div>
+                </aside>
+             </div>
 					</div>
 				</div>
 			</div>
@@ -214,20 +190,88 @@
 			reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
 			normal = reverseNumber(reversedWithDots);
 			$('#subtotal'+id).val(normal);
-
+			
 			//change total order price
 			var total = 0;
 			$('.subtotal').each(function() {
-				console.log($(this).val());
 				total += parseFloat(plainNumber($(this).val()));
+				$('#total').val(total);
 			});
-			var value = total,
+			var sanitized = $('#total').val().replace(/[^-.0-9]/g, '');
+			// Remove non-leading minus signs
+			sanitized = sanitized.replace(/(.)-+/g, '$1');
+			// Remove the first point if there is more than one
+			sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+			// Update value
+			var value = sanitized,
 			plain = plainNumber(value),
 			reversed = reverseNumber(plain),
 			reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
 			normal = reverseNumber(reversedWithDots);
-			$('#total').html(normal);
+			$('#total').val(normal);
 		});
+
+		$('#btn-proses').click(function(){
+			var data = $("#form-data").serialize();
+			$.ajax({
+				url:"{{url('/')}}/booking/addtikettocart",
+				data:data,
+				type:"POST",
+				dataType:"JSON",
+				success:function(data){
+					if(data.success==1){
+	          toast_success('Berhasil',data.msg);
+	        }else if(data.success == 2){
+	          toast_warning('Informasi',data.msg);
+	        }else{
+	        	toast_error('Gagal',data.msg);
+	        }
+	        getCartItem();
+					//console.log(data);
+				},error:function(error){
+					console.log(error.XMLHttpRequest);
+				}
+			});
+		});
+
+		//most popular kuliner
+		$.ajax({
+      url:"{{url('/')}}/fasilitas/kuliner/popular",
+      type:"GET",
+      dataType:"JSON",
+      success:function(data){
+        $('#popular-kuliner').html(data);
+      },error:function(error){
+        console.log(error.XMLHttpRequest);
+        $('#popular').html("Not Found");
+      }
+    });
+
+    //most popular homestay
+		$.ajax({
+      url:"{{url('/')}}/fasilitas/penginapan/popular",
+      type:"GET",
+      dataType:"JSON",
+      success:function(data){
+        $('#popular-homestay').html(data);
+      },error:function(error){
+        console.log(error.XMLHttpRequest);
+        $('#popular').html("Not Found");
+      }
+    });
+
+    //most popular transport
+		$.ajax({
+      url:"{{url('/')}}/fasilitas/transport/popular",
+      type:"GET",
+      dataType:"JSON",
+      success:function(data){
+        $('#popular-transport').html(data);
+      },error:function(error){
+        console.log(error.XMLHttpRequest);
+        $('#popular').html("Not Found");
+      }
+    });
 
 	});
 

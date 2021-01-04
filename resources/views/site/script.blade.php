@@ -80,7 +80,7 @@
 
   function bookingFasilitas(){
     $.ajax({
-      url:"{{url('/')}}/book/addtocart",
+      url:"{{url('/')}}/booking/addtocart",
       type:"POST",
       data: {
         "_method": "POST",
@@ -107,7 +107,7 @@
   function getCartItem(){
     //getcartitem
     $.ajax({
-      url:"{{url('/')}}/book/getcartitem",
+      url:"{{url('/')}}/booking/getcartitem",
       type:"GET",
       data: {
         "_method": "GET",

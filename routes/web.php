@@ -48,6 +48,9 @@ Route::post('/booking/addtocart','BookingController@addToCart')->name('booking.a
 Route::post('/booking/addtikettocart','BookingController@addTiketToCart')->name('booking.addtikettocart');
 Route::get('/booking/getcartitem','BookingController@getCartItem')->name('booking.getcartitem');
 Route::get('/booking/cart','BookingController@index')->name('booking.cart');
+Route::get('/booking/{param}/verifikasi','BookingController@verifikasi')->name('booking.verifikasi');
+Route::get('/booking/{param}/cetak','BookingController@cetak')->name('booking.cetak.tiket');
+Route::get('/booking/{param}/payment','BookingController@payment')->name('booking.payment');
 
 //role admin route
 Route::group(['middleware' => 'auth'], function () {

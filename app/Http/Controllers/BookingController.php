@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Crypt;
 
 use Validator;
 use Cookie;
+use HTML2PDF;
 
 
 use DB;
@@ -163,7 +164,13 @@ class BookingController extends Controller
                     $detail->itd_subtotal = $value['itd_subtotal'];
                     $detail->save();
                 }
-                $data = InvoiceTiket::where('it_id',$id)->update(array('it_kode_unik'=>md5($id)));
+                // generate kode unik transaksi
+                $number_of_booking = InvoiceTiket::where('it_tanggal',$request->tanggal)->get()->count();
+                $total_trx = $number_of_booking+1;
+
+                $it_kode_unik = strtoupper(date('Ymd').$this->generateCode($total_trx));
+                //update kode unik
+                $data = InvoiceTiket::where('it_id',$id)->update(array('it_kode_unik'=>$it_kode_unik));
                 
                 //$this->sendToEmail($id);
                 session()->flash('message', array('class'=>'alert-success','text'=>array('Tiket berhasil dipesan, periksa email yang anda cantumkan untuk verifikasi pesanan.')));
@@ -174,7 +181,9 @@ class BookingController extends Controller
         //dd($errors);
         if(empty($errors)){
             $cookie = Cookie::forget('item');
-            return view('site.booking.index')->withCookie('item');
+            $invoice = InvoiceTiket::where('it_id',$id)->first();
+            return redirect('booking/'.$it_kode_unik.'/verifikasi')->withCookie('item');
+            //return view('site.booking.show',compact('invoice'))->withCookie('item');
         }elseif($total_tagihan <= 0){
             $value = $request->cookie('item');
             $data = (array) json_decode($value);
@@ -197,8 +206,7 @@ class BookingController extends Controller
                     'tanggal'=>$request->tanggal,
                     'metode_bayar'=>$request->metode_bayar
                 );
-            //dd($data);
-            return view('site.booking.show',compact('data'));
+            return view('site.booking.index',compact('data'));
         }
     }
 
@@ -224,7 +232,6 @@ class BookingController extends Controller
      */
     public function verifikasi($token)
     {
-        $token = Crypt::decryptString($token);
         $invoice = InvoiceTiket::where("it_kode_unik","=",$token)->first();
         $invoice->status_tiket_id = 2;
         $invoice_tiket_id = $invoice->it_id;
@@ -238,12 +245,12 @@ class BookingController extends Controller
                 $log->status_tiket_id = 2;
                 $log->lit_keterangan = 'TIKET SUDAH DI-VERIFIKASI';
                 if($log->save()){
-                    return view('site.tiket.show',compact('invoice'));
+                    return view('site.booking.show',compact('invoice'));
                 }
             }
         }else{
             session()->flash('message', array('class'=>'alert-danger','text'=>array('Tiket tidak dapat di-verifikasi, tanggal booking telah expired')));
-            return view('site.tiket.show',compact('invoice'));
+            return view('site.booking.show',compact('invoice'));
         }
     }
 
@@ -253,9 +260,28 @@ class BookingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function payment($token)
     {
-
+        $invoice = InvoiceTiket::where("it_kode_unik","=",$token)->first();
+        $invoice->status_tiket_id = 2;
+        $invoice_tiket_id = $invoice->it_id;
+        if($invoice->it_tanggal <= date('Y-m-d')){
+            $update = DB::table('invoice_tiket')
+              ->where('it_id', $invoice_tiket_id)
+              ->update(['status_tiket_id' => 2,'updated_at'=>date('Y-m-d H:i:s')]);
+            if($update){
+                $log = new InvoiceTiketLog;
+                $log->invoice_tiket_id = $invoice_tiket_id;
+                $log->status_tiket_id = 2;
+                $log->lit_keterangan = 'TIKET SUDAH DI-VERIFIKASI';
+                if($log->save()){
+                    return view('site.booking.payment',compact('invoice'));
+                }
+            }
+        }else{
+            session()->flash('message', array('class'=>'alert-danger','text'=>array('Tiket tidak dapat di-verifikasi, tanggal booking telah expired')));
+            return view('site.booking.payment',compact('invoice'));
+        }
     }
 
     /**
@@ -276,9 +302,20 @@ class BookingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function cetak($token)
     {
-        //
+        $html2pdf = new HTML2PDF('L','A4','de',false,'UTF-8');
+        $invoice = InvoiceTiket::where('it_kode_unik',$token)->first();
+        $doc = view('site.booking.show',compact('invoice'));
+
+        //return $doc;
+        $html2pdf->pdf->SetTitle('Sertifikat TOT | e-PKM');
+        $html2pdf->setDefaultFont('Times');
+        $html2pdf->pdf->SetDisplayMode('fullpage');
+        $html2pdf->writeHTML($doc,false);
+
+
+        $html2pdf->Output('Sertifikat TOT'.md5($key).'-'.date('Y-m-d').'.pdf');
     }
 
     public function addToCart(Request $request){
@@ -383,5 +420,23 @@ class BookingController extends Controller
         $value = $request->cookie('item');
         $value = json_decode($value);
         return response()->json($value);
+    }
+
+    public function generateCode($data){
+        $alphabet =   array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+        $alpha_flip = array_flip($alphabet);
+        if($data <= 25){
+            return $alphabet[$data];
+        }elseif($data > 25){
+            $dividend = ($data + 1);
+            $alpha = '';
+            $modulo;
+            while ($dividend > 0){
+                $modulo = ($dividend - 1) % 26;
+                $alpha = $alphabet[$modulo] . $alpha;
+                $dividend = floor((($dividend - $modulo) / 26));
+            } 
+            return $alpha;
+        }
     }
 }

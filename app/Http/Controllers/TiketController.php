@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 
 use Validator;
+use PDF;
 
 
 use DB;
@@ -37,9 +38,32 @@ class TiketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function check($token = null)
     {
-        
+        $token = str_replace('#', '', $token);
+        $token = strtoupper($token);
+        $invoice = InvoiceTiket::where('it_kode_unik',$token)->first();
+        if(!empty($invoice)){
+            $status = InvoiceTiket::TiketStatus($token)->mts_status;
+            //dd($status);
+            session()->flash('message', array('class'=>'alert-success','text'=>array("<i class='fa fa-check-circle'></i> ".$status)));
+            return view('site.tiket.show',compact('invoice'));
+        }else{
+            session()->flash('message', array('class'=>'alert-danger','text'=>array("<i class='fa fa-times-circle'></i> Tiket #{$token} tidak ditemukan")));
+            return view('site.tiket.show',compact('invoice'));
+        }
+    }
+
+    public function cetak($token)
+    {
+        //$html2pdf = new HTML2PDF('L','A4','de',false,'UTF-8');
+        $invoice = InvoiceTiket::where('it_kode_unik',$token)->first();
+        //$doc = view('site.booking.show',compact('invoice'));
+
+        $pdf = PDF::loadview('site.tiket.cetak',['invoice'=>$invoice]);
+        return $pdf->stream();
+
+        //return $pdf->download('laporan-pegawai-pdf.pdf');
     }
 
     /**

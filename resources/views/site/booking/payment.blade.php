@@ -107,9 +107,9 @@ small, .small {
 						                            		@php
 															    use App\Models\Page;
 															    $rekening = Page::select('konten')->where('group','NO_REK')->first();
-															    print_r($rekening->konten);
 															@endphp
 						                            	</span>
+													    <p>{!!@$rekening->konten!!}</p>
 						                            </li>
 						                          </ul>
 						                          <h4>Data Tiket</h4>
@@ -139,16 +139,29 @@ small, .small {
 											</div>
 										</div> 
 									</div>
-									<form>
-										<div class="col-md-12">
-											<div class="form-group">
-												<label>
-													Bukti Bayar
-												</label>
-												<input type="file" name="file_upload" id="file_upload" class="form-control">
+									<div class="col-md-12">
+										<div class="mu-latest-course-single">
+											<div class="mu-latest-course-single-content">
+												<form id="form-data" name="form-data" method="POST" enctype="multipart/form-data" action="{{url('/')}}/booking/{{$invoice->it_kode_unik}}/upload">
+													<input type="hidden" name="_method" value="PUT">
+										            @csrf
+										            <div class="col-md-6">
+										            	<div class="form-group">
+										            		<label>Nomor Rekening Dituju</label>
+										            		<input type="text" name="no_rekening" class="form-control" id="no_rekening" value="{{$invoice->no_rekening}}" required>
+										            	</div>
+										            </div>
+										            <div class="col-md-6">
+														<div class="form-group">
+															<label>Upload Gambar</label>
+															<input type="hidden" name="url_gambar" id="url_gambar" value="{{$invoice->file_bukti}}">
+															<input type="file" name="image" class="form-control" id="image">
+											            </div>
+											        </div>
+												</form>
 											</div>
 										</div>
-									</form>
+									</div>
 				                </div>
 				                <div class="row" style="margin-top: 10px;">
 									<div class="col-md-12" align="center">
@@ -168,7 +181,9 @@ small, .small {
 @section('script')
 <script type="text/javascript">
 	$(document).ready(function(){
-
+		$('#btn-proses').click(function(){
+	      $('#form-data').submit();
+	    });
 	});
 </script>
 @endsection

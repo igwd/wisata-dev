@@ -19,9 +19,48 @@ class TiketController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.tiket',compact('data'));
+        return view('admin.tiket.index',compact('data'));
     }
 
+    public function listData(Request $request){
+        $data = InvoiceTiket::select([
+            'it_email','it_telp','it_pemesan','it_tanggal','it_keterangan','it_kode_unik','it_total_tagihan','status_tiket_id','it_jenis_pembayaran','file_bukti','no_rekening','mts_status'
+        ])->leftjoin('m_tiket_status','status_tiket_id','m_tiket_status.mts_id');
+
+        $datatables = DataTables::of($data);
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('fasilitas', function($query, $keyword) {
+                    $sql = "nama_fasilitas like ? OR deskripsi like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
+                });
+        }
+        return $datatables
+            ->addcolumn('thumbnail',function($data){
+                $url_gambar = "";
+                if(!empty($data->file_bukti)){
+                    $url_gambar = url('/')."/{$data->file_bukti}";
+                }else{
+                    $url_gambar = url('/')."/public/site/assets/img/slider/1.jpg";
+                }
+
+                return "<img width='80%' src='{$url_gambar}'>";
+            })
+            ->addcolumn('tiket', function ($data) {
+                $url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
+                $url_delete = url('/')."/admin/fasilitas/penginapan/{$data->id}/destroy";
+                $html = "<h5>#{$data->it_kode_unik}</h5>
+                        <p><small>$data->it_tanggal</small><br>$data->it_pemesan<br>$data->it_email<br>$data->it_telp<br><b>".number_format($data->it_total_tagihan)."</b><br><label class='btn btn-sm btn-success'>$data->mts_status</label></p>
+                        {$data->it_keterangan}";
+                return $html;
+            })
+            ->addcolumn('aksi',function($data){
+                $url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
+                return "<a href='{$url_edit}' style='min-width:200px' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Approve Bukti Bayar</a><br>
+                <a href='{$url_edit}' style='min-width:200px' class='btn btn-sm btn-primary'><i class='fa fa-upload'></i> Upload Bukti Bayar</a><br>
+                <a onclick='deleteSlideShow()' style='min-width:200px' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$data->nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i> Hapus Tiket</a>";
+            })->rawColumns(['thumbnail','tiket','aksi'])
+            ->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

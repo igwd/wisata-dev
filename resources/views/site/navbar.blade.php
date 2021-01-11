@@ -48,6 +48,7 @@
           <li class="@php echo(Request::segment(1) == 'booking' ? 'active' : '') @endphp">
             <a href="{{url('/booking/cart')}}"> Pesanan <span class="badge badge-danger badge-counter" id="cart-number">0</span></a>
           </li>
+          <li><a href="{{ route('tiket.check') }}">Cek Status Tiket</a></li>
           <li><a href="#" id="mu-search-icon"><i class="fa fa-search"></i></a></li>
         </ul>                     
       </div><!--/.nav-collapse -->        

@@ -14,4 +14,12 @@ class InvoiceTiket extends Model
     {
         return $this->hasMany(InvoiceTiketDetail::class,'invoice_tiket_id','it_id');
     }
+
+    public function scopeTiketStatus($query,$id){
+        return $query->select('b.*')
+            ->from('invoice_tiket as a')
+            ->leftjoin('m_tiket_status as b','a.status_tiket_id','b.mts_id')
+            ->where('a.it_kode_unik',$id)
+            ->first();
+    }
 }

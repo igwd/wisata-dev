@@ -173,7 +173,7 @@ class BookingController extends Controller
                 $data = InvoiceTiket::where('it_id',$id)->update(array('it_kode_unik'=>$it_kode_unik));
                 
                 //$this->sendToEmail($id);
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Tiket berhasil dipesan, periksa email yang anda cantumkan untuk verifikasi pesanan.')));
+                session()->flash('message', array('class'=>'alert-success','text'=>array('Tiket berhasil dipesan')));
             }else{
                 session()->flash('message', array('class'=>'alert-danger','text'=>array('Tiket gagal dipesan')));
             }            
@@ -291,9 +291,79 @@ class BookingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function upload(Request $request, $id)
     {
+        $url_gambar = $request->url_gambar;
+        $no_rekening = $request->no_rekening;
+        $msg = array();
+        $file = array('image' => $request->file('image'));
+        // setting up rules
+        $rules = array(
+            'image' => 'required',
+            'no_rekening' => 'required'
+        ); 
 
+        $messages = [
+            'required' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan Kosong',
+            'min' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan kurang dari :min karakter',
+            'max' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan lebih dari :max karakter',
+            'without_spaces' => '<i class="fa fa-times"></i>  Kolom :attribute kidak diperkenankan ada spasi',
+            'unique' => '<i class="fa fa-times"></i>  Kolom :attribute sudah terdaftar',
+            'email' => '<i class="fa fa-times"></i> Alamat email tidak valid.',
+            'numeric'=> '<i class="fa fa-times"></i> Kolom :attribute input harus angka',
+            'confirmed' => '<i class="fa fa-times"></i>  Kolom :attribute tidak sesuai dengan konfirmasi password',
+        ];
+        
+        $v = Validator::make($request->all(), $rules, $messages);
+        $errors = array();
+        foreach ($v->messages()->toArray() as $err => $errvalue) {
+            $errors = array_merge($errors, $errvalue);
+        }
+        //mimes:jpeg,bmp,png and for max size max:10000
+        // doing the validation, passing post data, rules and the messages
+        
+        if(!empty($errors)){
+            // send back to the page with the input data and errors
+            $msg = array('class'=>'alert-danger','text'=>$errors);
+        }else{
+            // checking file is valid.
+            if ($request->file('image')->isValid()) {
+                $destinationPath = 'storage/invoice'; // upload path
+                $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+                $filename = $request->file('image')->getClientOriginalName(); // getting image extension
+                $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
+                $fileName = $id.'.'.$extension;
+                if (file_exists($destinationPath.'/'.$fileName)) {
+                    unlink($destinationPath.'/'.$fileName);
+                }
+
+                // uploading file to given path
+                if ($request->file('image')->move($destinationPath, $fileName)) {
+                    $filePath = $destinationPath.'/'.$fileName;
+                    $url_gambar = $filePath;
+                }
+            }else{
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
+            }
+        }
+        //dd($url_gambar);
+        
+        if(empty($url_gambar)){
+            session()->flash('message', $msg);
+        }else{
+            $simpan = DB::table('invoice_tiket')
+              ->where('it_kode_unik', $id)
+              ->update(['file_bukti'=>$url_gambar,'no_rekening'=>$no_rekening,'status_tiket_id' => 2,'updated_at'=>date('Y-m-d H:i:s')]);
+            if($simpan){
+                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>upload</i> bukti bayar - #'.$id.', silahkan tunggu proses validasi oleh admin.')));
+            }else{
+                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>upload</i> bukti bayar - #'.$id)));
+            }
+        }
+        $invoice = InvoiceTiket::where('it_kode_unik',$id)->first();
+        $kode = $id;
+        //dd($invoice);
+        return view('site.booking.payment',compact('invoice','kode'));
     }
 
     /**
@@ -302,21 +372,6 @@ class BookingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function cetak($token)
-    {
-        $html2pdf = new HTML2PDF('L','A4','de',false,'UTF-8');
-        $invoice = InvoiceTiket::where('it_kode_unik',$token)->first();
-        $doc = view('site.booking.show',compact('invoice'));
-
-        //return $doc;
-        $html2pdf->pdf->SetTitle('Sertifikat TOT | e-PKM');
-        $html2pdf->setDefaultFont('Times');
-        $html2pdf->pdf->SetDisplayMode('fullpage');
-        $html2pdf->writeHTML($doc,false);
-
-
-        $html2pdf->Output('Sertifikat TOT'.md5($key).'-'.date('Y-m-d').'.pdf');
-    }
 
     public function addToCart(Request $request){
         $category = $request->cat;    

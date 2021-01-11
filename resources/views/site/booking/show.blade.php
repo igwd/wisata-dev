@@ -142,7 +142,7 @@ small, .small {
 				                </div>
 				                <div class="row" style="margin-top: 10px;">
 									<div class="col-md-12" align="center">
-										<button id="btn-proses" class="btn btn-primary">Upload Bukti Transfer</button>
+										<a href="{{url('/booking/')}}/{{$invoice->it_kode_unik}}/payment" class="btn btn-primary">Upload Bukti Transfer</a>
 									</div>
 								</div>
 				            </div>

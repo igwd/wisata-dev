@@ -108,6 +108,7 @@ class BookingController extends Controller
             'nama' => 'required',
             'email' => 'required',
             'telp' => 'required',
+            'metode_bayar'=>'required'
         ); 
 
         $messages = [
@@ -128,7 +129,7 @@ class BookingController extends Controller
         }
 
         if($total_tagihan <= 0){
-            $errors[] = "Anda belum memesan tiket.";
+            $errors[] = "<i class='fa fa-warning'></i>  Tidak ada pesanan yang diproses, Anda belum memesan tiket atau fasilitas.";
         }
         //dd($errors);
         $token = "";
@@ -164,16 +165,41 @@ class BookingController extends Controller
                 }
                 $data = InvoiceTiket::where('it_id',$id)->update(array('it_kode_unik'=>md5($id)));
                 
-                $this->sendToEmail($id);
+                //$this->sendToEmail($id);
                 session()->flash('message', array('class'=>'alert-success','text'=>array('Tiket berhasil dipesan, periksa email yang anda cantumkan untuk verifikasi pesanan.')));
             }else{
                 session()->flash('message', array('class'=>'alert-danger','text'=>array('Tiket gagal dipesan')));
             }            
         }
-        //dd($request->all());
-        $cookie = Cookie::forget('item');
-        
-        return response('Cek email untuk konfirmasi pesanan')->withCookie($cookie);
+        //dd($errors);
+        if(empty($errors)){
+            $cookie = Cookie::forget('item');
+            return view('site.booking.index')->withCookie('item');
+        }elseif($total_tagihan <= 0){
+            $value = $request->cookie('item');
+            $data = (array) json_decode($value);
+            $data['booking'] = (object) array(
+                    'nama'=>$request->nama,
+                    'email'=>$request->email,
+                    'telp'=>$request->telp,
+                    'tanggal'=>$request->tanggal,
+                    'metode_bayar'=>$request->metode_bayar
+                );
+            //dd($data);
+            return view('site.booking.index',compact('data'));
+        }else{
+            $value = $request->cookie('item');
+            $data = (array) json_decode($value);
+            $data['booking'] = (object) array(
+                    'nama'=>$request->nama,
+                    'email'=>$request->email,
+                    'telp'=>$request->telp,
+                    'tanggal'=>$request->tanggal,
+                    'metode_bayar'=>$request->metode_bayar
+                );
+            //dd($data);
+            return view('site.booking.show',compact('data'));
+        }
     }
 
     /**

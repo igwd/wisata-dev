@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\InvoiceTiket;
+use App\Models\InvoiceTiketDetail;
 use DataTables;
 use DB;
 use Validator;
@@ -23,15 +24,15 @@ class TiketController extends Controller
     }
 
     public function listData(Request $request){
-        $data = InvoiceTiket::select([
+        $data = InvoiceTiket::select(['it_id',
             'it_email','it_telp','it_pemesan','it_tanggal','it_keterangan','it_kode_unik','it_total_tagihan','status_tiket_id','it_jenis_pembayaran','file_bukti','no_rekening','mts_status'
         ])->leftjoin('m_tiket_status','status_tiket_id','m_tiket_status.mts_id');
 
         $datatables = DataTables::of($data);
         if ($keyword = $request->get('search')['value']) {
-            $datatables->filterColumn('fasilitas', function($query, $keyword) {
-                    $sql = "nama_fasilitas like ? OR deskripsi like ?";
-                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
+            $datatables->filterColumn('tiket', function($query, $keyword) {
+                    $sql = "it_pemesan like ? OR it_email like ? OR it_telp like ? OR it_kode_unik like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
                 });
         }
         return $datatables
@@ -46,18 +47,22 @@ class TiketController extends Controller
                 return "<img width='80%' src='{$url_gambar}'>";
             })
             ->addcolumn('tiket', function ($data) {
-                $url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
-                $url_delete = url('/')."/admin/fasilitas/penginapan/{$data->id}/destroy";
+                $detail = InvoiceTiketDetail::where('invoice_tiket_id',$data->it_id)->get();
+                $keterangan = "<ul>";
+                foreach ($detail as $key => $value) {
+                    $keterangan .= "<li><small style='font-size:60%'>[ {$value->booking_group} ]</small> {$value->booking_name} <small style='font-size:80%'>($value->itd_qty x ".number_format($value->itd_nominal)." = ".number_format($value->itd_subtotal).")</small></li>";
+                }
+                $keterangan .= "</ul>";
                 $html = "<h5>#{$data->it_kode_unik}</h5>
-                        <p><small>$data->it_tanggal</small><br>$data->it_pemesan<br>$data->it_email<br>$data->it_telp<br><b>".number_format($data->it_total_tagihan)."</b><br><label class='btn btn-sm btn-success'>$data->mts_status</label></p>
-                        {$data->it_keterangan}";
+                        <p><small>$data->it_tanggal</small><br>$data->it_pemesan<br>$data->it_email<br>$data->it_telp<br><b>".number_format($data->it_total_tagihan)."</b><br><span class='btn btn-sm btn-success'>$data->mts_status</span></p>
+                        {$keterangan}";
                 return $html;
             })
             ->addcolumn('aksi',function($data){
-                $url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
-                return "<a href='{$url_edit}' style='min-width:200px' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Approve Bukti Bayar</a><br>
-                <a href='{$url_edit}' style='min-width:200px' class='btn btn-sm btn-primary'><i class='fa fa-upload'></i> Upload Bukti Bayar</a><br>
-                <a onclick='deleteSlideShow()' style='min-width:200px' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$data->nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i> Hapus Tiket</a>";
+                //$url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
+                return "<a onclick='approveBuktiBayar(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Approve Bukti Bayar</a><br>
+                <a onclick='formUploadBuktiBayar(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-primary'><i class='fa fa-upload'></i> Upload Bukti Bayar</a><br>
+                <a onclick='deleteTiiket(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$data->nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i> Hapus Tiket</a>";
             })->rawColumns(['thumbnail','tiket','aksi'])
             ->make(true);
     }

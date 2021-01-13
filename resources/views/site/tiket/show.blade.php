@@ -114,10 +114,20 @@ small, .small {
 							                          </table>
 							                        <div class="row" style="margin-top: 10px;">
 														<div class="col-md-12" align="center">
-															@if($invoice->status_tiket_id >= 3)
+															@php
+																$status = $invoice->status_tiket_id;
+																// menentukan aksi yg bisa dilakukan oleh user saat booking tiket
+															@endphp
+															@if($status == 1)
+																<a href="{{url('booking/')}}/{{$invoice->it_kode_unik}}/verifikasi" class="btn btn-primary"><i class="fa fa-check-circle"></i> Verifikasi Tiket</a>
+															@elseif($status == 2)
+																<a href="{{url('booking/')}}/{{$invoice->it_kode_unik}}/payment" class="btn btn-primary"> Konfirmasi Pembayaran</a>
+															@elseif($status == 3)
+																<a href="{{route('tiket.check')}}" class="btn btn-success"> Cek Status TIket</a>
+															@elseif($status == 4)
 																<a target="_blank" href="{{url('tiket/')}}/{{$invoice->it_kode_unik}}/cetak" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> Cetak Tiket</a>
 															@else
-																<a href="{{route('tiket.check')}}" class="btn btn-danger"> Kembali</a>
+																<a href="{{url('tiket/')}}/{{$invoice->it_kode_unik}}/payment" class="btn btn-primary"><i class="fa fa-money"></i> Cek Status Tiket</a>
 															@endif
 														</div>
 													</div>

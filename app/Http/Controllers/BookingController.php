@@ -353,7 +353,7 @@ class BookingController extends Controller
         }else{
             $simpan = DB::table('invoice_tiket')
               ->where('it_kode_unik', $id)
-              ->update(['file_bukti'=>$url_gambar,'no_rekening'=>$no_rekening,'status_tiket_id' => 2,'updated_at'=>date('Y-m-d H:i:s')]);
+              ->update(['file_bukti'=>$url_gambar,'no_rekening'=>$no_rekening,'status_tiket_id' => 3,'updated_at'=>date('Y-m-d H:i:s')]);
             if($simpan){
                 session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>upload</i> bukti bayar - #'.$id.', silahkan tunggu proses validasi oleh admin.')));
             }else{

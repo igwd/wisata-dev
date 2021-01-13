@@ -61,6 +61,7 @@ class TiketController extends Controller
         //$doc = view('site.booking.show',compact('invoice'));
 
         $pdf = PDF::loadview('site.tiket.cetak',['invoice'=>$invoice]);
+        $pdf->setPaper([0, 0, 283,465, 141,732], 'landscape');
         return $pdf->stream();
 
         //return $pdf->download('laporan-pegawai-pdf.pdf');
@@ -75,39 +76,6 @@ class TiketController extends Controller
     public function store(Request $request)
     {
 
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function verifikasi($token)
-    {
-        $token = Crypt::decryptString($token);
-
-        $invoice = InvoiceTiket::where("it_kode_unik","=",$token)->first();
-        $invoice->status_tiket_id = 2;
-        $invoice_tiket_id = $invoice->it_id;
-        if($invoice->it_tanggal <= date('Y-m-d')){
-            $update = DB::table('invoice_tiket')
-              ->where('it_id', $invoice_tiket_id)
-              ->update(['status_tiket_id' => 2,'updated_at'=>date('Y-m-d H:i:s')]);
-            if($update){
-                $log = new InvoiceTiketLog;
-                $log->invoice_tiket_id = $invoice_tiket_id;
-                $log->status_tiket_id = 2;
-                $log->lit_keterangan = 'TIKET SUDAH DI-VERIFIKASI';
-                if($log->save()){
-                    return view('site.tiket.show',compact('invoice'));
-                }
-            }
-        }else{
-            session()->flash('message', array('class'=>'alert-danger','text'=>array('Tiket tidak dapat di-verifikasi, tanggal booking telah expired')));
-            return view('site.tiket.show',compact('invoice'));
-        }
     }
 
     /**

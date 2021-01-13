@@ -40,45 +40,28 @@ CREATE TABLE `invoice_tiket` (
   `it_email` varchar(100) DEFAULT NULL,
   `it_telp` varchar(255) DEFAULT NULL,
   `it_pemesan` varchar(255) DEFAULT NULL,
-  `it_tanggal` datetime DEFAULT NULL,
+  `it_tanggal` date DEFAULT NULL,
   `it_keterangan` text,
   `it_kode_unik` varchar(50) DEFAULT NULL,
   `it_total_tagihan` double DEFAULT NULL,
   `status_tiket_id` int(11) DEFAULT NULL,
   `it_jenis_pembayaran` smallint(2) DEFAULT '1' COMMENT '1=cash, 2=trf',
+  `file_bukti` varchar(255) DEFAULT NULL,
+  `no_rekening` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`it_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket` */
 
 LOCK TABLES `invoice_tiket` WRITE;
 
-insert  into `invoice_tiket`(`it_id`,`it_email`,`it_telp`,`it_pemesan`,`it_tanggal`,`it_keterangan`,`it_kode_unik`,`it_total_tagihan`,`status_tiket_id`,`it_jenis_pembayaran`,`created_at`,`updated_at`) values 
-(10,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',15000,1,2,'2021-01-04 10:02:05','2021-01-04 10:02:05'),
-(11,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:17:36','2021-01-04 10:17:36'),
-(12,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:19:10','2021-01-04 10:19:10'),
-(13,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:21:30','2021-01-04 10:21:30'),
-(14,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:22:05','2021-01-04 10:22:05'),
-(15,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:22:56','2021-01-04 10:22:56'),
-(16,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:24:35','2021-01-04 10:24:35'),
-(17,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:25:03','2021-01-04 10:25:03'),
-(18,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:25:23','2021-01-04 10:25:23'),
-(19,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:25:40','2021-01-04 10:25:40'),
-(20,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','vZieXHYt4Rs9zT2PZjwha1aSl8sTmPZkOJQIVnks',20000,1,2,'2021-01-04 10:25:50','2021-01-04 10:25:50'),
-(21,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 2 | 10000 @','3c59dc048e8850243be8079a5c74d079',20000,1,2,'2021-01-04 10:26:13','2021-01-04 10:26:13'),
-(22,'karmilasari640@gmail.com','045039434','test','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 2 | 20000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','b6d767d2f8ed5d21a44b0e5886680cb9',25000,1,2,'2021-01-04 11:41:34','2021-01-04 11:41:34'),
-(23,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','37693cfc748049e45d87b8c7d8b9aacd',15000,1,2,'2021-01-04 14:20:23','2021-01-04 14:20:23'),
-(24,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','1ff1de774005f8da13f42943881c655f',15000,1,2,'2021-01-04 14:21:03','2021-01-04 14:21:03'),
-(25,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','8e296a067a37563370ded05f5a3bf3ec',15000,1,2,'2021-01-04 14:25:08','2021-01-04 14:25:08'),
-(26,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','4e732ced3463d06de0ca9a15b6153677',15000,1,2,'2021-01-04 14:25:33','2021-01-04 14:25:33'),
-(27,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','02e74f10e0327ad868d138f2b4fdd6f0',15000,2,2,'2021-01-04 14:27:20','2021-01-05 11:11:56'),
-(28,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','33e75ff09dd601bbe69f351039152189',15000,1,2,'2021-01-04 14:27:49','2021-01-04 14:27:49'),
-(29,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','6ea9ab1baa0efb9e19094440c317e21b',15000,1,2,'2021-01-04 14:28:14','2021-01-04 14:28:14'),
-(30,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','34173cb38f07f89ddbebc2ac9128303f',15000,1,2,'2021-01-04 14:28:31','2021-01-04 14:28:31'),
-(31,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','c16a5320fa475530d9583c34fd356ef5',15000,1,2,'2021-01-04 14:33:35','2021-01-04 14:33:35'),
-(32,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-04 00:00:00','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','6364d3f0f495b6ab9dcf8d3b5c6e0b01',15000,1,2,'2021-01-04 14:33:50','2021-01-04 14:33:50');
+insert  into `invoice_tiket`(`it_id`,`it_email`,`it_telp`,`it_pemesan`,`it_tanggal`,`it_keterangan`,`it_kode_unik`,`it_total_tagihan`,`status_tiket_id`,`it_jenis_pembayaran`,`file_bukti`,`no_rekening`,`created_at`,`updated_at`) values 
+(33,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','20210111C',15000,4,2,'storage/invoice/20210111C.jpg','253465545465','2021-01-11 09:54:18','2021-01-12 05:28:33'),
+(34,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @','20210111D',10000,3,2,'storage/invoice/20210111D.jpeg','253465545465','2021-01-11 12:42:59','2021-01-11 12:47:37'),
+(35,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @| D\'Tukad Homestay | D\'Tukad Homestay | 100000 | 1 | 100000 @','20210111E',115000,2,2,'storage/invoice/20210111E.jpg','2165216125','2021-01-11 12:55:17','2021-01-11 13:27:43'),
+(36,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 10 | 100000 @','20210111F',100000,2,1,NULL,NULL,'2021-01-11 13:28:20','2021-01-11 13:38:40');
 
 UNLOCK TABLES;
 
@@ -98,7 +81,7 @@ CREATE TABLE `invoice_tiket_detail` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`itd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket_detail` */
 
@@ -151,7 +134,14 @@ insert  into `invoice_tiket_detail`(`itd_id`,`invoice_tiket_id`,`tiket_id`,`book
 (44,31,1,'TIKET','Dewasa',1,10000,10000,'2021-01-04 14:33:35','2021-01-04 14:33:35'),
 (45,31,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-04 14:33:35','2021-01-04 14:33:35'),
 (46,32,1,'TIKET','Dewasa',1,10000,10000,'2021-01-04 14:33:50','2021-01-04 14:33:50'),
-(47,32,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-04 14:33:50','2021-01-04 14:33:50');
+(47,32,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-04 14:33:50','2021-01-04 14:33:50'),
+(48,33,1,'TIKET','Dewasa',1,10000,10000,'2021-01-11 09:54:18','2021-01-11 09:54:18'),
+(49,33,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-11 09:54:18','2021-01-11 09:54:18'),
+(50,34,1,'TIKET','Dewasa',1,10000,10000,'2021-01-11 12:42:59','2021-01-11 12:42:59'),
+(51,35,1,'TIKET','Dewasa',1,10000,10000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
+(52,35,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
+(53,35,9,'PENGINAPAN','D\'Tukad Homestay',1,100000,100000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
+(54,36,1,'TIKET','Dewasa',10,10000,100000,'2021-01-11 13:28:20','2021-01-11 13:28:20');
 
 UNLOCK TABLES;
 
@@ -160,45 +150,26 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `invoice_tiket_log`;
 
 CREATE TABLE `invoice_tiket_log` (
-  `lit_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `invoice_tiket_id` bigint(20) DEFAULT NULL,
   `status_tiket_id` int(11) DEFAULT NULL,
   `lit_keterangan` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`lit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+  KEY `invoice_tiket_id` (`invoice_tiket_id`,`status_tiket_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket_log` */
 
 LOCK TABLES `invoice_tiket_log` WRITE;
 
-insert  into `invoice_tiket_log`(`lit_id`,`invoice_tiket_id`,`status_tiket_id`,`lit_keterangan`,`created_at`,`updated_at`) values 
-(1,3,1,'TIKET DI-PESAN','2021-01-04 09:08:50','2021-01-04 09:08:50'),
-(2,4,1,'TIKET DI-PESAN','2021-01-04 09:46:28','2021-01-04 09:46:28'),
-(3,5,1,'TIKET DI-PESAN','2021-01-04 09:48:17','2021-01-04 09:48:17'),
-(4,6,1,'TIKET DI-PESAN','2021-01-04 09:56:41','2021-01-04 09:56:41'),
-(5,7,1,'TIKET DI-PESAN','2021-01-04 09:57:56','2021-01-04 09:57:56'),
-(6,8,1,'TIKET DI-PESAN','2021-01-04 09:58:29','2021-01-04 09:58:29'),
-(7,9,1,'TIKET DI-PESAN','2021-01-04 09:58:49','2021-01-04 09:58:49'),
-(8,10,1,'TIKET DI-PESAN','2021-01-04 10:02:05','2021-01-04 10:02:05'),
-(9,NULL,1,'TIKET DI-PESAN','2021-01-04 10:22:05','2021-01-04 10:22:05'),
-(10,NULL,1,'TIKET DI-PESAN','2021-01-04 10:24:35','2021-01-04 10:24:35'),
-(11,NULL,1,'TIKET DI-PESAN','2021-01-04 10:25:04','2021-01-04 10:25:04'),
-(12,NULL,1,'TIKET DI-PESAN','2021-01-04 10:25:23','2021-01-04 10:25:23'),
-(13,21,1,'TIKET DI-PESAN','2021-01-04 10:26:13','2021-01-04 10:26:13'),
-(14,22,1,'TIKET DI-PESAN','2021-01-04 11:41:34','2021-01-04 11:41:34'),
-(15,23,1,'TIKET DI-PESAN','2021-01-04 14:20:23','2021-01-04 14:20:23'),
-(16,24,1,'TIKET DI-PESAN','2021-01-04 14:21:03','2021-01-04 14:21:03'),
-(17,25,1,'TIKET DI-PESAN','2021-01-04 14:25:08','2021-01-04 14:25:08'),
-(18,26,1,'TIKET DI-PESAN','2021-01-04 14:25:33','2021-01-04 14:25:33'),
-(19,27,1,'TIKET DI-PESAN','2021-01-04 14:27:20','2021-01-04 14:27:20'),
-(20,28,1,'TIKET DI-PESAN','2021-01-04 14:27:49','2021-01-04 14:27:49'),
-(21,29,1,'TIKET DI-PESAN','2021-01-04 14:28:14','2021-01-04 14:28:14'),
-(22,30,1,'TIKET DI-PESAN','2021-01-04 14:28:31','2021-01-04 14:28:31'),
-(23,31,1,'TIKET DI-PESAN','2021-01-04 14:33:35','2021-01-04 14:33:35'),
-(24,32,1,'TIKET DI-PESAN','2021-01-04 14:33:50','2021-01-04 14:33:50'),
-(25,27,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-05 11:11:56','2021-01-05 11:11:56');
+insert  into `invoice_tiket_log`(`invoice_tiket_id`,`status_tiket_id`,`lit_keterangan`,`created_at`,`updated_at`) values 
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:22:05','2021-01-12 05:22:05'),
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:23:10','2021-01-12 05:23:10'),
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:25:45','2021-01-12 05:25:45'),
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:26:48','2021-01-12 05:26:48'),
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:27:15','2021-01-12 05:27:15'),
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:27:56','2021-01-12 05:27:56'),
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:28:07','2021-01-12 05:28:07');
 
 UNLOCK TABLES;
 
@@ -374,7 +345,7 @@ CREATE TABLE `m_tiket_status` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`mts_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `m_tiket_status` */
 
@@ -382,9 +353,10 @@ LOCK TABLES `m_tiket_status` WRITE;
 
 insert  into `m_tiket_status`(`mts_id`,`mts_status`,`created_at`,`updated_at`) values 
 (1,'TIKET DI-PESAN',NULL,NULL),
-(2,'TIKET SUDAH DIBAYAR',NULL,NULL),
-(3,'PEMBAYARAN DITERIMA',NULL,NULL),
-(4,'CETAK',NULL,NULL);
+(2,'TIKET DI-VERIFIKASI',NULL,NULL),
+(3,'TIKET SUDAH DIBAYAR',NULL,NULL),
+(4,'PEMBAYARAN DITERIMA',NULL,NULL),
+(5,'CETAK TIKET',NULL,NULL);
 
 UNLOCK TABLES;
 
@@ -530,7 +502,7 @@ LOCK TABLES `users` WRITE;
 insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`created_at`,`updated_at`) values 
 (1,'I Gede Wira Darma','dewiradarma@gmail.com',NULL,'$2y$10$4hh2UT0jYlcwQbP/4CWOMeAxQ8Evk2g3MKGWARqvT7ZHEUEHUWJFG',NULL,'2020-11-20 11:32:09','2020-11-20 11:32:09'),
 (2,'Adi Panca','adipanca@gmail.com',NULL,'$2y$10$WM2k4eT10wXlHNBFk9WFkeQ4c2poJzGtx.RhDgxicffV39EZrJKs.',NULL,'2020-11-22 04:16:46','2020-11-22 04:16:46'),
-(3,'Administrator','admin123@gmail.com',NULL,'$2y$10$WM2k4eT10wXlHNBFk9WFkeQ4c2poJzGtx.RhDgxicffV39EZrJKs.',NULL,NULL,NULL);
+(3,'Administrator','pengempu.waterfall@gmail.com',NULL,'$2y$10$WM2k4eT10wXlHNBFk9WFkeQ4c2poJzGtx.RhDgxicffV39EZrJKs.',NULL,NULL,NULL);
 
 UNLOCK TABLES;
 

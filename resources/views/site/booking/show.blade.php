@@ -107,8 +107,14 @@ small, .small {
 						                            		@php
 															    use App\Models\Page;
 															    $rekening = Page::select('konten')->where('group','NO_REK')->first();
-															    print_r($rekening->konten);
 															@endphp
+															<p>
+																@if($invoice->it_jenis_pembayaran==2)
+																	{!!@$rekening->konten!!}
+																@else
+																	<pre>Silahkan menuju loket untuk proses pembayaran.</pre>
+																@endif
+															</p>
 						                            	</span>
 						                            </li>
 						                          </ul>
@@ -142,7 +148,14 @@ small, .small {
 				                </div>
 				                <div class="row" style="margin-top: 10px;">
 									<div class="col-md-12" align="center">
-										<a href="{{url('/booking/')}}/{{$invoice->it_kode_unik}}/payment" class="btn btn-primary">Upload Bukti Transfer</a>
+										<div class="mu-latest-course-single">
+											<div class="mu-latest-course-single-content">
+												@if($invoice->it_jenis_pembayaran == 2)
+												<a href="{{url('/booking/')}}/{{$invoice->it_kode_unik}}/payment" class="btn btn-primary">Konfirmasi Pembayaran</a>
+												@endif
+												<a href="{{url('/tiket/check')}}/{{$invoice->it_kode_unik}}" class="btn btn-success">Cek Status Tiket</a>
+											</div>
+										</div>
 									</div>
 								</div>
 				            </div>

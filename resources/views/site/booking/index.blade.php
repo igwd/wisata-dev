@@ -206,7 +206,7 @@
 																			<input type="hidden" name="harga[{{$kuliner}}]" id="harga{{$kuliner}}" class="form-control" value="{{$value->booking_price}}">
 																		</td>
 																		<td>
-																			<input type="number" readonly style="text-align:right;" name="qty[{{$kuliner}}]" id="qty{{$kuliner}}" data-tiketid="{{$kuliner}}" data-harga="{{$value->booking_price}}" class="qty form-control" value="{!!(!empty($data_tiket_order[$kuliner]->booking_qty) ? $data_tiket_order[$kuliner]->booking_qty : 0)!!}">
+																			<input type="number" readonly style="text-align:right;" name="qty[{{$kuliner}}]" id="qty{{$kuliner}}" data-tiketid="{{$kuliner}}" data-harga="{{$value->booking_price}}" class="qty form-control" value="{!!(!empty($data_kuliner_order[$kuliner]->booking_qty) ? $data_kuliner_order[$kuliner]->booking_qty : 0)!!}">
 																		</td>
 																		<td align="right">
 																			<input type="text" style="text-align:right;" readonly name="subtotal[{{$kuliner}}]" id="subtotal{{$kuliner}}" class="subtotal form-control" value="{!!(!empty($data_kuliner_order[$kuliner]->booking_subtotal) ? number_format($data_kuliner_order[$kuliner]->booking_subtotal) : 0)!!}">

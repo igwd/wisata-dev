@@ -164,8 +164,13 @@ small, .small {
 									</div>
 				                </div>
 				                <div class="row" style="margin-top: 10px;">
-									<div class="col-md-12" align="center">
-										<button id="btn-proses" class="btn btn-primary">Upload</button>
+									<div class="mu-latest-course-single">
+										<div class="mu-latest-course-single-content">
+											<div class="col-md-12" align="center">
+												<button id="btn-proses" class="btn btn-primary">Upload Bukti Bayar</button>
+												<a href="{{url('/tiket/check')}}/{{$invoice->it_kode_unik}}" class="btn btn-success">Cek Status Tiket</a>
+											</div>
+										</div>
 									</div>
 								</div>
 				            </div>

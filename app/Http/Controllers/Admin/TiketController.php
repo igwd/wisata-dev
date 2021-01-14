@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\InvoiceTiket;
 use App\Models\InvoiceTiketDetail;
+use App\Models\InvoiceTiketLog;
+use App\Models\Tiket;
+
 use DataTables;
 use DB;
 use Validator;
@@ -13,6 +16,28 @@ use Validator;
 
 class TiketController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     * Index Transaksi Admin
+     * @return \Illuminate\Http\Response
+     */
+    public function indexTransaksi(Request $request)
+    {
+        //dd($request->session());
+        $user = $request->session()->get('user');
+        $data['booking'] = (object) array(
+            'nama'=>$user['name'],
+            'email'=>$user['email'],
+            'telp'=>'-'
+        );
+        $data['tiket'] = (object) array();
+        $data['kuliner'] = (object) array();
+        $data['penginapan'] = (object) array();
+        $data['transport'] = (object) array();
+        return view('admin.tiket.index-transaksi-admin',compact('data'));
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -60,9 +85,9 @@ class TiketController extends Controller
             })
             ->addcolumn('aksi',function($data){
                 //$url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
-                return "<a onclick='approveBuktiBayar(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Approve Bukti Bayar</a><br>
+                return "<a style='min-width:200px' class='btn btn-sm btn-success' onclick='approveBuktiBayar(\"$data->it_id\")' id='btn-approve{$data->it_id}' data-id='{$data->it_id}' data-kode='{$data->it_kode_unik}'><i class='fa fa-check'></i> Approve Bukti Bayar</a><br>
                 <a onclick='formUploadBuktiBayar(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-primary'><i class='fa fa-upload'></i> Upload Bukti Bayar</a><br>
-                <a onclick='deleteTiiket(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$data->nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i> Hapus Tiket</a>";
+                <a onclick='deleteTiket(\"$data->it_kode_unik\")' style='min-width:200px' class='btn btn-sm btn-danger btn-delete' data-kode='{$data->it_kode_unik}'><i class='fa fa-trash'></i> Hapus Tiket</a>";
             })->rawColumns(['thumbnail','tiket','aksi'])
             ->make(true);
     }
@@ -198,6 +223,7 @@ class TiketController extends Controller
         return view('admin.galeri.photo.edit',compact('data'));
     }
 
+
     /**
      * Update the specified resource in storage.
      *
@@ -303,6 +329,180 @@ class TiketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $del = InvoiceTiket::where('it_kode_unik',$id)->delete();
+        if($del){
+            //@unlink($request->file);
+            $msg = array('class'=>'alert-success','text'=>'Berhasil hapus data Tiket #'.$id);
+        }else{
+            $msg = array('class'=>'alert-danger','text'=>'Gagal hapus data Tiket #'.$id);
+        }
+        return response()->json($msg);
+    }
+
+    /**
+     * Approve bukti bayar, update status tiket
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approveBuktiBayar(Request $request, $id){
+        $update = DB::table('invoice_tiket')
+              ->where('it_id', $id)
+              ->update(['status_tiket_id' => 4,'updated_at'=>date('Y-m-d H:i:s')]);
+        if($update){
+            $log = new InvoiceTiketLog;
+            $log->invoice_tiket_id = $id;
+            $log->status_tiket_id = 4;
+            $log->lit_keterangan = 'PEMBAYARAN DITERIMA';
+            if($log->save()){
+                return response()->json([
+                    'class' => 'alert-success',
+                    'text' => 'Proses approve pembayaran #'.$request->it_kode_unik.' berhasil.',
+                ]);
+            }else{
+                return response()->json([
+                    'class' => 'alert-danger',
+                    'text' => 'Proses approve pembayaran #'.$request->it_kode_unik.' gagal.',
+                ]);
+            }
+        }
+    }
+
+    public function formUploadBuktiBayar(Request $request){
+        $kode = $request->it_kode_unik;
+        $invoice = InvoiceTiket::where('it_kode_unik',$kode)->first();
+        return view('admin.tiket.modal-upload-bukti',compact('invoice'));
+    }
+
+    // menu cetak tiket
+    public function indexCetak(Request $request)
+    {
+        return view('admin.tiket.index-cetak',compact('data'));
+    }
+
+    public function listDataCetakTiket(Request $request){
+        $data = InvoiceTiket::select(['it_id',
+            'it_email','it_telp','it_pemesan','it_tanggal','it_keterangan','it_kode_unik','it_total_tagihan','status_tiket_id','it_jenis_pembayaran','file_bukti','no_rekening','mts_status'
+        ])->leftjoin('m_tiket_status','status_tiket_id','m_tiket_status.mts_id')
+        ->where('status_tiket_id',4);
+
+        $datatables = DataTables::of($data);
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('tiket', function($query, $keyword) {
+                    $sql = "it_pemesan like ? OR it_email like ? OR it_telp like ? OR it_kode_unik like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
+                });
+        }
+        return $datatables
+            ->addcolumn('thumbnail',function($data){
+                $url_gambar = "";
+                if(!empty($data->file_bukti)){
+                    $url_gambar = url('/')."/{$data->file_bukti}";
+                }else{
+                    $url_gambar = url('/')."/public/site/assets/img/slider/1.jpg";
+                }
+
+                return "<img width='80%' src='{$url_gambar}'>";
+            })
+            ->addcolumn('tiket', function ($data) {
+                $detail = InvoiceTiketDetail::where('invoice_tiket_id',$data->it_id)->get();
+                $keterangan = "<ul>";
+                foreach ($detail as $key => $value) {
+                    $keterangan .= "<li><small style='font-size:60%'>[ {$value->booking_group} ]</small> {$value->booking_name} <small style='font-size:80%'>($value->itd_qty x ".number_format($value->itd_nominal)." = ".number_format($value->itd_subtotal).")</small></li>";
+                }
+                $keterangan .= "</ul>";
+                $html = "<h5>#{$data->it_kode_unik}</h5>
+                        <p><small>$data->it_tanggal</small><br>$data->it_pemesan<br>$data->it_email<br>$data->it_telp<br><b>".number_format($data->it_total_tagihan)."</b><br><span class='btn btn-sm btn-success'>$data->mts_status</span></p>
+                        {$keterangan}";
+                return $html;
+            })
+            ->addcolumn('aksi',function($data){
+                $url_cetak = url('/')."/tiket/{$data->it_kode_unik}/cetak";
+                return "<a target='_blank' href='{$url_cetak}' style='min-width:200px' class='btn btn-sm btn-danger'><i class='fa fa-file-pdf-o'></i> Cetak Tiket</a>";
+            })->rawColumns(['thumbnail','tiket','aksi'])
+            ->make(true);
+    }
+
+    public function indexSettingTiket(Request $request){
+        return view('admin.tiket.index-setting',compact('data'));
+    }
+
+    public function listDataMasterTiket(Request $request){
+        $data = Tiket::all();
+
+        $datatables = DataTables::of($data);
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('tiket', function($query, $keyword) {
+                    $sql = "mt_nama_tiket like ? OR mt_deskripsi like ? ";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%"]);
+                });
+        }
+        return $datatables
+            ->addcolumn('aksi',function($data){
+                return "<a onclick='showFormData(\"$data->mt_id\")' class='btn btn-sm btn-primary'><i class='fa fa-edit'></i></a><br>
+                <a onclick='deleteTiket(\"{$data->mt_id}\")' id='btn-delete{$data->mt_id}' class='btn btn-sm btn-danger btn-delete' data-nama='{$data->mt_nama_tiket}'><i class='fa fa-trash'></i></a>";
+            })->rawColumns(['mt_nama_tiket','mt_keterangan','mt_harga','aksi'])
+            ->make(true);
+    }
+
+    public function editMasterTiket($id){
+        $tiket = Tiket::where('mt_id',$id)->first();
+        $method = 'PUT';
+        $action = url('/')."/admin/tiket/setting/{$id}/update";
+        return view('admin.tiket.form-setting',compact('tiket','method','action'));
+    }
+
+    public function createMasterTiket(){
+        $tiket = null;
+        $method = 'POST';
+        $action = url('/')."/admin/tiket/setting/store";
+        return view('admin.tiket.form-setting',compact('tiket','method','action'));
+    }
+
+    public function storeMasterTiket(Request $request){
+        $tiket = new Tiket;
+        $tiket->mt_nama_tiket = $request->mt_nama_tiket;
+        $tiket->mt_keterangan = $request->mt_keterangan;
+        $tiket->mt_harga = $request->mt_harga;
+        if($tiket->save()){
+            return response()->json([
+                'class' => 'alert-success',
+                'text' => 'Tambah data Tiket '.$request->mt_nama_tiket.' berhasil.',
+            ]);
+        }else{
+            return response()->json([
+                'class' => 'alert-danger',
+                'text' => 'Tambah data Tiket '.$request->mt_nama_tiket.' gagal.',
+            ]);
+        }
+    }
+
+    public function updateMasterTiket(Request $request, $id){
+        $update = DB::table('m_tiket')
+              ->where('mt_id', $id)
+              ->update(['mt_nama_tiket' => $request->mt_nama_tiket,'mt_keterangan'=>$request->mt_keterangan,'mt_harga'=>$request->mt_harga,'updated_at'=>date('Y-m-d H:i:s')]);
+        if($update){
+            return response()->json([
+                'class' => 'alert-success',
+                'text' => 'Update data Tiket '.$request->mt_nama_tiket.' berhasil.',
+            ]);
+        }else{
+            return response()->json([
+                'class' => 'alert-danger',
+                'text' => 'Update data Tiket '.$request->mt_nama_tiket.' gagal.',
+            ]);
+        }
+    }
+
+    public function destroyMasterTiket(Request $request,$id){
+        $del = Tiket::where('mt_id',$id)->delete();
+        //$del = true;
+        if($del){
+            //@unlink($request->file);
+            $msg = array('class'=>'alert-success','text'=>'Berhasil hapus data Tiket #'.$request->mt_nama_tiket);
+        }else{
+            $msg = array('class'=>'alert-danger','text'=>'Gagal hapus data Tiket #'.$request->mt_nama_tiket);
+        }
+        return response()->json($msg);
     }
 }

@@ -355,15 +355,28 @@ class BookingController extends Controller
               ->where('it_kode_unik', $id)
               ->update(['file_bukti'=>$url_gambar,'no_rekening'=>$no_rekening,'status_tiket_id' => 3,'updated_at'=>date('Y-m-d H:i:s')]);
             if($simpan){
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>upload</i> bukti bayar - #'.$id.', silahkan tunggu proses validasi oleh admin.')));
+                $tiket_id = InvoiceTiket::where('it_kode_unik',$id)->first()->it_id;
+                $log = new InvoiceTiketLog;
+                $log->invoice_tiket_id = $tiket_id;
+                $log->status_tiket_id = 3;
+                $log->lit_keterangan = 'TIKET SUDAH DIBAYAR';
+                $log->save();
+
+                $msg = array('class'=>'alert-success','text'=>array('Berhasil <i>upload</i> bukti bayar - #'.$id.', silahkan tunggu proses validasi oleh admin.'));
+                session()->flash('message', $msg);
             }else{
-                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>upload</i> bukti bayar - #'.$id)));
+                $msg = array('class'=>'alert-danger','text'=>array('Gagal <i>upload</i> bukti bayar - #'.$id));
+                session()->flash('message', $msg);
             }
         }
         $invoice = InvoiceTiket::where('it_kode_unik',$id)->first();
         $kode = $id;
-        //dd($invoice);
-        return view('site.booking.payment',compact('invoice','kode'));
+        if($request->ajax()){
+            return response()->json($msg);
+        }else{
+            return view('site.booking.payment',compact('invoice','kode'));
+            //dd($invoice);
+        }
     }
 
     /**

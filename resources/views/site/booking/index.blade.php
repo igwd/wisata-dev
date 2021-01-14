@@ -58,7 +58,7 @@
 									<h4>Cara Pemesanan On-line</h4>
 									<ul class="mu-sidebar-catg">
 										<li><i class="fa fa-book"></i> Lengkapi Form Isian Data</li>
-										<li><i class="fa fa-envelope"></i> Verifikasi Pesanan Melalui E-mail</li>
+										<li><i class="fa fa-envelope"></i> Verifikasi Tiket</li>
 										<li><i class="fa fa-money"></i> Verifikasi Bukti Bayar</li>
 										<li><i class="fa fa-file-pdf-o"></i> Cetak Tiket</li>
 										<li><i class="fa fa-check-circle"></i> Selesai</li>

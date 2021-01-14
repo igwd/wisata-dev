@@ -125,8 +125,25 @@ Route::group(['middleware' => 'auth'], function () {
 	//admin-galeri-video-end
 
 	//admin-tiket
+	Route::get('admin/tiket/transaksi', 'Admin\TiketController@indexTransaksi')->name('admin.tiket.transaksi');
+	
 	Route::get('admin/tiket/buktibayar', 'Admin\TiketController@index')->name('admin.tiket.buktibayar');
 	Route::get('admin/tiket/buktibayar/listData', 'Admin\TiketController@listData')->name('admin.tiket.buktibayar.listData');
+	Route::get('admin/tiket/buktibayar/formUploadBuktiBayar', 'Admin\TiketController@formUploadBuktiBayar')->name('admin.tiket.buktibayar.form');
+	Route::put('admin/tiket/buktibayar/{param1}/approveBuktiBayar','Admin\TiketController@approveBuktiBayar')->name('admin.tiket.buktibayar.approveBuktiBayar');
+	Route::delete('admin/tiket/buktibayar/{param1}/destroy','Admin\TiketController@destroy')->name('admin.tiket.buktibayar.destroy');
+
+	Route::get('admin/tiket/cetak', 'Admin\TiketController@indexCetak')->name('admin.tiket.cetak');
+	Route::get('admin/tiket/cetak/listDataCetakTiket', 'Admin\TiketController@listDataCetakTiket')->name('admin.tiket.cetak.listDataCetakTiket');
+	
+
+	Route::get('admin/tiket/setting', 'Admin\TiketController@indexSettingTiket')->name('admin.tiket.setting');
+	Route::get('admin/tiket/setting/listDataMasterTiket', 'Admin\TiketController@listDataMasterTiket')->name('admin.tiket.setting.listData');
+	Route::get( 'admin/tiket/setting/{param1}/edit','Admin\TiketController@editMasterTiket')->name('admin.tiket.setting.edit');
+	Route::put( 'admin/tiket/setting/{param1}/update','Admin\TiketController@updateMasterTiket')->name('admin.tiket.setting.update');
+	Route::get( 'admin/tiket/setting/create','Admin\TiketController@createMasterTiket')->name('admin.tiket.setting.create');
+	Route::post( 'admin/tiket/setting/store','Admin\TiketController@storeMasterTiket')->name('admin.tiket.setting.store');
+	Route::delete('admin/tiket/setting/{param1}/destroy','Admin\TiketController@destroyMasterTiket')->name('admin.tiket.setting.destroy');
 	//end admmin-tiket
 });
 

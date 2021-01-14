@@ -45,7 +45,7 @@ class TempatMakanController extends Controller
         $fasilitas->nama_fasilitas = $request->nama_fasilitas;
         $fasilitas->group_kategori = $request->group_kategori;
         $fasilitas->deskripsi = $request->deskripsi;
-        $fasilitas->harga_booking = $request->harga_booking;
+        $fasilitas->mt_harga = $request->harga_booking;
         $fasilitas->alamat_fasilitas = $request->alamat_fasilitas;
         $fasilitas->geo_location = $request->geo_location;
         $msg = array();
@@ -160,7 +160,7 @@ class TempatMakanController extends Controller
         $fasilitas->nama_fasilitas = $request->nama_fasilitas;
         $fasilitas->group_kategori = $request->group_kategori;
         $fasilitas->deskripsi = $request->deskripsi;
-        $fasilitas->harga_booking = $request->harga_booking;
+        $fasilitas->mt_harga = $request->harga_booking;
         $fasilitas->alamat_fasilitas = $request->alamat_fasilitas;
         $fasilitas->geo_location = $request->geo_location;
         $msg = array();

@@ -44,6 +44,7 @@ class PenginapanController extends Controller
         $url_gambar = $request->url_gambar;
         $fasilitas->nama_fasilitas = $request->nama_fasilitas;
         $fasilitas->group_kategori = $request->group_kategori;
+        $fasilitas->mt_harga = $request->harga_booking;
         $fasilitas->deskripsi = $request->deskripsi;
         $fasilitas->alamat_fasilitas = $request->alamat_fasilitas;
         $fasilitas->geo_location = $request->geo_location;
@@ -158,6 +159,7 @@ class PenginapanController extends Controller
         $url_gambar = $request->url_gambar;
         $fasilitas->nama_fasilitas = $request->nama_fasilitas;
         $fasilitas->group_kategori = $request->group_kategori;
+        $fasilitas->mt_harga = $request->harga_booking;
         $fasilitas->deskripsi = $request->deskripsi;
         $fasilitas->alamat_fasilitas = $request->alamat_fasilitas;
         $fasilitas->geo_location = $request->geo_location;

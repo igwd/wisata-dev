@@ -35,19 +35,19 @@
     <div class="sidebar-heading">
         Manajemen Tiket
     </div>
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTiket"
+    <li class="nav-item @php echo(Request::segment(2) == 'tiket' ? 'active' : '') @endphp">
+        <a class="nav-link @php echo(Request::segment(2) == 'tiket' ? '' : 'collapsed') @endphp" href="#" data-toggle="collapse" data-target="#collapseTiket"
             aria-expanded="true" aria-controls="collapseTiket">
             <i class="fas fa-fw fa-tags"></i>
             <span>Tiket</span>
         </a>
-        <div id="collapseTiket" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapseTiket" class="collapse @php echo(Request::segment(2) == 'tiket' ? 'show' : '') @endphp" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Proses Administrasi</h6>
-                <a class="collapse-item" href="login.html"><i class="far fa-calendar-check"></i> Pesan</a>
-                <a class="collapse-item" href="register.html"><i class="far fa-money-bill-alt"></i> Bukti Pembayaran</a>
-                <a class="collapse-item" href="register.html"><i class="fas fa-receipt"></i> Cetak Tiket</a>
-                <a class="collapse-item" href="forgot-password.html"><i class="fa fa-cog"></i> Pengaturan Harga</a>
+                <a class="collapse-item @php echo(Request::segment(3) == 'transaksi' ? 'active' : '') @endphp" href="{{url('/admin/tiket/transaksi')}}"><i class="far fa-calendar-check"></i> Pesan</a>
+                <a class="collapse-item @php echo(Request::segment(3) == 'buktibayar' ? 'active' : '') @endphp" href="{{url('/admin/tiket/buktibayar')}}"><i class="far fa-money-bill-alt"></i> Bukti Pembayaran</a>
+                <a class="collapse-item @php echo(Request::segment(3) == 'cetak' ? 'active' : '') @endphp" href="{{url('/admin/tiket/cetak')}}"><i class="fas fa-receipt"></i> Cetak Tiket</a>
+                <a class="collapse-item @php echo(Request::segment(3) == 'setting' ? 'active' : '') @endphp" href="{{url('/admin/tiket/setting')}}"><i class="fa fa-cog"></i> Pengaturan Harga</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>

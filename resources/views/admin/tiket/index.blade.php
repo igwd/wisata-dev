@@ -1,20 +1,22 @@
 @extends('admin.template')
 @section('content')
 <div class="container-fluid">
-	@if(Session::has('message'))
-    @php 
-      $messages = Session::get('message');
-    @endphp
-    <p class="alert {{@$messages['class']}}">
-      @if(!empty($messages['text']))
-        @foreach(@$messages['text'] as $err => $errvalue)
-          {!!@$errvalue!!}<br>
-        @endforeach
-      @endif
-    </p>
-  @else
-      <p class="alert" style="display: none"></p>
-  @endif
+	<div class="row">
+		@if(Session::has('message'))
+	    @php 
+	      $messages = Session::get('message');
+	    @endphp
+	    <div style="width: 100%" class="alert {{@$messages['class']}}">
+	      @if(!empty($messages['text']))
+	        @foreach(@$messages['text'] as $err => $errvalue)
+	          {!!@$errvalue!!}<br>
+	        @endforeach
+	      @endif
+	    </div>
+		@else
+		    <div style="width: 100%" class="alert" style="display: none"></div>
+		@endif
+	</div>
   <!-- Content Row -->
   <!-- Page Heading -->
   <div class="row">
@@ -45,16 +47,17 @@
     </div>
   </div>
 </div>
+<div id="div-modal-upload"></div>
 @endsection
 @section('script')
 <script type="text/javascript">
-var tabel_fasilitas;
+var table_tiket;
 $(document).ready(function() {
   $('#btn-add').click(function(){
     window.location.href="{{url('admin/fasilitas/penginapan/create')}}"
   });
 
-  tabel_fasilitas = $('#data-fasilitas').DataTable({
+  table_tiket = $('#data-fasilitas').DataTable({
     processing: true,
     serverSide: true,
     ajax: {
@@ -93,24 +96,63 @@ $(document).ready(function() {
   $('#data-fasilitas_filter input').unbind();
   $('#data-fasilitas_filter input').bind('keyup', function(e) {
     if(e.keyCode == 13) {
-      tabel_fasilitas.search(this.value).draw();   
+      table_tiket.search(this.value).draw();   
     }
+  });
+
+  $('.btn-approve').click(function(){
+  	
+	
   });
 });
 
-function deleteData(){
-  console.log('judul',judul);
-  var id = $('.btn-delete').data('id');
-  var judul = $('.btn-delete').data('judul');
-  var file = $('.btn-delete').data('file');
-  var confirm = window.confirm("Hapus data Slide Show "+judul+" ?");
+function approveBuktiBayar(id){
+	var id = $('#btn-approve'+id).data('id');
+	var kode = $('#btn-approve'+id).data('kode');
+	$.ajax({
+		url:"{{url('/')}}/admin/tiket/buktibayar/"+id+"/approveBuktiBayar",
+		headers: {
+        	'X-CSRF-TOKEN': '{{ csrf_token() }}'
+	    },
+	    data : {'it_kode_unik':kode},
+	    type : 'PUT',
+	    success:function(data){
+	        $('.alert').removeClass('alert-success alert-danger');
+	        $('.alert').css('display','none');
+	        $('.alert').addClass(data.class);
+	        $('.alert').html(data.text);
+	        $('.alert').css('display','block');
+	        table_tiket.ajax.reload();
+	    }
+	});
+}
+
+function formUploadBuktiBayar(id){
+	$.ajax({
+		url:"{{url('/')}}/admin/tiket/buktibayar/formUploadBuktiBayar",
+		headers: {
+        	'X-CSRF-TOKEN': '{{ csrf_token() }}'
+	    },
+	    data : {'it_kode_unik':id},
+	    type : 'GET',
+	    success:function(data){
+	        $('#div-modal-upload').html(data);
+	    }
+	});
+}
+
+function deleteTiket(id){
+  //var id = $('#btn-delete'+id).data('id');
+  var kode = $('#btn-delete'+id).attr('data-kode');
+
+  var confirm = window.confirm("Hapus data Tiket #"+id+" ?");
   if (confirm) {
     $.ajax({
-      url : '{{url("admin/slideshow")}}/'+id+"/destroy",
+      url : '{{url("admin/tiket/buktibayar")}}/'+id+"/destroy",
       headers: {
         'X-CSRF-TOKEN': '{{ csrf_token() }}'
       },
-      data:{'id':id,'judul':judul,'file':file},
+      data:{'id':id,'it_kode_unik':kode},
       type : 'DELETE',
       success:function(data){
         $('.alert').removeClass('alert-success alert-danger');
@@ -118,7 +160,7 @@ function deleteData(){
         $('.alert').addClass(data.class);
         $('.alert').html(data.text);
         $('.alert').css('display','block');
-        table_slide_show.ajax.reload();
+        table_tiket.ajax.reload();
       }
     });
   }

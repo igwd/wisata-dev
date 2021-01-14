@@ -51,17 +51,17 @@ CREATE TABLE `invoice_tiket` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`it_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket` */
 
 LOCK TABLES `invoice_tiket` WRITE;
 
 insert  into `invoice_tiket`(`it_id`,`it_email`,`it_telp`,`it_pemesan`,`it_tanggal`,`it_keterangan`,`it_kode_unik`,`it_total_tagihan`,`status_tiket_id`,`it_jenis_pembayaran`,`file_bukti`,`no_rekening`,`created_at`,`updated_at`) values 
-(33,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','20210111C',15000,4,2,'storage/invoice/20210111C.jpg','253465545465','2021-01-11 09:54:18','2021-01-12 05:28:33'),
-(34,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @','20210111D',10000,3,2,'storage/invoice/20210111D.jpeg','253465545465','2021-01-11 12:42:59','2021-01-11 12:47:37'),
-(35,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @| D\'Tukad Homestay | D\'Tukad Homestay | 100000 | 1 | 100000 @','20210111E',115000,2,2,'storage/invoice/20210111E.jpg','2165216125','2021-01-11 12:55:17','2021-01-11 13:27:43'),
-(36,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 10 | 100000 @','20210111F',100000,2,1,NULL,NULL,'2021-01-11 13:28:20','2021-01-11 13:38:40');
+(33,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','20210111C',15000,3,2,'storage/invoice/20210111C.jpg','253465545465','2021-01-11 09:54:18','2021-01-14 12:54:07'),
+(34,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @','20210111D',10000,4,2,'storage/invoice/20210111D.jpeg','253465545465','2021-01-11 12:42:59','2021-01-14 01:10:12'),
+(35,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @| D\'Tukad Homestay | D\'Tukad Homestay | 100000 | 1 | 100000 @','20210111E',115000,4,2,'storage/invoice/20210111E.jpg','2165216125','2021-01-11 12:55:17','2021-01-14 01:10:16'),
+(37,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-14','| Ngelan Tour | Ngelan Tour | 100000 | 1 | 100000 @','20210114C',100000,4,2,'storage/invoice/20210114C.png','253465545465','2021-01-14 17:39:04','2021-01-14 17:39:59');
 
 UNLOCK TABLES;
 
@@ -81,7 +81,7 @@ CREATE TABLE `invoice_tiket_detail` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`itd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket_detail` */
 
@@ -141,7 +141,8 @@ insert  into `invoice_tiket_detail`(`itd_id`,`invoice_tiket_id`,`tiket_id`,`book
 (51,35,1,'TIKET','Dewasa',1,10000,10000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
 (52,35,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
 (53,35,9,'PENGINAPAN','D\'Tukad Homestay',1,100000,100000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
-(54,36,1,'TIKET','Dewasa',10,10000,100000,'2021-01-11 13:28:20','2021-01-11 13:28:20');
+(54,36,1,'TIKET','Dewasa',10,10000,100000,'2021-01-11 13:28:20','2021-01-11 13:28:20'),
+(55,37,15,'TRANSPORT','Ngelan Tour',1,100000,100000,'2021-01-14 17:39:04','2021-01-14 17:39:04');
 
 UNLOCK TABLES;
 
@@ -169,7 +170,31 @@ insert  into `invoice_tiket_log`(`invoice_tiket_id`,`status_tiket_id`,`lit_keter
 (33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:26:48','2021-01-12 05:26:48'),
 (33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:27:15','2021-01-12 05:27:15'),
 (33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:27:56','2021-01-12 05:27:56'),
-(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:28:07','2021-01-12 05:28:07');
+(33,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-12 05:28:07','2021-01-12 05:28:07'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:44:46','2021-01-14 00:44:46'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:45:26','2021-01-14 00:45:26'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:55:41','2021-01-14 00:55:41'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:56:08','2021-01-14 00:56:08'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:56:16','2021-01-14 00:56:16'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:56:22','2021-01-14 00:56:22'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:56:58','2021-01-14 00:56:58'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:57:07','2021-01-14 00:57:07'),
+(34,4,'PEMBAYARAN DITERIMA','2021-01-14 00:57:48','2021-01-14 00:57:48'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 00:57:56','2021-01-14 00:57:56'),
+(34,4,'PEMBAYARAN DITERIMA','2021-01-14 01:10:12','2021-01-14 01:10:12'),
+(35,4,'PEMBAYARAN DITERIMA','2021-01-14 01:10:16','2021-01-14 01:10:16'),
+(36,4,'PEMBAYARAN DITERIMA','2021-01-14 01:25:17','2021-01-14 01:25:17'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 01:55:23','2021-01-14 01:55:23'),
+(0,3,'TIKET SUDAH DIBAYAR','2021-01-14 02:34:18','2021-01-14 02:34:18'),
+(33,3,'TIKET SUDAH DIBAYAR','2021-01-14 02:34:52','2021-01-14 02:34:52'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 12:50:39','2021-01-14 12:50:39'),
+(33,4,'PEMBAYARAN DITERIMA','2021-01-14 12:53:48','2021-01-14 12:53:48'),
+(33,3,'TIKET SUDAH DIBAYAR','2021-01-14 12:54:07','2021-01-14 12:54:07'),
+(37,1,'TIKET DI-PESAN','2021-01-14 17:39:04','2021-01-14 17:39:04'),
+(37,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-14 17:39:04','2021-01-14 17:39:04'),
+(37,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-14 17:39:10','2021-01-14 17:39:10'),
+(37,3,'TIKET SUDAH DIBAYAR','2021-01-14 17:39:23','2021-01-14 17:39:23'),
+(37,4,'PEMBAYARAN DITERIMA','2021-01-14 17:39:59','2021-01-14 17:39:59');
 
 UNLOCK TABLES;
 
@@ -189,23 +214,23 @@ CREATE TABLE `m_fasilitas` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `m_fasilitas` */
 
 LOCK TABLES `m_fasilitas` WRITE;
 
 insert  into `m_fasilitas`(`id`,`thumbnail`,`group_kategori`,`nama_fasilitas`,`alamat_fasilitas`,`deskripsi`,`mt_harga`,`geo_location`,`created_at`,`updated_at`) values 
-(4,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Warung D\'Wira','Jalan Disana Gunung disini Gunung','<p>nasi babi guling,&nbsp;<span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</span></p><p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\"><br></span></p><p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</span><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\"><br></span></p>',0,'{\"lat\":-8.47044445966728,\"lng\":115.20355018153613}',NULL,'2020-12-18 10:07:07'),
-(5,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','-','<p>- what the fox say?</p>',0,'{\"lat\":-8.470903654380338,\"lng\":115.20358230052639}','2020-12-08 09:49:38','2020-12-11 23:54:22'),
-(6,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Nasi Anyud','nasi anyud sisin tukad','<p>nasi anyud sisin tukad<br></p>',0,'{\"lat\":-8.47091986813846,\"lng\":115.20206960215991}','2020-12-08 09:54:37','2020-12-08 09:54:37'),
-(7,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Nasi Anyud 2','a','<p>a</p>',0,'{\"lat\":-8.47011337105806,\"lng\":115.20189794078296}','2020-12-08 11:54:35','2020-12-08 11:54:51'),
-(8,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','nasi anyud sisin tukad','<p>nasi anyud sisin tukad</p>',0,'{\"lat\":-8.470028476530208,\"lng\":115.20155461802905}','2020-12-08 11:56:52','2020-12-08 11:57:11'),
-(9,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','PENGINAPAN','D\'Tukad Homestay','D\'Tukad Homestay','<p>D\'Tukad Homestay<br></p>',100000,'{\"lat\":-8.47153110729332,\"lng\":115.20160611565633}','2020-12-08 12:18:24','2020-12-08 12:18:24'),
-(10,'storage/fasilitas/933c1e9b8635bb8c10a6ce7927162c0b.png','TRANSPORT','Family Tour','family tour pickup','<p>family tour pickup.&nbsp;<span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</span></p><p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\"><br></span></p><p><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</span><span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\"><br></span><br></p>',0,'{\"lat\":-8.473279923824622,\"lng\":115.20507367625659}','2020-12-08 12:55:08','2020-12-18 10:31:28'),
-(11,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','nasi anyud sisin tukad','<p>nasi anyud sisin tukad</p>',0,'{\"lat\":-8.470028476530208,\"lng\":115.20155461802905}','2020-12-08 11:56:52','2020-12-08 11:57:11'),
-(12,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','nasi anyud sisin tukad','<p>nasi anyud sisin tukad</p>',0,'{\"lat\":-8.470028476530208,\"lng\":115.20155461802905}','2020-12-08 11:56:52','2020-12-08 11:57:11'),
-(13,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','nasi anyud sisin tukad','<p>nasi anyud sisin tukad</p>',0,'{\"lat\":-8.470028476530208,\"lng\":115.20155461802905}','2020-12-08 11:56:52','2020-12-08 11:57:11');
+(4,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Warung D`Wira','Jalan Disana Gunung disini Gunung','<p>nasi babi guling,&nbsp;<span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</span></p>',100000,'{\"lat\":-8.47044445966728,\"lng\":115.20355018153613}',NULL,'2021-01-14 17:27:17'),
+(5,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','-','<p>- what the fox say?</p>',50000,'{\"lat\":-8.470903654380338,\"lng\":115.20358230052639}','2020-12-08 09:49:38','2021-01-14 12:32:42'),
+(6,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Nasi Anyud','nasi anyud sisin tukad','<p>nasi anyud sisin tukad<br></p>',20000,'{\"lat\":-8.47091986813846,\"lng\":115.20206960215991}','2020-12-08 09:54:37','2021-01-14 17:31:11'),
+(8,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TEMPAT_MAKAN','Resto Tepi Sungai','nasi anyud sisin tukad','<p>nasi anyud sisin tukad</p>',25000,'{\"lat\":-8.470028476530208,\"lng\":115.20155461802905}','2020-12-08 11:56:52','2021-01-14 17:31:26'),
+(9,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','PENGINAPAN','D`Tukad Homestay','D`Tukad Homestay','<p>D\'Tukad Homestay<br></p>',24996,'{\"lat\":-8.47153110729332,\"lng\":115.20160611565633}','2020-12-08 12:18:24','2021-01-14 17:25:09'),
+(10,'storage/fasilitas/933c1e9b8635bb8c10a6ce7927162c0b.png','TRANSPORT','Family Tour','family tour pickup','<p>family tour pickup.&nbsp;<span style=\"color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</span></p>',100000,'{\"lat\":-8.473279923824622,\"lng\":115.20507367625659}','2020-12-08 12:55:08','2021-01-14 17:16:56'),
+(14,'storage/fasilitas/3376603f65f52b85236a110b48b0c658.jpg','TRANSPORT','Tour n Tur','Tour n Tur','<p>Tour n Tur,&nbsp;<span style=\"background-color: rgba(0, 0, 0, 0.05); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</span><br></p><span style=\"background-color: rgba(0, 0, 0, 0.05); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, Arial, sans-serif; font-size: 14px; text-align: justify;\"><br></span>',50000,'{\"lat\":-8.47321253896074,\"lng\":115.20383771355672}','2021-01-14 17:09:27','2021-01-14 17:16:19'),
+(15,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','TRANSPORT','Ngelan Tour','Ngelan Tour','<p>Ngelan Tour<br></p>',100000,'{\"lat\":-8.473267720078775,\"lng\":115.20397504449183}','2021-01-14 17:20:45','2021-01-14 17:20:45'),
+(16,'storage/fasilitas/56ca7e85264d7b03e9afdb2634eacd43.jpg','PENGINAPAN','Omah Odah Homestay','Omah Odah Homestay','<p>Omah Odah Homestay<br></p>',50000,'{\"lat\":-8.4700162733289,\"lng\":115.20165761590296}','2021-01-14 17:26:21','2021-01-14 17:26:21'),
+(17,'storage/fasilitas/933c1e9b8635bb8c10a6ce7927162c0b.png','PENGINAPAN','Rumah Kakiang','Rumah Kakiang','<p>Rumah Kakiang</p>',120000,'{\"lat\":-8.471697181158644,\"lng\":115.2017005312472}','2021-01-14 17:35:02','2021-01-14 17:35:29');
 
 UNLOCK TABLES;
 
@@ -323,14 +348,14 @@ CREATE TABLE `m_tiket` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`mt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `m_tiket` */
 
 LOCK TABLES `m_tiket` WRITE;
 
 insert  into `m_tiket`(`mt_id`,`mt_nama_tiket`,`mt_keterangan`,`mt_harga`,`created_at`,`updated_at`) values 
-(1,'Dewasa','usia > 10 tahun',10000,'2020-12-18 22:06:10',NULL),
+(1,'Dewasa','usia > 10 tahun',15000,'2020-12-18 22:06:10','2021-01-14 11:59:30'),
 (2,'Anak-anak','usia <= 10 tahun',5000,'2020-12-18 22:06:13',NULL);
 
 UNLOCK TABLES;
@@ -500,8 +525,6 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 
 insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`remember_token`,`created_at`,`updated_at`) values 
-(1,'I Gede Wira Darma','dewiradarma@gmail.com',NULL,'$2y$10$4hh2UT0jYlcwQbP/4CWOMeAxQ8Evk2g3MKGWARqvT7ZHEUEHUWJFG',NULL,'2020-11-20 11:32:09','2020-11-20 11:32:09'),
-(2,'Adi Panca','adipanca@gmail.com',NULL,'$2y$10$WM2k4eT10wXlHNBFk9WFkeQ4c2poJzGtx.RhDgxicffV39EZrJKs.',NULL,'2020-11-22 04:16:46','2020-11-22 04:16:46'),
 (3,'Administrator','pengempu.waterfall@gmail.com',NULL,'$2y$10$WM2k4eT10wXlHNBFk9WFkeQ4c2poJzGtx.RhDgxicffV39EZrJKs.',NULL,NULL,NULL);
 
 UNLOCK TABLES;

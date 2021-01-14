@@ -54,7 +54,7 @@
             </div>
             <div class="form-group">
               <label>Harga Booking</label>
-              <input type="number" class="form-control" name="harga_booking" id="harga_booking" value="{{@$data->harga_booking}}">
+              <input type="number" class="form-control" name="harga_booking" id="harga_booking" value="{{$data->mt_harga}}">
             </div>
             <div class="form-group">
               <label>Upload Gambar</label>

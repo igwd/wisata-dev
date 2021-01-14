@@ -1,20 +1,22 @@
 @extends('admin.template')
 @section('content')
 <div class="container-fluid">
-	@if(Session::has('message'))
-    @php 
-      $messages = Session::get('message');
-    @endphp
-    <p class="alert {{@$messages['class']}}">
-      @if(!empty($messages['text']))
-        @foreach(@$messages['text'] as $err => $errvalue)
-          {!!@$errvalue!!}<br>
-        @endforeach
-      @endif
-    </p>
-  @else
-      <p class="alert" style="display: none"></p>
-  @endif
+	<div class="row">
+    @if(Session::has('message'))
+      @php 
+        $messages = Session::get('message');
+      @endphp
+      <div class="alert {{@$messages['class']}}" style="display: block; width: 100%">
+        @if(!empty($messages['text']))
+          @foreach(@$messages['text'] as $err => $errvalue)
+            {!!@$errvalue!!}<br>
+          @endforeach
+        @endif
+      </div>
+    @else
+        <div class="alert" style="display: none; width: 100%"></div>
+    @endif
+  </div>
   <!-- Content Row -->
   <!-- Page Heading -->
   <div class="row">
@@ -101,19 +103,19 @@ $(document).ready(function() {
   });
 });
 
-function deleteData(){
-  console.log('judul',judul);
-  var id = $('.btn-delete').data('id');
-  var judul = $('.btn-delete').data('judul');
-  var file = $('.btn-delete').data('file');
-  var confirm = window.confirm("Hapus data Slide Show "+judul+" ?");
+function deleteData(id){
+  var id = $('#fasilitas'+id).data('id');
+  var judul = $('#fasilitas'+id).data('fasilitas');
+  console.log(judul);
+  var file = $('#fasilitas'+id).data('file');
+  var confirm = window.confirm("Hapus data Transport "+judul+" ?");
   if (confirm) {
     $.ajax({
-      url : '{{url("admin/slideshow")}}/'+id+"/destroy",
+      url : '{{url("admin/fasilitas/transportasi/")}}/'+id+"/destroy",
       headers: {
         'X-CSRF-TOKEN': '{{ csrf_token() }}'
       },
-      data:{'id':id,'judul':judul,'file':file},
+      data:{'id':id,'nama_fasilitas':judul,'filename':file},
       type : 'DELETE',
       success:function(data){
         $('.alert').removeClass('alert-success alert-danger');
@@ -121,7 +123,7 @@ function deleteData(){
         $('.alert').addClass(data.class);
         $('.alert').html(data.text);
         $('.alert').css('display','block');
-        table_slide_show.ajax.reload();
+        tabel_fasilitas.ajax.reload();
       }
     });
   }

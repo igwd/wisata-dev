@@ -55,7 +55,8 @@ class TempatMakanController extends Controller
             'nama_fasilitas' => 'required',
             'alamat_fasilitas'=> 'required',
             'deskripsi' => 'required',
-            'image' => 'required',
+            'harga_booking'=> 'required',
+            'image' => 'mimes:jpeg,jpg,png|required',
             'geo_location'=> 'required'
 
         ); 
@@ -100,7 +101,7 @@ class TempatMakanController extends Controller
                     $url_gambar = $filePath;
                 }
             }else{
-                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png'));
             }
         }
         //dd($url_gambar);
@@ -167,9 +168,10 @@ class TempatMakanController extends Controller
         $file = array('image' => $request->file('image'));
         // setting up rules
         $rules = array(
-            'image' => 'required',
+            'image' => 'mimes:jpeg,jpg,png|required',
             'nama_fasilitas' => 'required',
             'deskripsi' => 'required',
+            'harga_booking'=> 'required',
             'alamat_fasilitas'=> 'required',
             'geo_location'=> 'required'
 
@@ -215,7 +217,7 @@ class TempatMakanController extends Controller
                     $url_gambar = $filePath;
                 }
             }else{
-                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png'));
             }
         }
         //dd($url_gambar);
@@ -239,9 +241,18 @@ class TempatMakanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        //dd($request->all());
+        $del = Fasilitas::where('id',$id)->delete();
+        //$del = true;
+        if($del){
+            //@unlink($request->file);
+            $msg = array('class'=>'alert-success','text'=>'Berhasil hapus data Tempat Makan #'.$request->nama_fasilitas);
+        }else{
+            $msg = array('class'=>'alert-danger','text'=>'Gagal hapus data Tempat Makan #'.$request->nama_fasilitas);
+        }
+        return response()->json($msg);
     }
 
     public function listData(Request $request){
@@ -277,8 +288,9 @@ class TempatMakanController extends Controller
             })
             ->addcolumn('aksi',function($data){
                 $url_edit = url('/')."/admin/fasilitas/tempatmakan/{$data->id}/edit";
+                $nama_fasilitas = str_replace("'", "`", $data->nama_fasilitas);
                 return "<a href='{$url_edit}' class='btn btn-sm btn-success'><i class='fa fa-edit'></i></a>
-                <a onclick='deleteSlideShow()' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$data->nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i></a>";
+                <a onclick='deleteData(\"{$data->id}\")' id='fasilitas{$data->id}' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i></a>";
             })->rawColumns(['thumbnail','fasilitas','aksi'])
             ->make(true);
     }

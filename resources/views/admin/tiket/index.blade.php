@@ -137,6 +137,7 @@ function formUploadBuktiBayar(id){
 	    type : 'GET',
 	    success:function(data){
 	        $('#div-modal-upload').html(data);
+          $('#modal-upload').modal('show');
 	    }
 	});
 }

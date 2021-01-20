@@ -8,6 +8,7 @@ use App\Models\InvoiceTiket;
 use App\Models\InvoiceTiketDetail;
 use App\Models\InvoiceTiketLog;
 use App\Models\Tiket;
+use App\Models\Fasilitas;
 
 use DataTables;
 use DB;
@@ -36,6 +37,65 @@ class TiketController extends Controller
         $data['penginapan'] = (object) array();
         $data['transport'] = (object) array();
         return view('admin.tiket.index-transaksi-admin',compact('data'));
+    }
+
+    public function listDataFasilitas(Request $request){
+        $data = Fasilitas::select([
+            'id','thumbnail','group_kategori','nama_fasilitas','alamat_fasilitas','deskripsi','geo_location','mt_harga',
+        ])->where('group_kategori',$request->group_kategori);
+
+        $datatables = DataTables::of($data);
+        if ($keyword = $request->get('search')['value']) {
+            $datatables->filterColumn('fasilitas', function($query, $keyword) {
+                    $sql = "nama_fasilitas like ? OR deskripsi like ?";
+                    $query->whereRaw($sql, ["%{$keyword}%","%{$keyword}%","%{$keyword}%"]);
+                });
+        }
+        return $datatables
+            ->addcolumn('fasilitas', function ($data) {
+                $url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
+                $url_delete = url('/')."/admin/fasilitas/penginapan/{$data->id}/destroy";
+                $html = "<h5>{$data->nama_fasilitas}</h5>
+                        <i class='fa fa-map-marker'> {$data->alamat_fasilitas}</i><br>
+                        {$data->deskripsi}";
+                return $html;
+            })
+            ->addcolumn('aksi',function($data) use ($request){
+                //$url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
+                $nama_fasilitas = str_replace("'", "`", $data->nama_fasilitas);
+                $datajson = json_encode(
+                    array(
+                        'tiket_id'=>$data->id,
+                        'itd_qty'=>1,
+                        'itd_nominal'=>$data->mt_harga,
+                        'itd_subtotal'=>$data->mt_harga,
+                        'booking_name'=>$data->nama_fasilitas,
+                        'booking_group'=>$request->group_kategori
+                    ));
+                return "<a onclick='pilihFasilitas({$datajson})' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Pilih</a>
+                <a onclick='deleteData(\"{$data->id}\")' id='fasilitas{$data->id}' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i></a>";
+            })->rawColumns(['fasilitas','aksi'])
+            ->make(true);
+    }
+
+    public function modalDataFasilitas(Request $request){
+        $title = "";
+        switch ($request->group_kategori) {
+            case 'TEMPAT_MAKAN':
+                $title = "Kuliner";
+                break;
+            case 'PENGINAPAN':
+                $title = "Penginapan";
+                break;
+            case 'TRANSPORT':
+                $title = "Transport";
+                break;
+            default:
+                $title = "Kuliner";
+                break;
+        }
+        $group_kategori = $request->group_kategori;
+        return view('admin.tiket.modal-fasilitas',compact('group_kategori','title'))->render();
     }
 
     /**

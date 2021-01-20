@@ -116,7 +116,7 @@
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th width="20%"> Tiket </th>
+											<th width="20%"> Voucher </th>
 											<th width="10%"> Harga </th>
 											<th width="10%"> Jumlah </th>
 											<th width="30%" style="text-align:right"> Total </th>
@@ -127,17 +127,17 @@
 									@if(empty($data_kuliner_order))
 										<tr>
 											<td>
-												<input type="hidden" name="booking_group[]" id="booking_group" class="form-control" value="KULINER">
-												<input type="text" name="booking_name[]" id="booking_name" class="form-control" value="{{$value->booking_name}}">
+												<input type="hidden" name="booking_group[]" id="booking_group1" class="form-control" value="KULINER">
+												<input type="text" readonly onclick="modalFasilitas('TEMPAT_MAKAN')" name="booking_name[]" id="booking_name1" class="form-control" value="{{$value->booking_name}}">
 											</td>
 											<td align="right"> 
-												<input type="number" name="harga[]" id="harga" class="form-control" value="{{$value->booking_price}}">
+												<input type="number" readonly name="harga[]" id="harga1" class="form-control" value="{{$value->booking_price}}">
 											</td>
 											<td>
-												<input type="number" style="text-align:right;" name="qty[]" id="qty" data-tiketid="" data-harga="" class="qty form-control" value="">
+												<input type="number" readonly style="text-align:right;" name="qty[]" id="qty1" data-tiketid="" data-harga="" class="qty form-control" value="">
 											</td>
 											<td align="right">
-												<input type="text" style="text-align:right;" readonly name="subtotal[]" id="subtotal" class="subtotal form-control" value="">
+												<input type="text" readonly style="text-align:right;" readonly name="subtotal[]" id="subtotal1" class="subtotal form-control" value="">
 											</td>
 											<td>
 												<input class="btn btn-danger btn-sm" type="button" value="Delete" onclick="deleteRow(this)"/>
@@ -304,5 +304,23 @@ var table_tiket;
 $(document).ready(function() {
 	
 });
+
+
+function pilihFasilitas(index,data){
+	console.log(data);
+}
+function modalFasilitas(kode){
+	$.ajax({
+		url:"{{url('/')}}/admin/tiket/modalDataFasilitas",
+		headers: {
+        	'X-CSRF-TOKEN': '{{ csrf_token() }}'
+	    },
+	    data : {'group_kategori':kode},
+	    type : 'GET',
+	    success:function(data){
+	        $('#div-modal').html(data);
+	    }
+	});
+}
 </script>
 @endsection

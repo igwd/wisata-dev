@@ -144,6 +144,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get( 'admin/tiket/setting/create','Admin\TiketController@createMasterTiket')->name('admin.tiket.setting.create');
 	Route::post( 'admin/tiket/setting/store','Admin\TiketController@storeMasterTiket')->name('admin.tiket.setting.store');
 	Route::delete('admin/tiket/setting/{param1}/destroy','Admin\TiketController@destroyMasterTiket')->name('admin.tiket.setting.destroy');
+	Route::get('admin/tiket/listDataFasilitas', 'Admin\TiketController@listDataFasilitas')->name('admin.tiket.fasilitas.listData');
+	Route::get('admin/tiket/modalDataFasilitas', 'Admin\TiketController@modalDataFasilitas')->name('admin.tiket.modal.fasilitas');
 	//end admmin-tiket
 });
 

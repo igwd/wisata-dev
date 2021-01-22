@@ -109,7 +109,7 @@
         ready: function () {
           $(this).jPlayer("setMedia", {
             title: "{{$value->judul}}",
-            m4v: "http://www.jplayer.org/video/m4v/Finding_Nemo_Teaser.m4v",
+            m4v: "{{url('/')}}/{{$value->filename}}",
             poster: "{{url('/').'/'.$value->thumbnail}}"
           });
         },

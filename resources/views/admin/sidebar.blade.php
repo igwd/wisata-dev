@@ -16,8 +16,8 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item @php echo(Request::segment(1) == 'admin' ? 'active' : '') @endphp">
-        <a class="nav-link" href="{{url('/')}}/admin"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a>
+    <li class="nav-item @php echo(Request::segment(2) == 'dashboard' ? 'active' : '') @endphp">
+        <a class="nav-link" href="{{url('/')}}/admin/dashboard"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
@@ -26,8 +26,8 @@
     <div class="sidebar-heading">
         Data Pengunjung
     </div>
-    <li class="nav-item">
-        <a class="nav-link" href="{{url('/')}}"><i class="fas fa-fw fa-chart-area"></i><span>Grafik Kunjungan</span></a>
+    <li class="nav-item @php echo(Request::segment(2) == 'grafik' ? 'active' : '') @endphp">
+        <a class="nav-link" href="{{url('/admin/grafik')}}"><i class="fas fa-fw fa-chart-area"></i><span>Grafik Kunjungan</span></a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

@@ -6,7 +6,7 @@
 	    @php 
 	      $messages = Session::get('message');
 	    @endphp
-	    <div style="width: 100%" class="alert {{@$messages['class']}}">
+	    <div style="width: 100%;display: none" class="alert {{@$messages['class']}}">
 	      @if(!empty($messages['text']))
 	        @foreach(@$messages['text'] as $err => $errvalue)
 	          {!!@$errvalue!!}<br>
@@ -14,7 +14,7 @@
 	      @endif
 	    </div>
 		@else
-		    <div style="width: 100%" class="alert" style="display: none"></div>
+		    <div style="width: 100%;display: none" class="alert"></div>
 		@endif
 	</div>
   <!-- Content Row -->

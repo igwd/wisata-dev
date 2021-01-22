@@ -56,6 +56,7 @@ Route::put('/booking/{param}/upload','BookingController@upload')->name('booking.
 //role admin route
 Route::group(['middleware' => 'auth'], function () {
 	//dashboard-start
+	Route::get('admin/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 	Route::get('admin', 'Admin\DashboardController@index')->name('admin.dashboard');
 	Route::get('admin/listDataHalaman', 'Admin\DashboardController@listDataHalaman')->name('listDataHalaman');
 	//edit halaman web
@@ -120,7 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get( 'admin/galeri/video/{param1}/edit','Admin\Galeri\VideoController@edit')->name('admin.galeri.video.edit');
 	Route::put( 'admin/galeri/video/{param1}/update','Admin\Galeri\VideoController@update')->name('admin.galeri.video.update');
 	Route::get( 'admin/galeri/video/create','Admin\Galeri\VideoController@create')->name('admin.galeri.video.create');
-	Route::put( 'admin/galeri/video/store','Admin\Galeri\VideoController@store')->name('admin.galeri.video.store');
+	Route::post( 'admin/galeri/video/store','Admin\Galeri\VideoController@store')->name('admin.galeri.video.store');
 	Route::delete('admin/galeri/video/{param1}/destroy','Admin\Galeri\VideoController@destroy')->name('admin.galeri.video.destroy');
 	//admin-galeri-video-end
 
@@ -146,6 +147,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('admin/tiket/setting/{param1}/destroy','Admin\TiketController@destroyMasterTiket')->name('admin.tiket.setting.destroy');
 	Route::get('admin/tiket/listDataFasilitas', 'Admin\TiketController@listDataFasilitas')->name('admin.tiket.fasilitas.listData');
 	Route::get('admin/tiket/modalDataFasilitas', 'Admin\TiketController@modalDataFasilitas')->name('admin.tiket.modal.fasilitas');
+	Route::post('admin/tiket/proses','Admin\TiketController@store')->name('admin.tiket.order');
 	//end admmin-tiket
+
+	//start-admin-grafik
+	Route::get('admin/grafik', 'Admin\GrafikController@index')->name('admin.grafik');
+	Route::get('admin/grafik/kunjungan', 'Admin\GrafikController@dataKunjungan')->name('admin.grafik.kunjungan');
+	//end-admin-grafik
 });
 

@@ -420,19 +420,19 @@
 
 	//currencynumber start
   // Catch all events related to changes
-  function reverseNumber(input) {
-    return [].map.call(input, function(x) {
-      return x;
-    }).reverse().join(''); 
-  }
+ 	function reverseNumber(input) {
+	    return [].map.call(input, function(x) {
+	      return x;
+	    }).reverse().join(''); 
+  	}
 
-  function plainNumber(number) {
-    return number.split('.').join('');
-  }
+  	function plainNumber(number) {
+    	return number.split('.').join('');
+  	}
 
-  function deleteRow(btn) {
-	  var row = btn.parentNode.parentNode;
-	  row.parentNode.removeChild(row);
+  	function deleteRow(btn) {
+		var row = btn.parentNode.parentNode;
+		row.parentNode.removeChild(row);
 	}
 </script>
 @endsection

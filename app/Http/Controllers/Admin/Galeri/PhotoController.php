@@ -267,8 +267,17 @@ class PhotoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        //dd($request->all());
+        $del = Galeri::where('id',$id)->delete();
+        //$del = true;
+        if($del){
+            @unlink($request->file);
+            $msg = array('class'=>'alert-success','text'=>'Berhasil hapus data Galeri #'.$request->judul);
+        }else{
+            $msg = array('class'=>'alert-danger','text'=>'Gagal hapus data Galeri #'.$request->judul);
+        }
+        return response()->json($msg);
     }
 }

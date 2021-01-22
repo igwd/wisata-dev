@@ -166,7 +166,7 @@ class BookingController extends Controller
                 }
                 // generate kode unik transaksi
                 $number_of_booking = InvoiceTiket::where('it_tanggal',$request->tanggal)->get()->count();
-                $total_trx = $number_of_booking+1;
+                $total_trx = $id+$number_of_booking+1;
 
                 $it_kode_unik = strtoupper(date('Ymd').$this->generateCode($total_trx));
                 //update kode unik

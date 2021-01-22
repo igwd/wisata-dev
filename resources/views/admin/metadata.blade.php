@@ -27,3 +27,9 @@
 
 <!-- google maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDMlWEn3DjJDy958FgnEBUsQQnXGDfzyZA"></script>
+
+<!-- datepicker -->
+<link href="{{url('/')}}/public/site/assets/datepicker/datepicker3.css" rel="stylesheet"> 
+
+<!-- toaster -->
+<link href="{{url('/public/admin/vendor/jquery-toast')}}/jquery.toast.css" rel="stylesheet" type="text/css" />

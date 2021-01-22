@@ -94,7 +94,7 @@
 														<p>{!!$value->deskripsi!!}</p>
 														<!-- <a href="{!!(!empty($value->filename) ? url('/').'/'.$value->filename : url('/').'/public/site/assets/img/gallery/big/1.jpg' )!!}"><span class="fa fa-eye"></span></a> -->
 														<a href="{!!url('/admin/galeri/video').'/'.$value->id.'/edit'!!}"><span class="fa fa-edit"></span></a>
-														<a href="#" class="aa-link"><span class="fa fa-trash"></span></a>
+														<a href="javascript:void(0)" onclick="deleteData('{!!$value->judul!!}','{!!$value->id!!}','{!!$value->filename!!}')" class="aa-link"><span class="fa fa-trash"></span></a>
 													</div>
 												</div>                  
 											</div>
@@ -135,27 +135,19 @@ $(document).ready(function() {
 	});
 });
 
-function deleteData(){
+function deleteData(judul,id,file){
   console.log('judul',judul);
-  var id = $('.btn-delete').data('id');
-  var judul = $('.btn-delete').data('judul');
-  var file = $('.btn-delete').data('file');
-  var confirm = window.confirm("Hapus data Slide Show "+judul+" ?");
+  var confirm = window.confirm("Hapus data Video "+judul+" ?");
   if (confirm) {
     $.ajax({
-      url : '{{url("admin/galeri/video")}}/'+id+"/destroy",
+      url : '{{url("admin/galeri/video/")}}/'+id+"/destroy",
       headers: {
         'X-CSRF-TOKEN': '{{ csrf_token() }}'
       },
       data:{'id':id,'judul':judul,'file':file},
       type : 'DELETE',
       success:function(data){
-        $('.alert').removeClass('alert-success alert-danger');
-        $('.alert').css('display','none');
-        $('.alert').addClass(data.class);
-        $('.alert').html(data.text);
-        $('.alert').css('display','block');
-        table_slide_show.ajax.reload();
+        window.location.href="{{url('admin/galeri/video')}}";
       }
     });
   }

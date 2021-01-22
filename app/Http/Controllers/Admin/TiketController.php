@@ -43,6 +43,11 @@ class TiketController extends Controller
         $data = Fasilitas::select([
             'id','thumbnail','group_kategori','nama_fasilitas','alamat_fasilitas','deskripsi','geo_location','mt_harga',
         ])->where('group_kategori',$request->group_kategori);
+        
+        $selected = array();
+        if($request->selected != "null"){
+            $selected = json_decode($request->selected);
+        }
 
         $datatables = DataTables::of($data);
         if ($keyword = $request->get('search')['value']) {
@@ -60,8 +65,13 @@ class TiketController extends Controller
                         {$data->deskripsi}";
                 return $html;
             })
-            ->addcolumn('aksi',function($data) use ($request){
+            ->addcolumn('aksi',function($data) use ($request,$selected){
                 //$url_edit = url('/')."/admin/fasilitas/penginapan/{$data->id}/edit";
+                if(in_array($data->id, $selected)){
+                    $add = FALSE;
+                }else{
+                    $add = TRUE;
+                }
                 $nama_fasilitas = str_replace("'", "`", $data->nama_fasilitas);
                 $datajson = json_encode(
                     array(
@@ -72,8 +82,7 @@ class TiketController extends Controller
                         'booking_name'=>$data->nama_fasilitas,
                         'booking_group'=>$request->group_kategori
                     ));
-                return "<a onclick='pilihFasilitas({$datajson})' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Pilih</a>
-                <a onclick='deleteData(\"{$data->id}\")' id='fasilitas{$data->id}' class='btn btn-sm btn-danger btn-delete' data-id='{$data->id}' data-fasilitas='{$nama_fasilitas}' data-file='{$data->thumnnail}'><i class='fa fa-trash'></i></a>";
+                return "<a onclick='pilihFasilitas({$datajson},{$add})' class='btn btn-sm btn-success'><i class='fa fa-check'></i> Pilih</a>";
             })->rawColumns(['fasilitas','aksi'])
             ->make(true);
     }
@@ -95,7 +104,9 @@ class TiketController extends Controller
                 break;
         }
         $group_kategori = $request->group_kategori;
-        return view('admin.tiket.modal-fasilitas',compact('group_kategori','title'))->render();
+        $index = $request->index;
+        $selected = json_encode($request->selected);
+        return view('admin.tiket.modal-fasilitas',compact('group_kategori','title','index','selected'))->render();
     }
 
     /**
@@ -156,10 +167,7 @@ class TiketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('admin.galeri.photo.create',compact('data'));
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -169,19 +177,61 @@ class TiketController extends Controller
      */
     public function store(Request $request)
     {
-        $galeri = new Galeri;
-        $url_gambar = $request->url_gambar;
-        $galeri->judul = $request->judul;
-        $galeri->group_kategori = $request->group_kategori;
-        $galeri->deskripsi = $request->deskripsi;
+        $user = $request->session()->get('user');
+        $invoice = new InvoiceTiket;        
+        $invoice->it_email = $user['email'];
+        $invoice->it_telp = '-';
+        $invoice->it_pemesan = $user['name'];
+        $invoice->it_tanggal = $request->tanggal;
+        $invoice->it_kode_unik = $request->_token;
+        $invoice->it_jenis_pembayaran = 1;
 
+        $booking_name = $request->booking_name;
+        $booking_price = $request->harga;
+        $booking_group = $request->booking_group;
+        $booking_subtotal = $request->subtotal;
+        $booking_id = $request->booking_id;
+
+        $keterangan = "";
+        $total_tagihan = 0;
+
+        //invoice_tiket_id  tiket_id  itd_qty  itd_nominal  itd_subtotal  created_at
+        $data_detail = array();
+        foreach ($request->qty as $key => $qty) {
+            if(!empty($qty)){
+                $tiket = Tiket::where('mt_id','=',$booking_id[$key])->first();
+                if(empty($tiket)){
+                    $tiket = Fasilitas::where('id','=',$booking_id[$key])->first();
+                }
+                $subtotal = $tiket->mt_harga * $qty;
+                $total_tagihan += $subtotal;
+                if($qty > 0){
+                    $data_detail[] = array(
+                        'tiket_id'=>$key,
+                        'itd_qty'=>$qty,
+                        'itd_nominal'=>$tiket->mt_harga,
+                        'itd_subtotal'=>$subtotal,
+                        'booking_name'=>$booking_name[$key],
+                        'booking_group'=>$booking_group[$key]
+                    );
+                    $keterangan .= "| ".(!empty($tiket->mt_nama_tiket) ? $tiket->mt_nama_tiket : $tiket->nama_fasilitas)." | ".(!empty($tiket->mt_keterangan) ? $tiket->mt_keterangan : $tiket->alamat_fasilitas)." | {$tiket->mt_harga} | {$qty} | {$subtotal} @";
+                }
+            }
+        }
+
+        $invoice->it_keterangan = $keterangan;
+        $invoice->it_total_tagihan = $total_tagihan;
+        $invoice->status_tiket_id = 4;
+
+        $datapost = $request->all();
+        $datapost['nama'] = $user['name'];
+        $datapost['email'] = $user['email'];
         $msg = array();
         
         // setting up rules
         $rules = array(
-            'judul' => 'required',
-            'deskripsi' => 'required',
-            'image' => 'required',
+            'nama' => 'required',
+            'email' => 'required',
         ); 
 
         $messages = [
@@ -195,68 +245,77 @@ class TiketController extends Controller
             'confirmed' => '<i class="fa fa-times"></i>  Kolom :attribute tidak sesuai dengan konfirmasi password',
         ];
         
-        $v = Validator::make($request->all(), $rules, $messages);
+        $v = Validator::make($datapost, $rules, $messages);
         $errors = array();
         foreach ($v->messages()->toArray() as $err => $errvalue) {
             $errors = array_merge($errors, $errvalue);
         }
-        //mimes:jpeg,bmp,png and for max size max:10000
-        // doing the validation, passing post data, rules and the messages
-        
+
+        if($total_tagihan <= 0){
+            $errors[] = "<i class='fa fa-warning'></i>  Tidak ada pesanan yang diproses, Anda belum memesan tiket atau fasilitas.";
+        }
+        //dd($errors);
+        $token = "";
         if(!empty($errors)){
             // send back to the page with the input data and errors
             $msg = array('class'=>'alert-danger','text'=>$errors);
         }else{
-            // checking file is valid.
-            if ($request->file('image')->isValid()) {
-                $destinationPath = 'storage/galeri/photo'; // upload path
-                $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-                $filename = $request->file('image')->getClientOriginalName(); // getting image extension
-                $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-                $fileName = md5($file).'.'.$extension;
-                if (file_exists($destinationPath.'/'.$fileName)) {
-                    unlink($destinationPath.'/'.$fileName);
+            //add invoice
+            if($invoice->save()){
+                $id = $invoice->id;
+                //add invoice detail
+                $invoice = InvoiceTiket::where('it_id',$id);
+                $log = new InvoiceTiketLog;
+                $log->invoice_tiket_id = $id;
+                $log->status_tiket_id = 4;
+                $log->lit_keterangan = 'PEMBAYARAN DITERIMA';
+                $log->save();
+                foreach ($data_detail as $key => $value) {
+                    $value['invoice_tiket_id'] = $id;
+                    //'invoice_tiket_id','tiket_id','itd_qty','itd_nominal','itd_subtotal','created_at','updated_at'
+                    $detail = new InvoiceTiketDetail;
+                    $detail->invoice_tiket_id = $id;
+                    $detail->tiket_id = $value['tiket_id'];
+                    $detail->booking_group = $value['booking_group'];
+                    $detail->booking_name = $value['booking_name'];
+                    $detail->itd_qty = $value['itd_qty'];
+                    $detail->itd_nominal = $value['itd_nominal'];
+                    $detail->itd_subtotal = $value['itd_subtotal'];
+                    $detail->save();
                 }
+                // generate kode unik transaksi
+                $number_of_booking = InvoiceTiket::where('it_tanggal',$request->tanggal)->get()->count();
+                $total_trx = $id+$number_of_booking+1;
 
-                // uploading file to given path
-                if ($request->file('image')->move($destinationPath, $fileName)) {
-                    $filePath = $destinationPath.'/'.$fileName;
-                    $url_gambar = $filePath;
-                    $img_fit = Image::make($url_gambar);
-                    $img_fit->fit(2048, 1365);
-                    $img_fit->save($url_gambar);
-                }
+                $it_kode_unik = strtoupper(date('Ymd').$this->generateCode($total_trx));
+                //update kode unik
+                $data = InvoiceTiket::where('it_id',$id)->update(array('it_kode_unik'=>$it_kode_unik));
+                
+                //$this->sendToEmail($id);
+                $msg = array('kode'=>$it_kode_unik,'class'=>'alert-success','text'=>array('Tiket berhasil dipesan, kode tiket #'.$it_kode_unik));
             }else{
-                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
-            }
+                $msg = array('kode'=>'-','class'=>'alert-danger','text'=>array('Tiket gagal dipesan'));
+            }            
         }
-        //dd($url_gambar);
-        $galeri->filename = $url_gambar; $id = null;
-        if(empty($url_gambar)){
-            session()->flash('message', $msg);
-        }else{
-            // lets make thumbnail
-            $img_thumb = Image::make($url_gambar);
-            $img_thumb_path = $img_thumb->dirname.'/thumb';
-            $img_thumb_name = $img_thumb->basename;
-            $img_thumb_extension = $img_thumb->extension;
-            $img_thumb->fit(370, 220);
-            $img_thumb->save($img_thumb_path.'/thumb_'.$img_thumb_name);
+        
+        return response()->json($msg);
+    }
 
-            $galeri->thumbnail = $img_thumb_path.'/thumb_'.$img_thumb_name;
-
-            if($galeri->save()){
-                $id = $galeri->id;
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil tambah data Galeri Photo - '.$request->judul)));
-            }else{
-                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal tambah data Galeri Photo - '.$request->judul)));
-            }
-        }
-        $data = (object) $request->input();
-        if(!empty($errors)){
-            return view('admin.galeri.photo.create',compact("data"));
-        }else{
-            return redirect('admin/galeri/photo/'.$id.'/edit');
+    public function generateCode($data){
+        $alphabet =   array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+        $alpha_flip = array_flip($alphabet);
+        if($data <= 25){
+            return $alphabet[$data];
+        }elseif($data > 25){
+            $dividend = ($data + 1);
+            $alpha = '';
+            $modulo;
+            while ($dividend > 0){
+                $modulo = ($dividend - 1) % 26;
+                $alpha = $alphabet[$modulo] . $alpha;
+                $dividend = floor((($dividend - $modulo) / 26));
+            } 
+            return $alpha;
         }
     }
 
@@ -279,8 +338,7 @@ class TiketController extends Controller
      */
     public function edit($id)
     {
-        $data = Galeri::where("id","=",$id)->first();
-        return view('admin.galeri.photo.edit',compact('data'));
+        
     }
 
 
@@ -293,92 +351,7 @@ class TiketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $galeri = Galeri::find($id);
-        $url_gambar = $request->url_gambar;
-        $galeri->judul = $request->judul;
-        $galeri->group_kategori = $request->group_kategori;
-        $galeri->deskripsi = $request->deskripsi;
-
-        $msg = array();
-        $file = array('image' => $request->file('image'));
-        // setting up rules
-        $rules = array(
-            'image' => 'required',
-            'judul' => 'required',
-            'deskripsi' => 'required',
-        ); 
-
-        $messages = [
-            'required' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan Kosong',
-            'min' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan kurang dari :min karakter',
-            'max' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan lebih dari :max karakter',
-            'without_spaces' => '<i class="fa fa-times"></i>  Kolom :attribute kidak diperkenankan ada spasi',
-            'unique' => '<i class="fa fa-times"></i>  Kolom :attribute sudah terdaftar',
-            'email' => '<i class="fa fa-times"></i> Alamat email tidak valid.',
-            'numeric'=> '<i class="fa fa-times"></i> Kolom :attribute input harus angka',
-            'confirmed' => '<i class="fa fa-times"></i>  Kolom :attribute tidak sesuai dengan konfirmasi password',
-        ];
         
-        $v = Validator::make($request->all(), $rules, $messages);
-        $errors = array();
-        foreach ($v->messages()->toArray() as $err => $errvalue) {
-            $errors = array_merge($errors, $errvalue);
-        }
-        //mimes:jpeg,bmp,png and for max size max:10000
-        // doing the validation, passing post data, rules and the messages
-        
-        if(!empty($errors)){
-            // send back to the page with the input data and errors
-            $msg = array('class'=>'alert-danger','text'=>$errors);
-        }else{
-            // checking file is valid.
-            if ($request->file('image')->isValid()) {
-                $destinationPath = 'storage/galeri/photo'; // upload path
-                $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-                $filename = $request->file('image')->getClientOriginalName(); // getting image extension
-                $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
-                $fileName = md5($file).'.'.$extension;
-                if (file_exists($destinationPath.'/'.$fileName)) {
-                    unlink($destinationPath.'/'.$fileName);
-                }
-
-                // uploading file to given path
-                if ($request->file('image')->move($destinationPath, $fileName)) {
-                    $filePath = $destinationPath.'/'.$fileName;
-                    $url_gambar = $filePath;
-                    //2048x1365
-                    $img_fit = Image::make($url_gambar);
-                    $img_fit->fit(2048, 1365);
-                    $img_fit->save($url_gambar);
-                }
-            }else{
-                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
-            }
-        }
-        //dd($url_gambar);
-        $galeri->filename = $url_gambar;
-        if(empty($url_gambar)){
-            session()->flash('message', $msg);
-        }else{
-            // lets make thumbnail
-            $img_thumb = Image::make($url_gambar);
-            $img_thumb_path = $img_thumb->dirname.'/thumb';
-            $img_thumb_name = $img_thumb->basename;
-            $img_thumb_extension = $img_thumb->extension;
-            
-            $img_thumb->fit(370, 220);
-            $img_thumb->save($img_thumb_path.'/thumb_'.$img_thumb_name);
-
-            $galeri->thumbnail = $img_thumb_path.'/thumb_'.$img_thumb_name;
-
-            $simpan = $galeri->save();
-            if($simpan){
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>update</i> data Galeri Photo - '.$request->judul)));
-            }else{
-                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>update</i> data Galeri Photo - '.$request->judul)));
-            }
-        }
-        return redirect('admin/galeri/photo/'.$id.'/edit');
     }
 
     /**

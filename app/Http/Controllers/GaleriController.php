@@ -23,7 +23,7 @@ class GaleriController extends Controller
                     ->orWhere('deskripsi', 'LIKE', '%' . $q . '%');
                 })->paginate(6);
         $data->appends(['search' => $q]);
-        return view('site.galeri-photo',compact('data'));
+        return view('site.galeri.index-photo',compact('data'));
         /*$data = Fasilitas::paginate(6);
         return view('admin.galeri.photo.index',compact('data'));*/
     }
@@ -37,7 +37,7 @@ class GaleriController extends Controller
                     ->orWhere('deskripsi', 'LIKE', '%' . $q . '%');
                 })->paginate(4);
         $data->appends(['search' => $q]);
-        return view('site.galeri-video',compact('data'));
+        return view('site.galeri.index-video',compact('data'));
         /*$data = Fasilitas::paginate(6);
         return view('admin.galeri.photo.index',compact('data'));*/
     }

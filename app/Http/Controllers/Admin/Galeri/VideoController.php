@@ -51,6 +51,7 @@ class VideoController extends Controller
     {
         $galeri = new Galeri;
         $url_gambar = $request->url_gambar;
+        $url_video = $request->url_video;
         $galeri->judul = $request->judul;
         $galeri->group_kategori = $request->group_kategori;
         $galeri->deskripsi = $request->deskripsi;
@@ -58,12 +59,14 @@ class VideoController extends Controller
         $msg = array();
         
         // setting up rules
+        $file = array('judul'=>$request->judul,'deskripsi'=>$request->deskripsi,'image' => $request->file('image'),'video'=>$request->file('video'));
+        // setting up rules
         $rules = array(
             'judul' => 'required',
             'deskripsi' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png',
-            'video' => 'required|mimes:video/mp4',
-        ); 
+            'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm',
+        );  
 
         $messages = [
             'required' => '<i class="fa fa-times"></i> Kolom :attribute tidak diperkenankan Kosong',
@@ -87,29 +90,59 @@ class VideoController extends Controller
         if(!empty($errors)){
             // send back to the page with the input data and errors
             $msg = array('class'=>'alert-danger','text'=>$errors);
+            session()->flash('message', $msg);
         }else{
             // checking file is valid.
             if ($request->file('image')->isValid()) {
-                $destinationPath = 'storage/galeri/photo'; // upload path
+                $destinationPath = 'storage/galeri/video/thumbnail'; // upload path
                 $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
                 $filename = $request->file('image')->getClientOriginalName(); // getting image extension
                 $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
                 $fileName = md5($file).'.'.$extension;
-                if (file_exists($destinationPath.'/'.$fileName)) {
-                    unlink($destinationPath.'/'.$fileName);
+                if (file_exists($url_gambar)) {
+                    unlink($url_gambar);
                 }
 
                 // uploading file to given path
                 if ($request->file('image')->move($destinationPath, $fileName)) {
                     $filePath = $destinationPath.'/'.$fileName;
                     $url_gambar = $filePath;
+                    //2048x1365
+                    $img_fit = Image::make($url_gambar);
+                    $img_fit->fit(2048, 1365);
+                    $img_fit->save($url_gambar);
                 }
             }else{
-                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png'));
+                session()->flash('message', $msg);
+            }
+
+
+            if ($request->file('video')->isValid()) {
+                $destinationPathVideo = 'storage/galeri/video'; // upload path
+                $extensionVideo = $request->file('video')->getClientOriginalExtension(); // getting image extension
+                $filenameVideo = $request->file('video')->getClientOriginalName(); // getting image extension
+                $fileVideo = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filenameVideo);
+                $fileNameVideo = md5($file).'.'.$extensionVideo;
+                /*if (file_exists($destinationPathVideo.'/'.$fileNameVideo)) {
+                    unlink($destinationPathVideo.'/'.$fileNameVideo);
+                }*/
+
+                // uploading file to given path
+                if ($request->file('video')->move($destinationPathVideo, $fileNameVideo)) {
+                    $filePathVideo = $destinationPathVideo.'/'.$fileNameVideo;
+                    $url_video = $filePathVideo;
+                }
+            }else{
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.mp4'));
+                session()->flash('message', $msg);
             }
         }
         //dd($url_gambar);
-        $galeri->filename = $url_gambar; $id = null;
+
+        $galeri->thumbnail = $url_gambar;
+        $galeri->filename = $url_video;
+        $id = null;
         if(empty($url_gambar)){
             session()->flash('message', $msg);
         }else{
@@ -160,20 +193,22 @@ class VideoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request->all());
         $galeri = Galeri::find($id);
         $url_gambar = $request->url_gambar;
+        $url_video = $request->url_video;
         $galeri->judul = $request->judul;
         $galeri->group_kategori = $request->group_kategori;
         $galeri->deskripsi = $request->deskripsi;
 
         $msg = array();
-        $file = array('image' => $request->file('image'));
+        $file = array('judul'=>$request->judul,'deskripsi'=>$request->deskripsi,'image' => $request->file('image'),'video'=>$request->file('video'));
         // setting up rules
         $rules = array(
             'judul' => 'required',
             'deskripsi' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png',
-            'video' => 'required|mimes:video/mp4',
+            'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm',
         ); 
 
         $messages = [
@@ -187,27 +222,29 @@ class VideoController extends Controller
             'confirmed' => '<i class="fa fa-times"></i>  Kolom :attribute tidak sesuai dengan konfirmasi password',
         ];
         
-        $v = Validator::make($request->all(), $rules, $messages);
+        $v = Validator::make($file, $rules, $messages);
         $errors = array();
         foreach ($v->messages()->toArray() as $err => $errvalue) {
             $errors = array_merge($errors, $errvalue);
         }
+        //dd($request->file('video')->isValid());
         //mimes:jpeg,bmp,png and for max size max:10000
         // doing the validation, passing post data, rules and the messages
-        
+        //dd($errors);
         if(!empty($errors)){
             // send back to the page with the input data and errors
             $msg = array('class'=>'alert-danger','text'=>$errors);
+            session()->flash('message', $msg);
         }else{
             // checking file is valid.
             if ($request->file('image')->isValid()) {
-                $destinationPath = 'storage/galeri/photo'; // upload path
+                $destinationPath = 'storage/galeri/video/thumbnail'; // upload path
                 $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
                 $filename = $request->file('image')->getClientOriginalName(); // getting image extension
                 $file = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
                 $fileName = md5($file).'.'.$extension;
-                if (file_exists($destinationPath.'/'.$fileName)) {
-                    unlink($destinationPath.'/'.$fileName);
+                if (file_exists($url_gambar)) {
+                    unlink($url_gambar);
                 }
 
                 // uploading file to given path
@@ -220,17 +257,43 @@ class VideoController extends Controller
                     $img_fit->save($url_gambar);
                 }
             }else{
-                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png,*.pdf,*.doc,*.docx'));
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.jgp,*.jpeg,*.png'));
+                session()->flash('message', $msg);
+            }
+
+
+            if ($request->file('video')->isValid()) {
+                $destinationPathVideo = 'storage/galeri/video'; // upload path
+                $extensionVideo = $request->file('video')->getClientOriginalExtension(); // getting image extension
+                $filenameVideo = $request->file('video')->getClientOriginalName(); // getting image extension
+                $fileVideo = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filenameVideo);
+                $fileNameVideo = md5($file).'.'.$extensionVideo;
+                /*if (file_exists($destinationPathVideo.'/'.$fileNameVideo)) {
+                    unlink($destinationPathVideo.'/'.$fileNameVideo);
+                }*/
+
+                // uploading file to given path
+                if ($request->file('video')->move($destinationPathVideo, $fileNameVideo)) {
+                    $filePathVideo = $destinationPathVideo.'/'.$fileNameVideo;
+                    $url_video = $filePathVideo;
+                }
+            }else{
+                $msg = array('class'=>'alert-danger','text'=>array('Format File tidak Sesuai, Format File yang diperbolehkan adalah *.mp4'));
+                session()->flash('message', $msg);
             }
         }
+        //dd($url_video);
         //dd($url_gambar);
-        $galeri->filename = $url_gambar;
-        if(empty($url_gambar)){
+        $galeri->thumbnail = $url_gambar;
+        $galeri->filename = $url_video;
+        //dd($msg);
+        if(!empty($errors)){
             session()->flash('message', $msg);
         }else{
             // lets make thumbnail
             $img_thumb = Image::make($url_gambar);
-            $img_thumb_path = $img_thumb->dirname.'/thumb';
+            //dd($img_thumb);
+            $img_thumb_path = $img_thumb->dirname.'';
             $img_thumb_name = $img_thumb->basename;
             $img_thumb_extension = $img_thumb->extension;
             
@@ -238,12 +301,13 @@ class VideoController extends Controller
             $img_thumb->save($img_thumb_path.'/thumb_'.$img_thumb_name);
 
             $galeri->thumbnail = $img_thumb_path.'/thumb_'.$img_thumb_name;
+            $galeri->filename = $url_video;
 
             $simpan = $galeri->save();
             if($simpan){
-                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>update</i> data Galeri Photo - '.$request->judul)));
+                session()->flash('message', array('class'=>'alert-success','text'=>array('Berhasil <i>update</i> data Galeri Video - '.$request->judul)));
             }else{
-                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>update</i> data Galeri Photo - '.$request->judul)));
+                session()->flash('message', array('class'=>'alert-danger','text'=>array('Gagal <i>update</i> data Galeri Video - '.$request->judul)));
             }
         }
         return redirect('admin/galeri/video/'.$id.'/edit');
@@ -255,8 +319,17 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        //dd($request->all());
+        $del = Galeri::where('id',$id)->delete();
+        //$del = true;
+        if($del){
+            @unlink($request->file);
+            $msg = array('class'=>'alert-success','text'=>'Berhasil hapus data Galeri #'.$request->judul);
+        }else{
+            $msg = array('class'=>'alert-danger','text'=>'Gagal hapus data Galeri #'.$request->judul);
+        }
+        return response()->json($msg);
     }
 }

@@ -8,5 +8,5 @@ class Galeri extends Model
 {
     protected $table = 'm_galeri';
     protected $primarykey = 'id';
-    protected $fillable = ['group_kategori','judul','deskripsi','filename'];
+    protected $fillable = ['thumbnail','group_kategori','judul','deskripsi','filename'];
 }

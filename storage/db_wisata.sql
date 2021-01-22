@@ -51,7 +51,7 @@ CREATE TABLE `invoice_tiket` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`it_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket` */
 
@@ -61,7 +61,12 @@ insert  into `invoice_tiket`(`it_id`,`it_email`,`it_telp`,`it_pemesan`,`it_tangg
 (33,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @','20210111C',15000,3,2,'storage/invoice/20210111C.jpg','253465545465','2021-01-11 09:54:18','2021-01-14 12:54:07'),
 (34,'dewiradarma@gmail.com','085646910808','Wira Darma','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @','20210111D',10000,4,2,'storage/invoice/20210111D.jpeg','253465545465','2021-01-11 12:42:59','2021-01-14 01:10:12'),
 (35,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-11','| Dewasa | usia > 10 tahun | 10000 | 1 | 10000 @| Anak-anak | usia <= 10 tahun | 5000 | 1 | 5000 @| D\'Tukad Homestay | D\'Tukad Homestay | 100000 | 1 | 100000 @','20210111E',115000,4,2,'storage/invoice/20210111E.jpg','2165216125','2021-01-11 12:55:17','2021-01-14 01:10:16'),
-(37,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-14','| Ngelan Tour | Ngelan Tour | 100000 | 1 | 100000 @','20210114C',100000,4,2,'storage/invoice/20210114C.png','253465545465','2021-01-14 17:39:04','2021-01-14 17:39:59');
+(37,'dewiradarma@gmail.com','085646910808','Adi Panca Iskandar','2021-01-14','| Ngelan Tour | Ngelan Tour | 100000 | 1 | 100000 @','20210114C',100000,4,2,'storage/invoice/20210114C.png','253465545465','2021-01-14 17:39:04','2021-01-14 17:39:59'),
+(40,'pengempu.waterfall@gmail.com','-','Administrator','2021-02-01','| Dewasa | usia > 10 tahun | 15000 | 1 | 15000 @| Anak-anak | usia <= 10 tahun | 10000 | 10 | 100000 @| Warung D`Wira | Jalan Disana Gunung disini Gunung | 100000 | 1 | 100000 @','20210122E',215000,4,1,NULL,NULL,'2021-01-22 08:28:32','2021-01-22 08:28:32'),
+(41,'pengempu.waterfall@gmail.com','-','Administrator','2021-02-01','| Dewasa | usia > 10 tahun | 15000 | 1 | 15000 @| Anak-anak | usia <= 10 tahun | 10000 | 10 | 100000 @| Warung D`Wira | Jalan Disana Gunung disini Gunung | 100000 | 1 | 100000 @','20210122D',215000,4,1,NULL,NULL,'2021-01-22 08:30:41','2021-01-22 08:30:41'),
+(42,'pengempu.waterfall@gmail.com','-','Administrator','2021-01-22','| Dewasa | usia > 10 tahun | 15000 | 2 | 30000 @| Anak-anak | usia <= 10 tahun | 10000 | 1 | 10000 @| Resto Tepi Sungai | - | 50000 | 1 | 50000 @','20210122F',90000,4,1,NULL,NULL,'2021-01-22 08:40:21','2021-01-22 08:40:21'),
+(43,'pengempu.waterfall@gmail.com','-','Administrator','2021-01-22','| Dewasa | usia > 10 tahun | 15000 | 2 | 30000 @| Anak-anak | usia <= 10 tahun | 10000 | 1 | 10000 @| Resto Tepi Sungai | - | 50000 | 1 | 50000 @','20210122AW',90000,4,1,NULL,NULL,'2021-01-22 08:43:13','2021-01-22 08:43:13'),
+(44,'pengempu.waterfall@gmail.com','-','Administrator','2021-01-22','| Dewasa | usia > 10 tahun | 15000 | 2 | 30000 @| Resto Tepi Sungai | nasi anyud sisin tukad | 25000 | 1 | 25000 @| Rumah Kakiang | Rumah Kakiang | 120000 | 1 | 120000 @','20210122AY',175000,4,1,NULL,NULL,'2021-01-22 08:47:24','2021-01-22 08:47:24');
 
 UNLOCK TABLES;
 
@@ -81,7 +86,7 @@ CREATE TABLE `invoice_tiket_detail` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`itd_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1;
 
 /*Data for the table `invoice_tiket_detail` */
 
@@ -142,7 +147,25 @@ insert  into `invoice_tiket_detail`(`itd_id`,`invoice_tiket_id`,`tiket_id`,`book
 (52,35,2,'TIKET','Anak-anak',1,5000,5000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
 (53,35,9,'PENGINAPAN','D\'Tukad Homestay',1,100000,100000,'2021-01-11 12:55:17','2021-01-11 12:55:17'),
 (54,36,1,'TIKET','Dewasa',10,10000,100000,'2021-01-11 13:28:20','2021-01-11 13:28:20'),
-(55,37,15,'TRANSPORT','Ngelan Tour',1,100000,100000,'2021-01-14 17:39:04','2021-01-14 17:39:04');
+(55,37,15,'TRANSPORT','Ngelan Tour',1,100000,100000,'2021-01-14 17:39:04','2021-01-14 17:39:04'),
+(56,39,1,'TIKET','Dewasa',1,15000,15000,'2021-01-22 08:27:41','2021-01-22 08:27:41'),
+(57,39,2,'TIKET','Anak-anak',10,10000,100000,'2021-01-22 08:27:41','2021-01-22 08:27:41'),
+(58,39,3,'KULINER','Warung D`Wira',1,100000,100000,'2021-01-22 08:27:41','2021-01-22 08:27:41'),
+(59,40,1,'TIKET','Dewasa',1,15000,15000,'2021-01-22 08:28:32','2021-01-22 08:28:32'),
+(60,40,2,'TIKET','Anak-anak',10,10000,100000,'2021-01-22 08:28:32','2021-01-22 08:28:32'),
+(61,40,3,'KULINER','Warung D`Wira',1,100000,100000,'2021-01-22 08:28:32','2021-01-22 08:28:32'),
+(62,41,1,'TIKET','Dewasa',1,15000,15000,'2021-01-22 08:30:41','2021-01-22 08:30:41'),
+(63,41,2,'TIKET','Anak-anak',10,10000,100000,'2021-01-22 08:30:41','2021-01-22 08:30:41'),
+(64,41,3,'KULINER','Warung D`Wira',1,100000,100000,'2021-01-22 08:30:41','2021-01-22 08:30:41'),
+(65,42,1,'TIKET','Dewasa',2,15000,30000,'2021-01-22 08:40:21','2021-01-22 08:40:21'),
+(66,42,2,'TIKET','Anak-anak',1,10000,10000,'2021-01-22 08:40:21','2021-01-22 08:40:21'),
+(67,42,3,'KULINER','Resto Tepi Sungai',1,50000,50000,'2021-01-22 08:40:21','2021-01-22 08:40:21'),
+(68,43,1,'TIKET','Dewasa',2,15000,30000,'2021-01-22 08:43:13','2021-01-22 08:43:13'),
+(69,43,2,'TIKET','Anak-anak',1,10000,10000,'2021-01-22 08:43:13','2021-01-22 08:43:13'),
+(70,43,3,'KULINER','Resto Tepi Sungai',1,50000,50000,'2021-01-22 08:43:13','2021-01-22 08:43:13'),
+(71,44,1,'TIKET','Dewasa',2,15000,30000,'2021-01-22 08:47:24','2021-01-22 08:47:24'),
+(72,44,3,'KULINER','Resto Tepi Sungai',1,25000,25000,'2021-01-22 08:47:24','2021-01-22 08:47:24'),
+(73,44,5,'PENGINAPAN','Rumah Kakiang',1,120000,120000,'2021-01-22 08:47:24','2021-01-22 08:47:24');
 
 UNLOCK TABLES;
 
@@ -194,7 +217,13 @@ insert  into `invoice_tiket_log`(`invoice_tiket_id`,`status_tiket_id`,`lit_keter
 (37,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-14 17:39:04','2021-01-14 17:39:04'),
 (37,2,'TIKET SUDAH DI-VERIFIKASI','2021-01-14 17:39:10','2021-01-14 17:39:10'),
 (37,3,'TIKET SUDAH DIBAYAR','2021-01-14 17:39:23','2021-01-14 17:39:23'),
-(37,4,'PEMBAYARAN DITERIMA','2021-01-14 17:39:59','2021-01-14 17:39:59');
+(37,4,'PEMBAYARAN DITERIMA','2021-01-14 17:39:59','2021-01-14 17:39:59'),
+(39,4,'PEMBAYARAN DITERIMA','2021-01-22 08:27:41','2021-01-22 08:27:41'),
+(40,4,'PEMBAYARAN DITERIMA','2021-01-22 08:28:32','2021-01-22 08:28:32'),
+(41,4,'PEMBAYARAN DITERIMA','2021-01-22 08:30:41','2021-01-22 08:30:41'),
+(42,4,'PEMBAYARAN DITERIMA','2021-01-22 08:40:21','2021-01-22 08:40:21'),
+(43,4,'PEMBAYARAN DITERIMA','2021-01-22 08:43:13','2021-01-22 08:43:13'),
+(44,4,'PEMBAYARAN DITERIMA','2021-01-22 08:47:24','2021-01-22 08:47:24');
 
 UNLOCK TABLES;
 
@@ -244,33 +273,29 @@ CREATE TABLE `m_galeri` (
   `group_kategori` char(5) NOT NULL DEFAULT 'PHOTO',
   `judul` varchar(255) NOT NULL,
   `deskripsi` varchar(255) DEFAULT NULL,
-  `filename` varchar(255) NOT NULL,
+  `filename` text,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `m_galeri` */
 
 LOCK TABLES `m_galeri` WRITE;
 
 insert  into `m_galeri`(`id`,`thumbnail`,`group_kategori`,`judul`,`deskripsi`,`filename`,`created_at`,`updated_at`) values 
-(1,'storage/galeri/photo/thumb/thumb_3748e656554c35820311cd6d351ded82.png','PHOTO','Yasamin Jasem','Yasamin Jasem','storage/galeri/photo/3748e656554c35820311cd6d351ded82.png',NULL,'2020-12-15 03:04:45'),
-(2,'storage/galeri/photo/thumb/thumb_b62d45677efadb493e51a3879ae1fea5.png','PHOTO','Rancang Bangun  Layanan  Notifikasi Universal','<p>Rancang Bangun&nbsp; Layanan&nbsp; Notifikasi Universal<br></p>','storage/galeri/photo/b62d45677efadb493e51a3879ae1fea5.png','2020-12-15 01:43:09','2020-12-15 03:10:07'),
-(3,'storage/galeri/photo/thumb/thumb_0b921e4970648b44161b7f97cadebe21.png','PHOTO','Bisnis Import Export Celana Kolor','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 03:10:14'),
-(4,'storage/galeri/photo/thumb/thumb_0b921e4970648b44161b7f97cadebe21.png','PHOTO','Bisnis Import Export Celana Kolor','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 03:24:30'),
+(1,'storage/galeri/video/thumbnail/thumb_56ca7e85264d7b03e9afdb2634eacd43.jpg','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/video/56ca7e85264d7b03e9afdb2634eacd43.mp4',NULL,'2021-01-22 13:58:26'),
+(2,'storage/galeri/photo/thumb/thumb_3648ed306d7635ac5c16a1e4909afca6.jpeg','PHOTO','Rancang Bangun  Layanan  Notifikasi Universal','<p>Rancang Bangun&nbsp; Layanan&nbsp; Notifikasi Universal<br></p>','storage/galeri/photo/3648ed306d7635ac5c16a1e4909afca6.jpeg','2020-12-15 01:43:09','2021-01-22 13:44:11'),
 (5,'storage/galeri/photo/thumb/thumb_a93ce76d3af672497522a386128e0ea2.jpg','PHOTO','Rancang Bangun  Layanan  Notifikasi Universal','<p>Rancang Bangun&nbsp; Layanan&nbsp; Notifikasi Universal<br></p>','storage/galeri/photo/a93ce76d3af672497522a386128e0ea2.jpg','2020-12-15 01:43:09','2020-12-15 04:04:43'),
 (6,'storage/galeri/photo/thumb/thumb_3748e656554c35820311cd6d351ded82.png','PHOTO','Yasamin Jasem','Yasamin Jasem','storage/galeri/photo/3748e656554c35820311cd6d351ded82.png',NULL,'2020-12-15 03:48:09'),
-(7,NULL,'PHOTO','Yasamin Jasem','Yasamin Jasem','storage/galeri/photo/3748e656554c35820311cd6d351ded82.png',NULL,'2020-12-15 01:55:02'),
+(7,'storage/galeri/photo/thumb/thumb_56ca7e85264d7b03e9afdb2634eacd43.jpg','PHOTO','Yasamin Jasem','Yasamin Jasem','storage/galeri/photo/56ca7e85264d7b03e9afdb2634eacd43.jpg',NULL,'2021-01-22 13:44:26'),
 (8,'storage/galeri/photo/thumb/thumb_5cc1a8be7b27d7747b26404b6090bf03.jpg','PHOTO','Rancang Bangun  Layanan  Notifikasi Universal','<p>Rancang Bangun&nbsp; Layanan&nbsp; Notifikasi Universal<br></p>','storage/galeri/photo/5cc1a8be7b27d7747b26404b6090bf03.jpg','2020-12-15 01:43:09','2020-12-15 04:06:42'),
-(9,'storage/galeri/photo/thumb/thumb_0b921e4970648b44161b7f97cadebe21.png','VIDEO','Bisnis Import Export Celana Kolor','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00'),
+(9,'storage/galeri/video/thumbnail/thumb_56ca7e85264d7b03e9afdb2634eacd43.jpg','VIDEO','Bisnis Import Export Celana Kolor','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/video/56ca7e85264d7b03e9afdb2634eacd43.mp4','2020-12-15 02:10:00','2021-01-22 12:46:51'),
 (10,'storage/galeri/photo/thumb/thumb_820c9b699c47f3a75cdf8d994d2abcf0.jpg','PHOTO','Bisnis Ganja Berbasis Mobile Android dengan Konsep Multilevel Marketing','<p>Bisnis Ganja Berbasis Mobile Android dengan Konsep Multilevel Marketing<br></p>','storage/galeri/photo/820c9b699c47f3a75cdf8d994d2abcf0.jpg','2020-12-15 03:56:48','2020-12-15 04:03:05'),
-(11,'storage/galeri/photo/thumb/thumb_b62d45677efadb493e51a3879ae1fea5.png','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00'),
-(12,'storage/galeri/photo/thumb/thumb_0b921e4970648b44161b7f97cadebe21.png','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00'),
-(13,'storage/galeri/photo/thumb/thumb_b62d45677efadb493e51a3879ae1fea5.png','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00'),
+(12,'storage/galeri/video/thumbnail/thumb_3648ed306d7635ac5c16a1e4909afca6.jpeg','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/video/3648ed306d7635ac5c16a1e4909afca6.mp4','2020-12-15 02:10:00','2021-01-22 14:00:57'),
 (14,'storage/galeri/photo/thumb/thumb_0b921e4970648b44161b7f97cadebe21.png','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00'),
 (15,'storage/galeri/photo/thumb/thumb_b62d45677efadb493e51a3879ae1fea5.png','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00'),
-(16,'storage/galeri/photo/thumb/thumb_0b921e4970648b44161b7f97cadebe21.png','VIDEO','Bisnis Import Export Celana Kolor 2','<p>Bisnis Import Export Celana Kolor<br></p>','storage/galeri/photo/0b921e4970648b44161b7f97cadebe21.png','2020-12-15 02:10:00','2020-12-15 02:10:00');
+(17,'storage/galeri/video/thumbnail/3648ed306d7635ac5c16a1e4909afca6.jpeg','VIDEO','We Will Guide You to Explore Around','<p>We Will Guide You to Explore Around<br></p>','storage/galeri/video/3648ed306d7635ac5c16a1e4909afca6.ogg','2021-01-22 13:43:34','2021-01-22 13:43:34');
 
 UNLOCK TABLES;
 
@@ -348,7 +373,7 @@ CREATE TABLE `m_tiket` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`mt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `m_tiket` */
 
@@ -356,7 +381,7 @@ LOCK TABLES `m_tiket` WRITE;
 
 insert  into `m_tiket`(`mt_id`,`mt_nama_tiket`,`mt_keterangan`,`mt_harga`,`created_at`,`updated_at`) values 
 (1,'Dewasa','usia > 10 tahun',15000,'2020-12-18 22:06:10','2021-01-14 11:59:30'),
-(2,'Anak-anak','usia <= 10 tahun',5000,'2020-12-18 22:06:13',NULL);
+(2,'Anak-anak','usia <= 10 tahun',10000,'2020-12-18 22:06:13','2021-01-16 03:54:10');
 
 UNLOCK TABLES;
 

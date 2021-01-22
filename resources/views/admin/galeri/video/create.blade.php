@@ -19,7 +19,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item active"><a href="{{url('/')}}/admin">Home</a></li>
         <li class="breadcrumb-item active"><a href="{{url('/')}}/admin">Galeri</a></li>
-        <li class="breadcrumb-item"><a href="{{url('/')}}/admin/galeri/photo">Photo</a></li>
+        <li class="breadcrumb-item"><a href="{{url('/')}}/admin/galeri/photo">Video</a></li>
         <li class="breadcrumb-item active" aria-current="page">Create {!!(!empty($data->judul) ? '- '.$data->judul : '')!!}</li>
       </ol>
     </nav>
@@ -37,13 +37,13 @@
               @endif
             </p>
           @endif
-          <form id="form-data" name="form-data" method="POST" enctype="multipart/form-data" action="{{url('/')}}/admin/galeri/photo/store">
+          <form id="form-data" name="form-data" method="POST" enctype="multipart/form-data" action="{{url('/')}}/admin/galeri/video/store">
             <!-- form reqiure laravel -->
-            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="_method" value="POST">
             @csrf
             <!-- form require laravel end -->
             <div class="form-group">
-              <input type="hidden" name="group_kategori" value="PHOTO">
+              <input type="hidden" name="group_kategori" value="VIDEO">
               <label>Judul</label>
               <input type="text" class="form-control" name="judul" id="judul" value="{{@$data->judul}}">
             </div>
@@ -52,9 +52,14 @@
               <textarea id="deskripsi" name="deskripsi" class="summernote form-control">{{@$data->deskripsi}}</textarea>
             </div>
             <div class="form-group">
-              <label>Upload Gambar</label>
+              <label>Upload Thumbnail</label>
               <input type="hidden" name="url_gambar" id="url_gambar" value="{{@$data->thumbnail}}">
               <input type="file" name="image" class="form-control" id="image">
+            </div>
+            <div class="form-group">
+              <label>Upload Video</label>
+              <input type="hidden" name="url_video" id="url_video" value="{{@$data->filename}}">
+              <input type="file" name="video" class="form-control" id="video">
             </div>
           </form>
           <div class="group-btn pull-right">
@@ -74,7 +79,7 @@
     });
 
     $('#btn-batal').click(function(){
-      window.location.href = "{{url('/admin/galeri/photo')}}"; 
+      window.location.href = "{{url('/admin/galeri/video')}}"; 
     });
 
     $('.summernote').summernote();

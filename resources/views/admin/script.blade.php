@@ -1,6 +1,7 @@
 <!-- Bootstrap core JavaScript-->
 <script src="{{url('/')}}/public/admin/vendor/jquery/jquery.min.js"></script>
 <script src="{{url('/')}}/public/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{url('/')}}/public/admin/vendor/jquery/jquery.form.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="{{url('/')}}/public/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -20,3 +21,8 @@
 
 <!-- summernote -->
 <script src="{{url('/')}}/public/admin/vendor/summernote/summernote.min.js"></script>
+
+<!-- datepicker -->
+<script type="text/javascript" src="{{url('/public/site/assets')}}/datepicker/bootstrap-datepicker.js"></script>
+<!-- toaster -->
+<script type="text/javascript" src="{{url('/public/admin/vendor/jquery-toast')}}/jquery.toast.js"></script>

@@ -10,6 +10,8 @@
                 <div class="modal-body">
                     <p class="alert" style="display: none"></p>
                     <input type="hidden" name="group_kategori" id="group_kategori" value="{{$group_kategori}}">
+                    <input type="hidden" name="index" id="index-f" value="{{$index}}">
+                    <input type="text" name="selected" id="selected" value="{{$selected}}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -42,6 +44,7 @@ $(document).ready(function(){
           url: '{{url("admin/tiket/listDataFasilitas")}}',
           data: function(d) {
             d.group_kategori = $('#group_kategori').val();
+            d.selected = $('#selected').val();
           }
         },
         columns: [         
@@ -69,4 +72,56 @@ $(document).ready(function(){
         }
     });
 });
+
+function pilihFasilitas(data,act){
+    //data = JSON.parse(data);
+    var group = $('#group_kategori').val();
+    var table_id = '';
+    var index = $('#index-f').val();
+    if(act){
+        if(group == "TEMPAT_MAKAN"){
+            table_id = 'table-kuliner'
+        }else if(group == "PENGINAPAN"){
+            table_id = 'table-penginapan';
+        }else if(group == 'TRANSPORT'){
+            table_id = 'table-transport';
+        }
+
+        $('#'+table_id+' #booking_id'+index).val(data.tiket_id);
+        $('#'+table_id+' #booking_name'+index).val(data.booking_name);
+        $('#'+table_id+' #harga'+index).val(data.itd_nominal);
+        $('#'+table_id+' #qty'+index).val(data.itd_qty);
+        $('#'+table_id+' #qty'+index).attr('data-harga',data.itd_nominal);
+        $('#'+table_id+' #qty'+index).attr('data-tiketid',data.tiket_id);
+        $('#'+table_id+' #subtotal'+index).val(data.itd_subtotal);
+
+        //change subtotal format
+        var sanitized = $('#'+table_id+' #subtotal'+index).val().replace(/[^-.0-9]/g, '');
+        // Remove non-leading minus signs
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        // Remove the first point if there is more than one
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        // Update value
+        var value = sanitized,
+        plain = plainNumber(value),
+        reversed = reverseNumber(plain),
+        reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
+        normal = reverseNumber(reversedWithDots);
+        $('#'+table_id+' #subtotal'+index).val(normal);
+
+        hitungTrx();
+
+        $('#modal-upload').modal('hide');
+    }
+    //$('#modal-upload').modal('hide');
+    var newindex = parseInt($('#index').val())+1;
+    $('#index').val(newindex);
+    if(group == "TEMPAT_MAKAN" && act){
+        addRowKuliner(newindex);
+    }else if(group == "PENGINAPAN" && act){
+        addRowPenginapan(newindex);
+    }else if(group == 'TRANSPORT' && act){
+        addRowTransport(newindex);
+    }
+}
 </script>

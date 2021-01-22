@@ -41,7 +41,7 @@
             @csrf
             <!-- form require laravel end -->
             <div class="form-group">
-              <input type="hidden" name="group_kategori" value="PHOTO">
+              <input type="hidden" name="group_kategori" value="VIDEO">
               <label>Judul</label>
               <input type="text" class="form-control" name="judul" id="judul" value="{{@$data->judul}}">
             </div>
@@ -77,7 +77,7 @@
     });
 
     $('#btn-batal').click(function(){
-      window.location.href = "{{url('/admin/galeri/photo')}}"; 
+      window.location.href = "{{url('/admin/galeri/video')}}"; 
     });
 
     $('.summernote').summernote();

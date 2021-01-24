@@ -40,21 +40,24 @@ Route::get('fasilitas/{param1}/popular', 'FasilitasController@popular')->name('f
 
 Route::get('fasilitas/{param1}/{param2}/detail', 'FasilitasController@show')->name('fasilitas.show');
 
+// untuk pemesanan tiket
 Route::get('/tiket','TiketController@index')->name('tiket');
 Route::get('/tiket/check/','TiketController@check')->name('tiket.check');
 Route::get('/tiket/check/{param1}','TiketController@check')->name('tiket.check-kode');
 Route::get('/tiket/{param}/cetak','TiketController@cetak')->name('tiket.cetak');
+// pemesanan tiket end
 
+// untuk proses booking
+Route::get('/booking/cart','BookingController@index')->name('booking.cart');
 Route::post('/booking/proses','BookingController@store')->name('booking.order');
 Route::post('/booking/addtocart','BookingController@addToCart')->name('booking.addtocart');
 Route::post('/booking/addtikettocart','BookingController@addTiketToCart')->name('booking.addtikettocart');
 Route::get('/booking/getcartitem','BookingController@getCartItem')->name('booking.getcartitem');
-Route::get('/booking/cart','BookingController@index')->name('booking.cart');
 Route::get('/booking/{param}/verifikasi','BookingController@verifikasi')->name('booking.verifikasi');
 
 Route::get('/booking/{param}/payment','BookingController@payment')->name('booking.payment');
 Route::put('/booking/{param}/upload','BookingController@upload')->name('booking.uploadbukti');
-
+//booking end
 //role admin route
 Route::group(['middleware' => 'auth'], function () {
 	//dashboard-start

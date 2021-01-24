@@ -3,6 +3,7 @@
 	@include('site/navbar')
 @endsection
 @section('content')
+	<!-- ini include/tambahin tampilan -->
 	@include('site/slider')	
 	@include('site/servicebadge')
 	<!-- Start about us -->

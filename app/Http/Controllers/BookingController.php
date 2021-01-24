@@ -235,7 +235,7 @@ class BookingController extends Controller
         $invoice = InvoiceTiket::where("it_kode_unik","=",$token)->first();
         $invoice->status_tiket_id = 2;
         $invoice_tiket_id = $invoice->it_id;
-        if($invoice->it_tanggal <= date('Y-m-d')){
+        if($invoice->it_tanggal >= date('Y-m-d')){
             $update = DB::table('invoice_tiket')
               ->where('it_id', $invoice_tiket_id)
               ->update(['status_tiket_id' => 2,'updated_at'=>date('Y-m-d H:i:s')]);
@@ -265,7 +265,7 @@ class BookingController extends Controller
         $invoice = InvoiceTiket::where("it_kode_unik","=",$token)->first();
         $invoice->status_tiket_id = 2;
         $invoice_tiket_id = $invoice->it_id;
-        if($invoice->it_tanggal <= date('Y-m-d')){
+        if($invoice->it_tanggal >= date('Y-m-d')){
             $update = DB::table('invoice_tiket')
               ->where('it_id', $invoice_tiket_id)
               ->update(['status_tiket_id' => 2,'updated_at'=>date('Y-m-d H:i:s')]);

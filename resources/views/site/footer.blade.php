@@ -17,7 +17,7 @@
               <h4>Information</h4>
               <ul>
                 <li><a href="#">About Us</a></li>
-                <li><a href="">Term Of Use</a></li>
+                <li><a href="{{route('termofuse')}}">Term Of Use</a></li>
                 <!-- Authentication Links -->
                 @guest
                     <li><a href="{{ route('login') }}">{{ __('Administrator') }}</a></li>

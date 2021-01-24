@@ -34,4 +34,9 @@ class HomeController extends Controller
         //dd($data);
         return view('site.homepage')->with($data);
     }
+
+    public function term(Request $request){
+        $data = Page::where('group','TERM_OF_USE')->first();
+        return view('site.page',compact('data'));
+    }
 }

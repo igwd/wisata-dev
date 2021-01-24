@@ -22,6 +22,8 @@ Auth::routes([
 Route::get('/','HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/term', 'HomeController@term')->name('termofuse');
+
 Route::get('galeri/photo', 'GaleriController@photo', function () {
     return Galeri::paginate();
 })->name('galeri.photo');
@@ -154,5 +156,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/grafik', 'Admin\GrafikController@index')->name('admin.grafik');
 	Route::get('admin/grafik/kunjungan', 'Admin\GrafikController@dataKunjungan')->name('admin.grafik.kunjungan');
 	//end-admin-grafik
+
+	Route::get('admin/account','Admin\AccountController@index')->name('admin.account');
+	Route::get('admin/account/listData','Admin\AccountController@listData')->name('admin.account.list');
+	Route::get( 'admin/account/{param1}/edit','Admin\AccountController@edit')->name('admin.account.edit');
+	Route::put( 'admin/account/{param1}/update','Admin\AccountController@update')->name('admin.account.update');
+	Route::get( 'admin/account/create','Admin\AccountController@create')->name('admin.account.create');
+	Route::post( 'admin/account/store','Admin\AccountController@store')->name('admin.account.store');
+	Route::delete('admin/account/{param1}/destroy','Admin\AccountController@destroy')->name('admin.account.destroy');
+	//update password
+	Route::get( 'admin/account/{param1}/resetpassword','Admin\AccountController@resetPassword')->name('admin.account.reset');
+	Route::put( 'admin/account/{param1}/updatepassword','Admin\AccountController@updatePassword')->name('admin.account.updatepassword');
 });
 

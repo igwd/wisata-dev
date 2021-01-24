@@ -8,10 +8,10 @@
               <div class="mu-about-us-left">
                 <!-- Start Title -->
                 <div class="mu-title">
-                  <h2>{{ $ABOUT[0]['judul'] }}</h2>              
+                  <h2>{{ @$ABOUT[0]['judul'] }}</h2>              
                 </div>
                 <!-- End Title -->
-                {!! $ABOUT[0]['konten'] !!}
+                {!! @$ABOUT[0]['konten'] !!}
               </div>
             </div>
             <!-- <div class="col-lg-6 col-md-6">

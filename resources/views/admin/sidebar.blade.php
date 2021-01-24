@@ -100,8 +100,8 @@
         Akses Kontrol
     </div>
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+    <li class="nav-item @php echo(Request::segment(2) == 'account' ? 'active' : '') @endphp">
+        <a class="nav-link" href="{{route('admin.account')}}">
             <i class="fas fa-fw fa-user"></i>
             <span>Users</span></a>
     </li>

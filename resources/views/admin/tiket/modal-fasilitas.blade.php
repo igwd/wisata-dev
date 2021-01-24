@@ -11,7 +11,7 @@
                     <p class="alert" style="display: none"></p>
                     <input type="hidden" name="group_kategori" id="group_kategori" value="{{$group_kategori}}">
                     <input type="hidden" name="index" id="index-f" value="{{$index}}">
-                    <input type="text" name="selected" id="selected" value="{{$selected}}">
+                    <input type="hidden" name="selected" id="selected" value="{{$selected}}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">

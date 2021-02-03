@@ -211,7 +211,7 @@ $(document).ready(function(){
         // JUST RESPONSE (Not needed)
         var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
         var msg = "";
-        if (ratingValue > 1) {
+        if (ratingValue >= 1) {
             //msg = "Thanks! You rated this " + ratingValue + " stars.";
             //ajax, call form rating
             $.ajax({

@@ -8,6 +8,7 @@ use App\Models\Fasilitas;
 use App\Models\RateFasilitas;
 use DataTables;
 use DB;
+use Validator;
 use Illuminate\Support\Facades\Crypt;
 
 
@@ -107,23 +108,54 @@ class FasilitasController extends Controller
 
 	public function submitRating(Request $request){
 		//dd($request->all());
-		$rate = new RateFasilitas;
-        $rate->rf_name = $request->rf_name;
-        $rate->rf_email = $request->rf_email;
-        $rate->rf_review = $request->rf_review;
-        $rate->fasilitas_id = $request->fasilitas_id;
-        $rate->rf_skor = $request->skor;
-		RateFasilitas::where('fasilitas_id',$request->fasilitas_id)->where('rf_email',$request->rf_email)->delete();
-        if($rate->save()){
-            return response()->json([
-                'class' => 'alert-success',
-                'text' => 'Review '.$request->nama_fasilitas.' berhasil. Terimakasih telah memberi skor '.$request->skor.' bintang.',
-            ]);
-        }else{
+		$data = array('name'=>$request->rf_name,'email'=>$request->rf_email);
+		$msg = array();
+        // setting up rules
+        $rules = array(
+            'name' => 'required',
+            'email' => 'required|email'
+        ); 
+
+        $messages = [
+            'required' => '<i class="fa fa-times-circle"></i> :attribute tidak diperkenankan Kosong</br>',
+            'min' => '<i class="fa fa-times-circle"></i> :attribute tidak diperkenankan kurang dari :min karakter</br>',
+            'max' => '<i class="fa fa-times-circle"></i> Kolom :attribute tidak diperkenankan lebih dari :max karakter</br>',
+            'without_spaces' => '<i class="fa fa-times-circle"></i>  Kolom :attribute kidak diperkenankan ada spasi</br>',
+            'unique' => '<i class="fa fa-times-circle"></i> :attribute sudah terdaftar</br>',
+            'email' => '<i class="fa fa-times-circle"></i> Alamat email tidak valid.</br>',
+            'confirmed' => '<i class="fa fa-times-circle"></i> Kolom :attribute tidak sesuai dengan konfirmasi password</br>',
+        ];
+        
+        $v = Validator::make($data, $rules, $messages);
+        $errors = array();
+        foreach ($v->messages()->toArray() as $err => $errvalue) {
+            $errors = array_merge($errors, $errvalue);
+        }
+
+        if(!empty($errors)){
             return response()->json([
                 'class' => 'alert-danger',
-                'text' => 'Review '.$request->nama_fasilitas.' gagal.',
+                'text' => $errors,
             ]);
-        }
+        }else{
+			$rate = new RateFasilitas;
+	        $rate->rf_name = $request->rf_name;
+	        $rate->rf_email = $request->rf_email;
+	        $rate->rf_review = $request->rf_review;
+	        $rate->fasilitas_id = $request->fasilitas_id;
+	        $rate->rf_skor = $request->skor;
+			RateFasilitas::where('fasilitas_id',$request->fasilitas_id)->where('rf_email',$request->rf_email)->delete();
+	        if($rate->save()){
+	            return response()->json([
+	                'class' => 'alert-success',
+	                'text' => 'Review '.$request->nama_fasilitas.' berhasil. Terimakasih telah memberi skor '.$request->skor.' bintang.',
+	            ]);
+	        }else{
+	            return response()->json([
+	                'class' => 'alert-danger',
+	                'text' => 'Review '.$request->nama_fasilitas.' gagal.',
+	            ]);
+	        }
+	    }
 	}
 }

@@ -9,31 +9,33 @@
             </div>
                 <div class="modal-body">
                     <p class="alert" style="display: none"></p>
-                    <form id="form-data" name="form-data" action="{{@$action}}">
-                        <input type="hidden" name="_method" value="{{@$method}}">
-                        @csrf
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <input type="hidden" name="fasilitas_id" value="{{@$fasilitas->fasilitas_id}}">
-                                <input type="hidden" name="skor" value="{{@$fasilitas->skor}}">
-                                <input type="hidden" name="nama_fasilitas" value="{{@$fasilitas->nama_fasilitas}}">
-                                <label>Nama Responden</label>
-                                <input type="text" name="rf_name" class="form-control" id="rf_name" value="{{@$fasilitas->rf_name}}" required>
+                    <div class="row">
+                        <form id="form-data" name="form-data" action="{{@$action}}">
+                            <input type="hidden" name="_method" value="{{@$method}}">
+                            @csrf
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="hidden" name="fasilitas_id" value="{{@$fasilitas->fasilitas_id}}">
+                                    <input type="hidden" name="skor" value="{{@$fasilitas->skor}}">
+                                    <input type="hidden" name="nama_fasilitas" value="{{@$fasilitas->nama_fasilitas}}">
+                                    <label>Nama Responden</label>
+                                    <input type="text" name="rf_name" class="form-control" id="rf_name" value="{{@$fasilitas->rf_name}}" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Email Responden</label>
-                                <input type="text" name="rf_email" class="form-control" id="rf_email" value="{{@$fasilitas->rf_email}}" required>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Email Responden</label>
+                                    <input type="text" name="rf_email" class="form-control" id="rf_email" value="{{@$fasilitas->rf_email}}" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Komentar Review</label>
-                                <input type="text" name="rf_review" class="form-control" id="rf_review" value="{{@$fasilitas->rf_review}}">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Komentar Review</label>
+                                    <input type="text" name="rf_review" class="form-control" id="rf_review" value="{{@$fasilitas->rf_review}}">
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="btn-proses">Review</button>

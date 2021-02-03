@@ -138,7 +138,7 @@
                             <aside class="mu-sidebar">
                                 <!-- start single sidebar -->
                                 <div class="mu-single-sidebar">
-                                    <h3>Most Popular</h3>
+                                    <h3>Paling Populer</h3>
                                     <div id="popular" class="mu-sidebar-popular-courses">
                                     <!-- derived from ajax-->
                                     </div>

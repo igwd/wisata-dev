@@ -26,10 +26,10 @@
      <div class="row">
        <div class="col-md-12">
          <div class="mu-page-breadcrumb-area">
-           <h2>Gallery</h2>
+           <h2>Galeri</h2>
            <ol class="breadcrumb">
-            <li><a href="{{url('/')}}">Home</a></li>            
-            <li>Gallery</li>
+            <li><a href="{{url('/')}}">Beranda</a></li>            
+            <li>Galeri</li>
             <li class="active">Video</li>
           </ol>
          </div>

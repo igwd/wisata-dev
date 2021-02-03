@@ -128,7 +128,7 @@
 			                <aside class="mu-sidebar">
 			                  <!-- start single sidebar -->
 			                  <div class="mu-single-sidebar">
-			                    <h4>Most Popular Kuliner</h4>
+			                    <h4>Kuliner Populer</h4>
 			                    <div id="popular-kuliner" class="mu-sidebar-popular-courses">
 			                    	
 			                    </div>
@@ -138,7 +138,7 @@
 			                <aside class="mu-sidebar">
 			                  <!-- start single sidebar -->
 			                  <div class="mu-single-sidebar">
-			                    <h4>Most Popular Homestay</h4>
+			                    <h4>Penginapan Populer</h4>
 			                    <div id="popular-homestay" class="mu-sidebar-popular-courses">
 			                    	
 			                    </div>
@@ -148,7 +148,7 @@
 			                <aside class="mu-sidebar">
 			                  <!-- start single sidebar -->
 			                  <div class="mu-single-sidebar">
-			                    <h4>Most Popular Transport</h4>
+			                    <h4>Transport Populer</h4>
 			                    <div id="popular-transport" class="mu-sidebar-popular-courses">
 			                    	
 			                    </div>

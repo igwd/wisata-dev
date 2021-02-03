@@ -25,7 +25,7 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-          <li class="{{request()->routeIs('home') ? 'active' : ''}}"><a href="{{ route('home') }}">Home</a></li>            
+          <li class="{{request()->routeIs('home') ? 'active' : ''}}"><a href="{{ route('home') }}">Beranda</a></li>            
           <li class="dropdown @php echo(Request::segment(1) == 'fasilitas' ? 'active' : '') @endphp">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fasilitas <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
@@ -37,7 +37,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Galeri <span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{url('/galeri/photo')}}">Photo</a></li>                
+              <li><a href="{{url('/galeri/photo')}}">Foto</a></li>                
               <li><a href="{{url('/galeri/video')}}">Video</a></li>                
             </ul>
           </li>                      

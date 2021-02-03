@@ -49,6 +49,8 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
+		ob_get_contents();
+		//dd($request->all());
         $galeri = new Galeri;
         $url_gambar = $request->url_gambar;
         $url_video = $request->url_video;
@@ -64,6 +66,7 @@ class VideoController extends Controller
         $rules = array(
             'judul' => 'required',
             'deskripsi' => 'required',
+			//'image' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png',
             'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm',
         );  
@@ -86,7 +89,7 @@ class VideoController extends Controller
         }
         //mimes:jpeg,bmp,png and for max size max:10000
         // doing the validation, passing post data, rules and the messages
-        
+        ob_end_clean();
         if(!empty($errors)){
             // send back to the page with the input data and errors
             $msg = array('class'=>'alert-danger','text'=>$errors);
@@ -208,7 +211,8 @@ class VideoController extends Controller
             'judul' => 'required',
             'deskripsi' => 'required',
             'image' => 'required|mimes:jpeg,jpg,png',
-            'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm',
+            //'image'=>'required',
+			'video' => 'required|mimes:mp4,ogx,oga,ogv,ogg,webm',
         ); 
 
         $messages = [

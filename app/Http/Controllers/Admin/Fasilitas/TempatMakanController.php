@@ -57,7 +57,7 @@ class TempatMakanController extends Controller
             'deskripsi' => 'required',
             'harga_booking'=> 'required',
             'image' => 'mimes:jpeg,jpg,png|required',
-            'geo_location'=> 'required'
+            //'geo_location'=> 'required'
 
         ); 
 
@@ -173,7 +173,7 @@ class TempatMakanController extends Controller
             'deskripsi' => 'required',
             'harga_booking'=> 'required',
             'alamat_fasilitas'=> 'required',
-            'geo_location'=> 'required'
+            //'geo_location'=> 'required'
 
         ); 
 

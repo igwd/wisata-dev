@@ -58,7 +58,7 @@ class TransportasiController extends Controller
             'deskripsi' => 'required',
             'harga_booking'=> 'required',
             'image' => 'mimes:jpeg,jpg,png|required',
-            'geo_location'=> 'required'
+            //'geo_location'=> 'required'
 
         ); 
 
@@ -175,7 +175,7 @@ class TransportasiController extends Controller
             'deskripsi' => 'required',
             'harga_booking'=> 'required',
             'image' => 'mimes:jpeg,jpg,png|required',
-            'geo_location'=> 'required'
+            //'geo_location'=> 'required'
         );
 
         $messages = [

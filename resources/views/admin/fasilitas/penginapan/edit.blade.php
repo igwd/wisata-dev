@@ -61,11 +61,11 @@
               <input type="hidden" name="url_gambar" id="url_gambar" value="{{$data->thumbnail}}">
               <input type="file" name="image" class="form-control" id="image">
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Lokasi</label>
               <input type="text" name="geo_location" id="geo_location" class="form-control" value="{{$data->geo_location}}" readonly="">
               <div id="map"></div>
-            </div>
+            </div>-->
           </form>
           <div class="group-btn pull-right">
             <button id="btn-simpan" class="btn btn-success">Simpan</button>
@@ -91,7 +91,7 @@
     });
 
     $('.summernote').summernote();
-    initMap();
+    //initMap();
   });
 
   function initMap() {

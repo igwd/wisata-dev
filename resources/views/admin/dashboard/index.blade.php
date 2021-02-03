@@ -53,7 +53,7 @@
         <p class="alert" style="display: none"></p>
     @endif
     <h1 class="h3 text-gray-800">Dashboard</h1>
-    <p class="mb-2">Dashboard admin merupakan halaman yang digunakan untuk mengelola konten yang terdapat pada halaman web</p>
+    <p class="mb-2">Selamat Datang ADMIN !!! </p>
     <!-- Content Row -->
     <div class="row">
     	<div class="col-md-12 card">

@@ -77,4 +77,53 @@ class FasilitasController extends Controller
 		$segment = $request->segment(2);
 		return view('site.fasilitas.detail', compact('data','segment','keyid'));
 	}
+
+	public function showModalRating($id_enkrip,Request $request){
+		$group_kategori = ""; $id = 0;
+		$kategori = $request->segment(2);
+		//$id_enkrip = $request->keyid;
+		if($kategori == "kuliner"){
+			$group_kategori = "TEMPAT_MAKAN";
+		}elseif($kategori == "transportasi"){
+			$group_kategori = "TRANSPORT";
+		}elseif($kategori == "penginapan"){
+			$group_kategori = "PENGINAPAN";
+		}
+
+		$method = 'POST';
+        $action = url('/')."/fasilitas/rating/store";
+        // proses decrypt id
+        $id = Crypt::decryptString($id_enkrip);
+        $fasilitas = Fasilitas::find($id);
+        $fasilitas = (object) array(
+        				'fasilitas_id'=>$fasilitas->id,
+        				'nama_fasilitas'=>$fasilitas->nama_fasilitas,
+        				'skor'=>$request->skor
+    				);
+        //dd($fasilitas);
+        // return view with data
+        return view('site.fasilitas.modal-rating',compact('fasilitas','method','action'));
+	}
+
+	public function submitRating(Request $request){
+		//dd($request->all());
+		$rate = new RateFasilitas;
+        $rate->rf_name = $request->rf_name;
+        $rate->rf_email = $request->rf_email;
+        $rate->rf_review = $request->rf_review;
+        $rate->fasilitas_id = $request->fasilitas_id;
+        $rate->rf_skor = $request->skor;
+		RateFasilitas::where('fasilitas_id',$request->fasilitas_id)->where('rf_email',$request->rf_email)->delete();
+        if($rate->save()){
+            return response()->json([
+                'class' => 'alert-success',
+                'text' => 'Review '.$request->nama_fasilitas.' berhasil. Terimakasih telah memberi skor '.$request->skor.' bintang.',
+            ]);
+        }else{
+            return response()->json([
+                'class' => 'alert-danger',
+                'text' => 'Review '.$request->nama_fasilitas.' gagal.',
+            ]);
+        }
+	}
 }

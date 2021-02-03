@@ -32,13 +32,49 @@ Route::get('galeri/video', 'GaleriController@video', function () {
     return Galeri::paginate();
 })->name('galeri.video');
 
+// route fasilitas start 
 Route::get('fasilitas/{param1}', 'FasilitasController@view', function () {
     return Fasilitas::paginate();
 })->name('fasilitas.view');
+/*
+	Controller 	: app/Http/Controller => FasilitasController
+	Fungsi 		: view($kategori)
+	Parameter 	: $kategori = 'transportasi' atau 'kuliner' atau 'penginapan'
+	Fungsi		: menampilkan data fasilitas berdasarkan kategori
+*/
 
 Route::get('fasilitas/{param1}/popular', 'FasilitasController@popular')->name('fasilitas.view');
+/*
+	Controller 	: app/Http/Controller => FasilitasController
+	Fungsi 		: popular()
+	Parameter 	: $kategori = 'transportasi' atau 'kuliner' atau 'penginapan'
+	Fungsi		: menampilkan list fasilitas yg paling populer berdasarkan rating yg diberikan pengunjung
+*/
 
 Route::get('fasilitas/{param1}/{param2}/detail', 'FasilitasController@show')->name('fasilitas.show');
+/*
+	Controller 	: app/Http/Controller => FasilitasController
+	Fungsi 		: show($kategori)
+	Parameter 	: $kategori = 'transportasi' atau 'kuliner' atau 'penginapan'
+	Fungsi		: menampilkan list fasilitas yg paling populer berdasarkan rating yg diberikan pengunjung
+*/
+
+Route::get('fasilitas/rating/{param1}', 'FasilitasController@showModalRating')->name('fasilitas.rating.form');
+/*
+	Controller 	: app/Http/Controller => FasilitasController
+	Fungsi 		: showModalRating()
+	Parameter 	: $kategori, $id
+	Fungsi		: menampilkan form untuk memberikan rating fasilitas dari pengunjung
+*/
+Route::post('fasilitas/rating/store', 'FasilitasController@submitRating')->name('fasilitas.rating.submit');
+/*
+	Controller 	: app/Http/Controller => FasilitasController
+	Fungsi 		: showModalRating()
+	Parameter 	: $kategori, $id
+	Fungsi		: simpan rating user
+*/	
+
+//route fasilitas end
 
 // untuk pemesanan tiket
 Route::get('/tiket','TiketController@index')->name('tiket');

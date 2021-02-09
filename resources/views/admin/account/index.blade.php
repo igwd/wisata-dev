@@ -164,7 +164,7 @@ function deleteData(id){
 	        $('.alert').addClass(data.class);
 	        $('.alert').html(data.text);
 	        $('.alert').css('display','block');
-	        table_user.ajax.reload();
+	        tabel_user.ajax.reload();
 	      }
 	    });
    	}

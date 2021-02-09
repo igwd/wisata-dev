@@ -122,7 +122,7 @@ class TiketController extends Controller
     public function listData(Request $request){
         $data = InvoiceTiket::select(['it_id',
             'it_email','it_telp','it_pemesan','it_tanggal','it_keterangan','it_kode_unik','it_total_tagihan','status_tiket_id','it_jenis_pembayaran','file_bukti','no_rekening','mts_status'
-        ])->leftjoin('m_tiket_status','status_tiket_id','m_tiket_status.mts_id');
+        ])->leftjoin('m_tiket_status','status_tiket_id','m_tiket_status.mts_id')->orderBy('status_tiket_id','ASC');
 
         $datatables = DataTables::of($data);
         if ($keyword = $request->get('search')['value']) {

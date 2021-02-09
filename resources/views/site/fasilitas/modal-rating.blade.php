@@ -60,6 +60,7 @@
                     $('#modal-upload .alert').addClass(data.class);
                     $('#modal-upload .alert').html(data.text);
                     $('#modal-upload .alert').css('display','block');
+                    getRatingFasilitas();
                 },complete:function(){
                     setTimeout(function(){
                         $('#modal-upload').modal('hide'); 

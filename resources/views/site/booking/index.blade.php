@@ -165,7 +165,7 @@
 																			<input type="text" style="text-align:right;" readonly name="subtotal[{{$value->mt_id}}]" id="subtotal{{$value->mt_id}}" class="subtotal form-control" value="{!!(!empty($data_tiket_order[$value->mt_id]->booking_subtotal) ? number_format($data_tiket_order[$value->mt_id]->booking_subtotal) : 0)!!}">
 																		</td>
 																		<td>
-																			<input class="btn btn-danger btn-sm" type="button" value="Delete" onclick="deleteRow(this)"/>
+																			<input class="btn btn-danger btn-sm" type="button" value="Delete" data-booking="Tiket {{$value->mt_nama_tiket}}" data-key="TIKET-{{$value->mt_id}}" onclick="deleteRow(this)"/>
 																		</td>
 																	</tr>
 																	@php $total_tiket += @$data_tiket_order[$value->mt_id]->booking_subtotal; @endphp
@@ -174,7 +174,7 @@
 																<tfoot>
 																	<td colspan="3">Total</td>
 																	<td align="right">
-																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_tiket)!!}" name="total" class="form-control" id="total">
+																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_tiket)!!}" name="total" class="form-control" id="total-tiket">
 																	</td>
 																</tfoot>
 															</table>
@@ -212,7 +212,7 @@
 																			<input type="text" style="text-align:right;" readonly name="subtotal[{{$kuliner}}]" id="subtotal{{$kuliner}}" class="subtotal form-control" value="{!!(!empty($data_kuliner_order[$kuliner]->booking_subtotal) ? number_format($data_kuliner_order[$kuliner]->booking_subtotal) : 0)!!}">
 																		</td>
 																		<td>
-																			<input class="btn btn-danger btn-sm" type="button" value="Delete" onclick="deleteRow(this)"/>
+																			<input class="btn btn-danger btn-sm" type="button" value="Delete" data-booking="{{$value->booking_name}}" data-key="KULINER-{{$kuliner}}" onclick="deleteRow(this)"/>
 																		</td>
 																	</tr>
 																	@php 
@@ -223,7 +223,7 @@
 																<tfoot>
 																	<td colspan="3">Total</td>
 																	<td align="right">
-																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_kuliner)!!}" name="total" class="form-control" id="total">
+																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_kuliner)!!}" name="total" class="form-control" id="total-kuliner">
 																	</td>
 																</tfoot>
 															</table>
@@ -261,7 +261,7 @@
 																			<input type="text" style="text-align:right;" readonly name="subtotal[{{$penginapan}}]" id="subtotal{{$penginapan}}" class="subtotal form-control" value="{!!(!empty($data_penginapan_order[$penginapan]->booking_subtotal) ? number_format($data_penginapan_order[$penginapan]->booking_subtotal) : 0)!!}">
 																		</td>
 																		<td>
-																			<input class="btn btn-danger btn-sm" type="button" value="Delete" onclick="deleteRow(this)"/>
+																			<input class="btn btn-danger btn-sm" type="button" value="Delete" data-booking="{{$value->booking_name}}" data-key="PENGINAPAN-{{$penginapan}}" onclick="deleteRow(this)"/>
 																		</td>
 																	</tr>
 																	@php 
@@ -272,7 +272,7 @@
 																<tfoot>
 																	<td colspan="3">Total</td>
 																	<td align="right">
-																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_penginapan)!!}" name="total" class="form-control" id="total">
+																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_penginapan)!!}" name="total" class="form-control" id="total-penginapan">
 																	</td>
 																</tfoot>
 															</table>
@@ -310,7 +310,7 @@
 																			<input type="text" style="text-align:right;" readonly name="subtotal[{{$transport}}]" id="subtotal{{$transport}}" class="subtotal form-control" value="{!!(!empty($data_transport_order[$transport]->booking_subtotal) ? number_format($data_transport_order[$transport]->booking_subtotal) : 0)!!}">
 																		</td>
 																		<td>
-																			<input class="btn btn-danger btn-sm" type="button" value="Delete" onclick="deleteRow(this)"/>
+																			<input class="btn btn-danger btn-sm" type="button" value="Delete" data-booking="{{$value->booking_name}}" data-key="TRANSPORT-{{$transport}}" onclick="deleteRow(this)"/>
 																		</td>
 																	</tr>
 																@php 
@@ -321,7 +321,7 @@
 																<tfoot>
 																	<td colspan="3">Total</td>
 																	<td align="right">
-																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_transport)!!}" name="total" class="form-control" id="total">
+																		<input readonly type="text" style="text-align: right;" value="{!!number_format($total_transport)!!}" name="total" class="form-control" id="total-transport">
 																	</td>
 																</tfoot>
 															</table>
@@ -431,8 +431,81 @@
   	}
 
   	function deleteRow(btn) {
-		var row = btn.parentNode.parentNode;
-		row.parentNode.removeChild(row);
+  		var confirm = window.confirm("Hapus Item "+$(btn).attr('data-booking')+'?');
+  		$.ajax({
+  			url:"{{url('booking/item/delete')}}",
+  			data:{keyid:$(btn).attr('data-key')},
+  			dataType:"JSON",
+  			success:function(data){
+  				if(data.success == 1){
+	  				toast_success('Berhasil',data.msg);
+	  				var row = btn.parentNode.parentNode;
+					row.parentNode.removeChild(row);
+  				}else{
+					toast_error('Gagal',data.msg);
+  				}
+  				getCartItem();
+  				getSubtotal();
+  			},error:function(error){
+  				toast_error('Gagal','Terjadi kesalahan sistem');
+  				console.log(error.XMLHttpRequest);
+  			}
+  		});
+		/**/
+	}
+
+	function getSubtotal(){
+		var sanitized = $('#total-tiket').val().replace(/[^-.0-9]/g, '');
+        // Remove non-leading minus signs
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        // Remove the first point if there is more than one
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        // Update value
+        var value = sanitized,
+        plain = plainNumber(value),
+        reversed = reverseNumber(plain),
+        reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
+        normal = reverseNumber(reversedWithDots);
+        $('#total-tiket').val(normal);
+		
+		var sanitized = $('#total-kuliner').val().replace(/[^-.0-9]/g, '');
+        // Remove non-leading minus signs
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        // Remove the first point if there is more than one
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        // Update value
+        var value = sanitized,
+        plain = plainNumber(value),
+        reversed = reverseNumber(plain),
+        reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
+        normal = reverseNumber(reversedWithDots);
+        $('#total-kuliner').val(normal);
+
+		var sanitized = $('#total-penginapan').val().replace(/[^-.0-9]/g, '');
+        // Remove non-leading minus signs
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        // Remove the first point if there is more than one
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        // Update value
+        var value = sanitized,
+        plain = plainNumber(value),
+        reversed = reverseNumber(plain),
+        reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
+        normal = reverseNumber(reversedWithDots);
+        $('#total-penginapan').val(normal);
+
+		var sanitized = $('#total-transport').val().replace(/[^-.0-9]/g, '');
+        // Remove non-leading minus signs
+        sanitized = sanitized.replace(/(.)-+/g, '$1');
+        // Remove the first point if there is more than one
+        sanitized = sanitized.replace(/\.(?=.*\.)/g, '');
+        // Update value
+        var value = sanitized,
+        plain = plainNumber(value),
+        reversed = reverseNumber(plain),
+        reversedWithDots = reversed.match(/.{1,3}/g).join('.'),
+        normal = reverseNumber(reversedWithDots);
+        $('#total-transport').val(normal);
 	}
 </script>
 @endsection

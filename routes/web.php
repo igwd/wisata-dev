@@ -73,7 +73,13 @@ Route::post('fasilitas/rating/store', 'FasilitasController@submitRating')->name(
 	Parameter 	: $kategori, $id
 	Fungsi		: simpan rating user
 */	
-
+Route::get('fasilitas/ratingskor/{param1}', 'FasilitasController@getRatingSkor')->name('fasilitas.rating.skor');
+/*
+	Controller 	: app/Http/Controller => FasilitasController
+	Fungsi 		: showModalRating()
+	Parameter 	: $kategori, $id
+	Fungsi		: menampilkan form untuk memberikan rating fasilitas dari pengunjung
+*/
 //route fasilitas end
 
 // untuk pemesanan tiket
@@ -93,6 +99,7 @@ Route::get('/booking/{param}/verifikasi','BookingController@verifikasi')->name('
 
 Route::get('/booking/{param}/payment','BookingController@payment')->name('booking.payment');
 Route::put('/booking/{param}/upload','BookingController@upload')->name('booking.uploadbukti');
+Route::get('/booking/item/delete','BookingController@deleteItem')->name('booking.item.delete');
 //booking end
 //role admin route
 Route::group(['middleware' => 'auth'], function () {

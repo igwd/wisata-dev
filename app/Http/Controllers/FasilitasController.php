@@ -79,6 +79,13 @@ class FasilitasController extends Controller
 		return view('site.fasilitas.detail', compact('data','segment','keyid'));
 	}
 
+	public function getRatingSkor($id){
+		$keyid = $id;
+		$id = Crypt::decryptString($id);
+		$data = Fasilitas::AvgRating($id);
+		return response()->json($data);
+	}
+
 	public function showModalRating($id_enkrip,Request $request){
 		$group_kategori = ""; $id = 0;
 		$kategori = $request->segment(2);

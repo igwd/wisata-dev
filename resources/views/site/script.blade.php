@@ -116,10 +116,47 @@
       success:function(data){
         //console.log(data);
         $('#cart-number').html(data.total);
+        var total_tiket = 0;
+        $.each(data.tiket, function( index, value ){
+          total_tiket += parseInt(value.booking_subtotal);
+        });
+        $('#total-tiket').val(total_tiket);
+        
+
+        var total_kuliner = 0;
+        $.each(data.kuliner, function( index, value ){
+          total_kuliner += parseInt(value.booking_subtotal);
+        });
+        $('#total-kuliner').val(total_kuliner);
+        
+
+        var total_penginapan = 0;
+        $.each(data.penginapan, function( index, value ){
+          total_penginapan += parseInt(value.booking_subtotal);
+        });
+        $('#total-penginapan').val(total_penginapan);
+        
+
+        var total_transport = 0;
+        $.each(data.transport, function( index, value ){
+          total_transport += parseInt(value.booking_subtotal);
+        });
+        $('#total-transport').val(total_transport);
+        
       },error:function(error){
         //console.log(error.XMLHttpRequest);
       }
     });
+  }
+
+  function reverseNumber(input) {
+    return [].map.call(input, function(x) {
+      return x;
+    }).reverse().join(''); 
+  }
+
+  function plainNumber(number) {
+    return number.split('.').join('');
   }
 
   </script>

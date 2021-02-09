@@ -57,7 +57,7 @@
                     $('#modal-upload .alert').addClass(data.class);
                     $('#modal-upload .alert').html(data.text);
                     $('#modal-upload .alert').css('display','block');
-                    table_tiket.ajax.reload();
+                    tabel_user.ajax.reload();
                 },complete:function(){
                     setTimeout(function(){
                         $('#modal-upload').modal('hide'); 

@@ -116,7 +116,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <span><i class="fa fa-star"></i>@php echo(empty($data->skor) ? 'Belum memiliki review' : $data->skor)@endphp</span>
+                                        <span id="rate"><i class="fa fa-star"></i>@php echo(empty($data->skor) ? 'Belum memiliki review' : $data->skor)@endphp</span>
                                     </figcaption>
                                 </figure>
                                 <div class="mu-latest-course-single-content">
@@ -234,6 +234,31 @@ $(document).ready(function(){
     $('#btn-booking').click(function(){
       bookingFasilitas();
     });
+
+    getRatingFasilitas();
 });
+
+function getRatingFasilitas(){
+    $.ajax({
+        url:"{{url('fasilitas/ratingskor')}}/"+$('#keyid').val(),
+        success:function(data){
+            console.log(data);
+            var onStar = parseInt($('#stars li').data('value'), 10); // The star currently selected
+            var stars = $('#stars li').parent().children('li.star');
+            
+            for (i = 0; i < stars.length; i++) {
+                if(i < data.skor){
+                    $(stars[i]).removeClass('selected');
+                    $(stars[i]).addClass('selected');
+                }else{
+                    $(stars[i]).removeClass('selected');
+                }
+            }
+            if(data.skor != null){
+                $('#rate').html('<i class="fa fa-star"></i>'+data.skor);
+            }
+        }
+    });    
+}
 </script>
 @endsection

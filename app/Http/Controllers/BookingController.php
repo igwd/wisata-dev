@@ -490,6 +490,52 @@ class BookingController extends Controller
         return response()->json($value);
     }
 
+    public function deleteItem(Request $request){
+        $keyid = explode('-', $request->keyid);
+        $booking_key = strtolower($keyid[0]);
+        $booking_id = $keyid[1];
+
+        // ambil item booking dari cookie
+        $value = $request->cookie('item');
+        //ubah kedalam bentuk array
+        $data = (array) json_decode($value);
+        // if ada item
+        $item = (array) $data[$booking_key];
+        //dd($item[$booking_id]);
+        if(!empty($item[$booking_id])){
+            // delete item dari array
+            unset($item[$booking_id]);
+            $data[$booking_key] = $item;
+        }
+
+        $kuliner = (empty($data['kuliner']) ? [] : (array) $data['kuliner']);
+        $penginapan = (empty($data['penginapan']) ? [] : (array) $data['penginapan']);
+        $transport = (empty($data['transport']) ? [] : (array) $data['transport']);
+        $tiket = (empty($data['tiket']) ? [] : (array) $data['tiket']);
+        
+        $data['kuliner']=$kuliner;
+        $data['penginapan']=$penginapan;
+        $data['transport']=$transport;
+        $data['tiket'] = $tiket;
+                
+        $total = count($kuliner)+count($penginapan)+count($transport)+count($data['tiket']);
+        $data['total'] = $total;
+
+        //dd($data);
+
+        $item = cookie('item',json_encode($data));
+        if($item){
+            if(!empty($errors)){
+                $response = array('success'=>2,'msg'=>$errors);
+            }else{
+                $response = array('success'=>1,'msg'=>'Pesanan berhasil dihapus');
+            }
+        }else{
+            $response = array('success'=>3,'msg'=>'Pesanan gagal dihapus');
+        }
+        return response($response)->cookie($item);
+    }
+
     public function generateCode($data){
         $alphabet =   array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
         $alpha_flip = array_flip($alphabet);

@@ -71,7 +71,7 @@ small, .small {
 										              @endif
 										            </p>
 										        @endif
-										        <h2><a href="#">Status Tiket #{{@$invoice->it_kode_unik}} <small style="font-size: 50% !important;"> *) mohon untuk mengingat kode booking tiket</small></a></h2>
+										        <h2><a href="#">Status Tiket #{{@$invoice->it_kode_unik}} <small style="font-size: 50% !important;"> *) mohon untuk mengingat kode pesanan tiket</small></a></h2>
 										        @if(!empty($invoice))
 							                          <h4>Data Diri</h4>
 							                          <ul>

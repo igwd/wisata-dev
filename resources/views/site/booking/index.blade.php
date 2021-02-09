@@ -26,10 +26,10 @@
 	    <div class="row">
 	        <div class="col-md-12">
 		        <div class="mu-page-breadcrumb-area">
-		           <h2>Booking Area</h2>
+		           <h2>Pemesanan</h2>
 		           <ol class="breadcrumb">
 		            <li><a href="#">Home</a></li>            
-		            <li class="active">Booking</li>
+		            <li class="active">Pemesanan</li>
 		          </ol>
          		</div>
        		</div>
